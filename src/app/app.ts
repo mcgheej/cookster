@@ -7,7 +7,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   selector: 'ck-root',
   imports: [MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('cookster');
