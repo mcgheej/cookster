@@ -40,6 +40,9 @@ body {
     (
       container-background-color: var(--mat-sys-primary),
       container-text-color: white,
+      // standard-height: 64px,
+      // title-text-size: 22px,
+       // title-text-line-height: 16px,
     )
   );
   @include mat.icon-overrides(

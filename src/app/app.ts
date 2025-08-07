@@ -1,12 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { Shell } from '@app-container/index';
 
 @Component({
   selector: 'ck-root',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule],
-  templateUrl: './app.html',
+  imports: [Shell],
+  template: `<ck-shell></ck-shell>`,
 })
 export class App {
   protected readonly title = signal('cookster');
