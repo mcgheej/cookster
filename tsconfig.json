@@ -16,7 +16,8 @@
     "module": "preserve",
     "baseUrl": "./src",
     "paths": {
-      "@app-container/*": ["libs/app-container/*"]
+      "@app-container/*": ["libs/app-container/*"],
+      "@data-access/authentication/*": ["libs/data-access/authentication/*"]
     }
   },
   "angularCompilerOptions": {
