@@ -10,7 +10,7 @@ import { AfAuthenticationService } from './af-authentication';
 export class AuthenticationService {
   private readonly afAuthenticationService = inject(AfAuthenticationService);
 
-  loggedIn = toSignal(this.afAuthenticationService.loggedIn$, { initialValue: false });
+  loggedIn$ = this.afAuthenticationService.loggedIn$;
 
   login(email: string, password: string): Observable<UserCredential> {
     return this.afAuthenticationService.login(email, password);

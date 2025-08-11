@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, authState, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, User, user, UserCredential } from '@angular/fire/auth';
 import { from, map, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,9 +7,12 @@ import { from, map, Observable } from 'rxjs';
 })
 export class AfAuthenticationService {
   private afAuth: Auth = inject(Auth);
-  private authState$ = authState(this.afAuth);
 
-  loggedIn$: Observable<boolean> = this.authState$.pipe(map((user) => !!user));
+  loggedIn$: Observable<boolean> = user(this.afAuth).pipe(
+    map((user: User | null) => {
+      return !!user;
+    })
+  );
 
   login(email: string, password: string): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(this.afAuth, email, password));
