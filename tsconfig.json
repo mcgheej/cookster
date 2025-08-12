@@ -21,7 +21,8 @@
       "@feature/home/*": ["libs/feature/home/*"],
       "@feature/login/*": ["libs/feature/login/*"],
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
-      "@feature/plans/*": ["libs/feature/plans/*"]
+      "@feature/plans/*": ["libs/feature/plans/*"],
+      "@util/app-config/*": ["libs/util/app-config/*"]
     }
   },
   "angularCompilerOptions": {
