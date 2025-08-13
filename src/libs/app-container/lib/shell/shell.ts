@@ -6,6 +6,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '@data-access/authentication/index';
 import { NavBar } from './navbar/navbar';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { PlansDataService } from '@data-access/plans/index';
 
 @Component({
   selector: 'ck-shell',
@@ -23,6 +24,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class Shell {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthenticationService);
+  private readonly plansData = inject(PlansDataService);
 
   protected readonly loggedIn = toSignal(this.auth.loggedIn$, { initialValue: false });
 

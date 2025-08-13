@@ -18,11 +18,13 @@
     "paths": {
       "@app-container/*": ["libs/app-container/*"],
       "@data-access/authentication/*": ["libs/data-access/authentication/*"],
+      "@data-access/plans/*": ["libs/data-access/plans/*"],
       "@feature/home/*": ["libs/feature/home/*"],
       "@feature/login/*": ["libs/feature/login/*"],
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],
-      "@util/app-config/*": ["libs/util/app-config/*"]
+      "@util/app-config/*": ["libs/util/app-config/*"],
+      "@util/data-types/*": ["libs/util/data-types/*"]
     }
   },
   "angularCompilerOptions": {
