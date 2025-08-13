@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { UserCredential } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { AfAuthenticationService } from './af-authentication';
