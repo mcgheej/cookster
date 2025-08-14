@@ -28,7 +28,7 @@ export class Shell {
 
   protected readonly loggedIn = toSignal(this.auth.loggedIn$, { initialValue: false });
 
-  logout() {
+  protected logout(): void {
     this.auth.logout().subscribe({
       next: () => {
         this.router.navigateByUrl('/login');

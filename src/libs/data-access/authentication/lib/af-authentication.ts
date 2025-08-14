@@ -8,7 +8,7 @@ import { from, map, Observable } from 'rxjs';
 export class AfAuthenticationService {
   private afAuth: Auth = inject(Auth);
 
-  loggedIn$: Observable<boolean> = user(this.afAuth).pipe(
+  readonly loggedIn$: Observable<boolean> = user(this.afAuth).pipe(
     map((user: User | null) => {
       return !!user;
     })

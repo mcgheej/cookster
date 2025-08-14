@@ -51,3 +51,14 @@ body {
     )
   );
 }
+
+:root {
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--mat-sys-primary),
+      state-layer-color: var(--mat-sys-primary),
+      // hover-color: var(--mat-sys-primary),
+       // active-color: var(--mat-sys-primary),
+    )
+  );
+}

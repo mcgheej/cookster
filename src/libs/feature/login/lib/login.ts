@@ -36,9 +36,9 @@ import { PasswordField } from './password-field';
   providers: [LoginService],
 })
 export class Login {
-  private loginService: LoginService = inject(LoginService);
+  private readonly loginService: LoginService = inject(LoginService);
 
-  protected loginForm = this.loginService.loginForm;
+  protected readonly loginForm = this.loginService.loginForm;
   protected submitForm = this.loginService.submitForm.bind(this.loginService);
   protected forgotPassword = this.loginService.forgotPassword.bind(this.loginService);
 }

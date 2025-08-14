@@ -48,7 +48,7 @@ import { navItems } from './navbar-props';
 })
 export class NavBar {
   readonly loggedIn = input.required<boolean>();
-  readonly logout = output<void>();
+  protected readonly logout = output<void>();
 
   protected readonly navItems = navItems;
 }

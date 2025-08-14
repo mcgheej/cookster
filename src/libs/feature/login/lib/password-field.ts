@@ -29,7 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordField {
-  protected loginService = inject(LoginService);
+  protected readonly loginService = inject(LoginService);
 
   protected readonly passwordField = this.loginService.loginForm.controls.password;
 

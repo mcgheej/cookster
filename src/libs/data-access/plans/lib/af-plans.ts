@@ -27,13 +27,11 @@ export class AfPlansService {
       }
       if (user) {
         unsubscribe = this.setupSnapshotListener();
-        console.log('User is logged in:', user);
       } else {
         if (unsubscribe) {
           (unsubscribe as Unsubscribe)();
           unsubscribe = null;
         }
-        console.log('User is logged out');
       }
     });
   }

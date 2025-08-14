@@ -16,9 +16,9 @@ interface UserDetails {
 @Injectable()
 export class LoginService {
   private readonly fb = inject(FormBuilder);
-  private router: Router = inject(Router);
-  private snackBar: MatSnackBar = inject(MatSnackBar);
-  private auth: AuthenticationService = inject(AuthenticationService);
+  private readonly router: Router = inject(Router);
+  private readonly snackBar: MatSnackBar = inject(MatSnackBar);
+  private readonly auth: AuthenticationService = inject(AuthenticationService);
 
   readonly loginForm = this.fb.group({
     [EMAIL_FIELD]: ['', [Validators.required, Validators.email]],

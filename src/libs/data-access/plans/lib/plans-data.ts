@@ -11,7 +11,7 @@ export class PlansDataService {
 
   private planSummaries = new Map<string, PlanSummary>();
   private planSummariesSubject$ = new BehaviorSubject<PlanSummary[]>(Array.from(this.planSummaries.values()));
-  planSummaries$ = this.planSummariesSubject$
+  readonly planSummaries$ = this.planSummariesSubject$
     .asObservable()
     .pipe(map((summaries) => summaries.sort((a, b) => compareAsc(a.dateTime, b.dateTime))));
 
@@ -23,14 +23,13 @@ export class PlansDataService {
           case 'modified':
             const { date, ...planSummary } = { ...change.planDB, dateTime: (change.planDB.date as Timestamp).toDate() };
             this.planSummaries.set(planSummary.id, planSummary as PlanSummary);
-            console.log('add/modify', planSummary);
             break;
           case 'removed':
-            console.log('remove', change.planDB);
             this.planSummaries.delete(change.planDB.id);
             break;
         }
       });
+      this.planSummariesSubject$.next(Array.from(this.planSummaries.values()));
     });
   }
 }

@@ -6,6 +6,4 @@ import { Shell } from '@app-container/index';
   imports: [Shell],
   template: `<ck-shell></ck-shell>`,
 })
-export class App {
-  protected readonly title = signal('cookster');
-}
+export class App {}
