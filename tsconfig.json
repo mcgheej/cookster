@@ -23,6 +23,7 @@
       "@feature/login/*": ["libs/feature/login/*"],
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],
+      "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],
       "@util/data-types/*": ["libs/util/data-types/*"]
     }
