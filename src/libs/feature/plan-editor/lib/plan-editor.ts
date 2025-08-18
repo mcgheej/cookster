@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { PlansDataService } from '@data-access/plans/index';
-import { Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'ck-plan-editor',
@@ -17,6 +17,14 @@ export class PlanEditor implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.plansData.currentPlanId = this.planId();
+    this.plansData.currentPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((plan) => plan !== null)
+      )
+      .subscribe((currentPlan) => {
+        console.log(currentPlan);
+      });
     // this.plansData.currentPlanActivities$.pipe(takeUntil(this.unsubscribe$)).subscribe((activities) => {
     // });
   }

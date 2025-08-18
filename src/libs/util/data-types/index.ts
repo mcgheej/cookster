@@ -7,3 +7,6 @@ export * from './lib/plan-kitchen-resource';
 export * from './lib/plan-summary';
 export * from './lib/activity-template-db';
 export * from './lib/activity-db';
+export * from './lib/plan-properties';
+export * from './lib/resource-lane';
+export * from './lib/plan';
