@@ -1,11 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { PlansDataService } from '@data-access/plans/index';
 import { ConfirmSnack } from '@ui/snack-bars/index';
 import { PlanSummary } from '@util/data-types/index';
 
 @Injectable({ providedIn: 'root' })
 export class PlansService {
+  private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
   private readonly plansData = inject(PlansDataService);
 
@@ -16,7 +18,7 @@ export class PlansService {
   }
 
   editPlan(planSummary: PlanSummary) {
-    console.log('editPlan click', planSummary);
+    this.router.navigateByUrl(`/plans/editor/${planSummary.id}`);
   }
 
   copyPlan(planSummary: PlanSummary) {

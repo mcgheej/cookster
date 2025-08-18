@@ -5,3 +5,5 @@ export * from './lib/plan-base';
 export * from './lib/reference-point';
 export * from './lib/plan-kitchen-resource';
 export * from './lib/plan-summary';
+export * from './lib/activity-template-db';
+export * from './lib/activity-db';

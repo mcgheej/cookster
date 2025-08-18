@@ -1,13 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { Firestore } from '@angular/fire/firestore';
-import { planDB } from '@util/data-types/index';
-import { collection, onSnapshot, Unsubscribe } from 'firebase/firestore';
+import { Auth, Unsubscribe } from '@angular/fire/auth';
+import { collection, Firestore, onSnapshot } from '@angular/fire/firestore';
+import { PlanDB } from '@util/data-types/index';
 import { BehaviorSubject } from 'rxjs';
 
 interface PlanChange {
-  type: 'added' | 'modified' | 'removed';
-  planDB: planDB;
+  type: 'added' | 'modified' | 'removed' | 'flush';
+  planDB?: PlanDB;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,19 +18,15 @@ export class AfPlansService {
   readonly plansChanges$ = this.plansChangesSubject$.asObservable();
 
   constructor() {
-    let unsubscribe: Unsubscribe | null;
+    let stopListener: Unsubscribe | null;
     this.auth.onAuthStateChanged((user) => {
-      if (unsubscribe) {
-        unsubscribe();
-        unsubscribe = null;
+      if (stopListener) {
+        stopListener();
+        stopListener = null;
+        this.plansChangesSubject$.next([{ type: 'flush' }]);
       }
       if (user) {
-        unsubscribe = this.setupSnapshotListener();
-      } else {
-        if (unsubscribe) {
-          (unsubscribe as Unsubscribe)();
-          unsubscribe = null;
-        }
+        stopListener = this.setupSnapshotListener();
       }
     });
   }
@@ -41,7 +36,7 @@ export class AfPlansService {
     return onSnapshot(plansCollection, (snapshot) => {
       const changes: PlanChange[] = [];
       snapshot.docChanges().forEach((change) => {
-        changes.push({ type: change.type, planDB: { ...change.doc.data(), id: change.doc.id } as planDB });
+        changes.push({ type: change.type, planDB: { ...change.doc.data(), id: change.doc.id } as PlanDB });
       });
       this.plansChangesSubject$.next(changes);
     });

@@ -13,6 +13,11 @@ export const routes: Routes = [
     loadComponent: () => import('@feature/home/index').then((m) => m.Home),
   },
   {
+    path: 'plans/editor/:planId',
+    loadComponent: () => import('@feature/plan-editor/index').then((m) => m.PlanEditor),
+    canActivate: [authGuard('/login')],
+  },
+  {
     path: 'plans',
     loadComponent: () => import('@feature/plans/index').then((m) => m.Plans),
     canActivate: [authGuard('/login')],
