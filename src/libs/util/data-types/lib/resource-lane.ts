@@ -1,6 +1,3 @@
-import { ActivityDB } from './activity-db';
-import { PlanKitchenResource } from './plan-kitchen-resource';
-
 export type LaneWidth = 'narrow' | 'medium' | 'wide';
 export const supportedLaneWidths: LaneWidth[] = ['narrow', 'medium', 'wide'];
 export const laneWidthPx: Record<LaneWidth, number> = {
@@ -10,8 +7,7 @@ export const laneWidthPx: Record<LaneWidth, number> = {
 };
 
 export interface ResourceLane {
-  resource: PlanKitchenResource;
+  resourceIndex: number;
   visibility: boolean;
   laneWidth: LaneWidth;
-  activities: ActivityDB[];
 }

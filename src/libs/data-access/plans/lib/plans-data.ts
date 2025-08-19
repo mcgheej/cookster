@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { AfPlansService } from './af-plans';
-import { Plan, PlanDB, PlanProperties, PlanSummary } from '@util/data-types/index';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map } from 'rxjs';
-import { compareAsc, subMinutes } from 'date-fns';
+import { Plan, PlanDB, PlanSummary } from '@util/data-types/index';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';
+import { compareAsc } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { ActivitiesDataService } from './activities-data';
 
@@ -21,6 +21,11 @@ export class PlansDataService {
 
   private _currentPlanId = '';
   private currentPlanId$ = new BehaviorSubject<string>(this._currentPlanId);
+
+  /**
+   * Sets the current plan ID.
+   * This will also update the current plan ID in the activities data service
+   */
   set currentPlanId(planId: string) {
     if (planId === this._currentPlanId) {
       return;
@@ -30,19 +35,8 @@ export class PlansDataService {
     this.activitiesData.currentPlanId = planId;
   }
 
-  readonly currentPlan$ = combineLatest([
-    this.currentPlanId$.pipe(distinctUntilChanged()),
-    this.planSummaries$.pipe(distinctUntilChanged()),
-    this.currentPlanActivities$.pipe(distinctUntilChanged()),
-  ]).pipe(
-    map(([currentPlanId, planSummaries, currentPlanActivities]) => {
-      const currentPlanSummary = planSummaries.find((summary) => summary.id === currentPlanId);
-      if (currentPlanSummary === undefined) {
-        return null;
-      }
-      return new Plan(currentPlanSummary, currentPlanActivities);
-    })
-  );
+  private lastEmittedPlan: Plan | null = null;
+  readonly currentPlan$ = this.getCurrentPlan$();
 
   constructor() {
     this.afPlansDB.plansChanges$.subscribe((changes) => {
@@ -66,5 +60,39 @@ export class PlansDataService {
       });
       this.planSummariesSubject$.next(Array.from(this.planSummaries.values()));
     });
+  }
+
+  private getCurrentPlan$(): Observable<Plan | null> {
+    return combineLatest([
+      this.currentPlanId$.pipe(distinctUntilChanged()),
+      this.planSummaries$.pipe(distinctUntilChanged()),
+      this.currentPlanActivities$.pipe(distinctUntilChanged()),
+    ]).pipe(
+      map(([currentPlanId, planSummaries, currentPlanActivities]) => {
+        // If no current plan ID is set, reset state and emit null as a plan cannot be created
+        if (currentPlanId === '') {
+          this.lastEmittedPlan = null;
+          return null;
+        }
+
+        // If no plan summary is found reset state and emit null as a plan cannot be created
+        const currentPlanSummary = planSummaries.find((summary) => summary.id === currentPlanId);
+        if (currentPlanSummary === undefined) {
+          this.lastEmittedPlan = null;
+          return null;
+        }
+
+        // If the last emitted plan has same id as currentPlanId then emit new copy of plan containing
+        // modifications.
+        if (this.lastEmittedPlan && this.lastEmittedPlan.properties.id === currentPlanSummary.id) {
+          // TODO: Same plan as last emitted plan so need to emit new copy of plan with changes
+          return null;
+        }
+
+        // Either the plan id has changed or the last emit was null so create new plan and emit
+        this.lastEmittedPlan = new Plan(currentPlanSummary, currentPlanActivities);
+        return this.lastEmittedPlan;
+      })
+    );
   }
 }

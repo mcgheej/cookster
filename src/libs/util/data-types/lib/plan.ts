@@ -2,12 +2,10 @@ import { subMinutes } from 'date-fns';
 import { ActivityDB } from './activity-db';
 import { PlanProperties } from './plan-properties';
 import { PlanSummary } from './plan-summary';
-import { ResourceLane } from './resource-lane';
 
 export class Plan {
   properties: PlanProperties;
   activities: ActivityDB[] = [];
-  resourceLanes: ResourceLane[] = [];
 
   constructor(planSummary: PlanSummary, activities: ActivityDB[]) {
     const { dateTime, ...baseProperties } = planSummary;
@@ -21,15 +19,6 @@ export class Plan {
       durationMins: durationMins,
     } as PlanProperties;
     this.activities = activities;
-    this.resourceLanes = this.properties.kitchenResources.map((resource) => {
-      const activities = this.activities.filter((activity) => activity.resourceIndex === resource.index);
-      return {
-        resource,
-        visibility: activities.length > 0,
-        laneWidth: 'narrow',
-        activities,
-      } as ResourceLane;
-    });
   }
 
   /**
