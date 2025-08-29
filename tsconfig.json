@@ -26,6 +26,7 @@
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
+      "@ui/plan-editor-panels/*": ["libs/ui/plan-editor-panels/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
       "@ui/text-speech/*": ["libs/ui/text-speech/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],

@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'ck-panel-content',
-  imports: [MatDividerModule],
+  imports: [CommonModule, MatDividerModule],
   templateUrl: './panel-content.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PanelContent {}
+export class PanelContent {
+  readonly panelComponent = input<any | undefined>();
+}

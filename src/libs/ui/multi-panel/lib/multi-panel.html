@@ -4,7 +4,7 @@
     [selectedButtonName]="selectedButtonName()"
     (panelSelectorClick)="toggleButton($event)">
   </ck-panel-selector>
-  <div class="bg-blue-500 h-full transition-[width]" [style.width.px]="panelWidth()">
-    <ck-panel-content></ck-panel-content>
+  <div class="bg-[var(--mat-sys-surface)] h-full transition-[width]" [style.width.px]="panelWidth()">
+    <ck-panel-content [panelComponent]="selectedButtonPanelComponent()"></ck-panel-content>
   </div>
 </div>

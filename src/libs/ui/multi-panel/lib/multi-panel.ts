@@ -18,11 +18,13 @@ export class MultiPanel {
 
   protected panelWidth = signal(COLLAPSED_PANEL_CONTENT_WIDTH);
   protected selectedButtonName = signal('');
+  protected selectedButtonPanelComponent = signal<any | undefined>(undefined);
 
   protected toggleButton(buttonIndex: number) {
     if (this.selectedButtonName() === this.selectorButtons()[buttonIndex].name) {
       // this.speechService.speak(`Closing panel ${this.selectorButtons()[buttonIndex].name}`);
       this.selectedButtonName.set('');
+      this.selectedButtonPanelComponent.set(undefined);
       this.panelWidth.set(COLLAPSED_PANEL_CONTENT_WIDTH);
     } else {
       // if (this.selectedButtonName() !== '') {
@@ -33,6 +35,7 @@ export class MultiPanel {
       //   this.speechService.speak(`Opening panel ${this.selectorButtons()[buttonIndex].name}`);
       // }
       this.selectedButtonName.set(this.selectorButtons()[buttonIndex].name);
+      this.selectedButtonPanelComponent.set(this.selectorButtons()[buttonIndex].panelComponent);
       this.panelWidth.set(EXPANDED_PANEL_CONTENT_WIDTH);
     }
   }
