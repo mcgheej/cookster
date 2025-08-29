@@ -27,6 +27,7 @@
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
+      "@ui/text-speech/*": ["libs/ui/text-speech/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],
       "@util/data-types/*": ["libs/util/data-types/*"]
     }

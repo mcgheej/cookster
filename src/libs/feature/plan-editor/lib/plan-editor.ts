@@ -5,6 +5,7 @@ import { MultiPanel } from '@ui/multi-panel/index';
 import { selectorButtons } from './selector-buttons';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatColors } from '@ui/mat-colors/index';
+import { SpeechService } from '@ui/text-speech/index';
 
 @Component({
   selector: 'ck-plan-editor',
@@ -14,6 +15,7 @@ import { MatColors } from '@ui/mat-colors/index';
 })
 export class PlanEditor implements OnInit {
   private readonly plansData = inject(PlansDataService);
+  private readonly textSpeech = inject(SpeechService);
 
   readonly planId = input.required<string>();
 

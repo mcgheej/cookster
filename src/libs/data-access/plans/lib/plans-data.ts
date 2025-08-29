@@ -72,7 +72,6 @@ export class PlansDataService {
         // If no current plan ID is set, reset state and emit null as a plan cannot be created
         if (currentPlanId === '') {
           this.lastEmittedPlan = null;
-          console.log('No current plan ID set');
           return null;
         }
 
@@ -80,7 +79,6 @@ export class PlansDataService {
         const currentPlanSummary = planSummaries.find((summary) => summary.id === currentPlanId);
         if (currentPlanSummary === undefined) {
           this.lastEmittedPlan = null;
-          console.log('No current plan summary found');
           return null;
         }
 
