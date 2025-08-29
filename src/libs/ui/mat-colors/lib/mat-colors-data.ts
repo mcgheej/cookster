@@ -1,0 +1,86 @@
+export const matColorsData = [
+  {
+    groupName: 'Primary',
+    colors: [
+      { name: '--mat-sys-primary', hex: '#005cbb', textColor: '#ffffff' },
+      { name: '--mat-sys-primary-container', hex: '#d7e3ff', textColor: '#00458f' },
+      { name: '--mat-sys-primary-fixed', hex: '#d7e3ff', textColor: '#001b3f' },
+      { name: '--mat-sys-primary-fixed-dim', hex: '#abc7ff', textColor: '#00458f' },
+      { name: '--mat-sys-on-primary', hex: '#ffffff', textColor: '#005cbb' },
+      { name: '--mat-sys-on-primary-container', hex: '#00458f', textColor: '#d7e3ff' },
+      { name: '--mat-sys-on-primary-fixed', hex: '#001b3f', textColor: '#d7e3ff' },
+      { name: '--mat-sys-on-primary-fixed-variant', hex: '#00458f', textColor: '#ffffff' },
+    ],
+  },
+  {
+    groupName: 'Secondary',
+    colors: [
+      { name: '--mat-sys-secondary', hex: '#565e71', textColor: '#ffffff' },
+      { name: '--mat-sys-secondary-container', hex: '#dae2f9', textColor: '#3e4759' },
+      { name: '--mat-sys-secondary-fixed', hex: '#dae2f9', textColor: '#131c2b' },
+      { name: '--mat-sys-secondary-fixed-dim', hex: '#bec6dc', textColor: '#3e4759' },
+      { name: '--mat-sys-on-secondary', hex: '#ffffff', textColor: '#565e71' },
+      { name: '--mat-sys-on-secondary-container', hex: '#3e4759', textColor: '#dae2f9' },
+      { name: '--mat-sys-on-secondary-fixed', hex: '#131c2b', textColor: '#dae2f9' },
+      { name: '--mat-sys-on-secondary-fixed-variant', hex: '#3e4759', textColor: '#dae2f9' },
+    ],
+  },
+  {
+    groupName: 'Tertiary',
+    colors: [
+      { name: '--mat-sys-tertiary', hex: '#343dff', textColor: '#ffffff' },
+      { name: '--mat-sys-tertiary-container', hex: '#e0e0ff', textColor: '#0000ef' },
+      { name: '--mat-sys-tertiary-fixed', hex: '#e0e0ff', textColor: '#00006e' },
+      { name: '--mat-sys-tertiary-fixed-dim', hex: '#bec2ff', textColor: '#0000ef' },
+      { name: '--mat-sys-on-tertiary', hex: '#ffffff', textColor: '#343dff' },
+      { name: '--mat-sys-on-tertiary-container', hex: '#0000ef', textColor: '#e0e0ff' },
+      { name: '--mat-sys-on-tertiary-fixed', hex: '#00006e', textColor: '#e0e0ff' },
+      { name: '--mat-sys-on-tertiary-fixed-variant', hex: '#0000ef', textColor: '#bec2ff' },
+    ],
+  },
+  {
+    groupName: 'Error',
+    colors: [
+      { name: '--mat-sys-error', hex: '#ba1a1a', textColor: '#ffffff' },
+      { name: '--mat-sys-error-container', hex: '#ffdad6', textColor: '#93000a' },
+      { name: '--mat-sys-on-error', hex: '#ffffff', textColor: '#ba1a1a' },
+      { name: '--mat-sys-on-error-container', hex: '#93000a', textColor: '#ffdad6' },
+    ],
+  },
+  {
+    groupName: 'Surface',
+    colors: [
+      { name: '--mat-sys-surface', hex: '#faf9fd', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-bright', hex: '#faf9fd', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-container', hex: '#efedf0', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-container-high', hex: '#e9e7eb', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-container-highest', hex: '#e3e2e6', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-container-low', hex: '#f4f3f6', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-container-lowest', hex: '#ffffff', textColor: '#1a1b1f' },
+      { name: '--mat-sys-surface-dim', hex: '#dbd9dd', textColor: '#44474e' },
+      { name: '--mat-sys-surface-tint', hex: '#005cbb', textColor: '#ffffff' },
+      { name: '--mat-sys-surface-variant', hex: '#e0e2ec', textColor: '#1a1b1f' },
+      { name: '--mat-sys-on-surface', hex: '#1a1b1f', textColor: '#faf9fd' },
+      { name: '--mat-sys-on-surface-variant', hex: '#44474e', textColor: '#faf9fd' },
+    ],
+  },
+  {
+    groupName: 'Inverse',
+    colors: [
+      { name: '--mat-sys-inverse-primary', hex: '#abc7ff', textColor: '#00458f' },
+      { name: '--mat-sys-inverse-surface', hex: '#2f3033', textColor: '#f2f0f4' },
+      { name: '--mat-sys-inverse-on-surface', hex: '#f2f0f4', textColor: '#2f3033' },
+    ],
+  },
+  {
+    groupName: 'Background',
+    colors: [
+      { name: '--mat-sys-background', hex: '#faf9fd', textColor: '#1a1b1f' },
+      { name: '--mat-sys-on-background', hex: '#1a1b1f', textColor: '#faf9fd' },
+      { name: '--mat-sys-outline', hex: '#74777f', textColor: '#faf9fd' },
+      { name: '--mat-sys-outline-variant', hex: '#c4c6d0', textColor: '#1a1b1f' },
+      { name: '--mat-sys-scrim', hex: '#000000', textColor: '#faf9fd' },
+      { name: '--mat-sys-shadow', hex: '#000000', textColor: '#faf9fd' },
+    ],
+  },
+];

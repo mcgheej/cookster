@@ -72,6 +72,7 @@ export class PlansDataService {
         // If no current plan ID is set, reset state and emit null as a plan cannot be created
         if (currentPlanId === '') {
           this.lastEmittedPlan = null;
+          console.log('No current plan ID set');
           return null;
         }
 
@@ -79,17 +80,10 @@ export class PlansDataService {
         const currentPlanSummary = planSummaries.find((summary) => summary.id === currentPlanId);
         if (currentPlanSummary === undefined) {
           this.lastEmittedPlan = null;
+          console.log('No current plan summary found');
           return null;
         }
 
-        // If the last emitted plan has same id as currentPlanId then emit new copy of plan containing
-        // modifications.
-        if (this.lastEmittedPlan && this.lastEmittedPlan.properties.id === currentPlanSummary.id) {
-          // TODO: Same plan as last emitted plan so need to emit new copy of plan with changes
-          return null;
-        }
-
-        // Either the plan id has changed or the last emit was null so create new plan and emit
         this.lastEmittedPlan = new Plan(currentPlanSummary, currentPlanActivities);
         return this.lastEmittedPlan;
       })

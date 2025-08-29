@@ -24,6 +24,8 @@
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
+      "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
+      "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],
       "@util/data-types/*": ["libs/util/data-types/*"]

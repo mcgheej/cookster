@@ -1,0 +1,10 @@
+<div class="inline-flex size-full">
+  <ck-panel-selector
+    [selectorButtons]="selectorButtons()"
+    [selectedButtonName]="selectedButtonName()"
+    (panelSelectorClick)="toggleButton($event)">
+  </ck-panel-selector>
+  <div class="bg-blue-500 h-full transition-[width]" [style.width.px]="panelWidth()">
+    <ck-panel-content></ck-panel-content>
+  </div>
+</div>

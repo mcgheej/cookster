@@ -62,3 +62,11 @@ body {
     )
   );
 }
+
+mat-icon.primary-color {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-primary),
+    )
+  );
+}
