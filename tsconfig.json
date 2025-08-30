@@ -19,6 +19,7 @@
       "@app-container/*": ["libs/app-container/*"],
       "@data-access/authentication/*": ["libs/data-access/authentication/*"],
       "@data-access/plans/*": ["libs/data-access/plans/*"],
+      "@feature/colors/*": ["libs/feature/colors/*"],
       "@feature/home/*": ["libs/feature/home/*"],
       "@feature/login/*": ["libs/feature/login/*"],
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],

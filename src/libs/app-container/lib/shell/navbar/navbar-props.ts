@@ -6,6 +6,11 @@ export interface NavbarItemProps {
 
 export const navItems: NavbarItemProps[] = [
   {
+    title: 'Colors',
+    url: '/colors',
+    loggedInRequired: true,
+  },
+  {
     title: 'Plans',
     url: '/plans',
     loggedInRequired: true,
