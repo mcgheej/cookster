@@ -9,7 +9,6 @@ import { navItems } from './navbar-props';
   selector: 'ck-navbar',
   imports: [CommonModule, MatButtonModule, MatIconModule, RouterModule],
   template: `
-    <!-- <nav class="flex flex-wrap items-center w-full py-0 px-4 text-xl font-medium text-white bg-[#303F9F]"> -->
     <nav
       class="flex flex-wrap items-center w-full py-0 px-4 text-xl font-medium text-[var(--mat-sys-on-primary)] bg-[var(--mat-sys-primary)]">
       <a class="mt-1" routerLink="/home">Cookster</a>
@@ -24,12 +23,6 @@ import { navItems } from './navbar-props';
                 routerLinkActive="active-link"
                 >{{ navItem.title }}</a
               >
-              <!-- <a
-                class="px-4 py-2 block hover:text-yellow-500"
-                [routerLink]="navItem.url"
-                routerLinkActive="active-link"
-                >{{ navItem.title }}</a
-              > -->
             }
           </li>
         }

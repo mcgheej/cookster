@@ -63,10 +63,36 @@ body {
   );
 }
 
-mat-icon.primary-color {
-  @include mat.icon-overrides(
-    (
-      color: var(--mat-sys-primary),
-    )
-  );
+mat-icon {
+  &.primary-color {
+    @include mat.icon-overrides(
+      (
+        color: var(--mat-sys-primary),
+      )
+    );
+  }
+
+  &.primary-container-color {
+    @include mat.icon-overrides(
+      (
+        color: var(--mat-sys-primary-container),
+      )
+    );
+  }
+
+  &.primary-fixed-dim-color {
+    @include mat.icon-overrides(
+      (
+        color: var(--mat-sys-primary-fixed-dim),
+      )
+    );
+  }
+
+  &.error-color {
+    @include mat.icon-overrides(
+      (
+        color: var(--mat-sys-error),
+      )
+    );
+  }
 }
