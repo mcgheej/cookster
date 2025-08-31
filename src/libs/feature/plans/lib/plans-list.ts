@@ -4,10 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PlansListRow } from './plans-list-row';
 import { PlanSummary } from '@util/data-types/index';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 
 @Component({
   selector: 'ck-plans-list',
-  imports: [CommonModule, MatButtonModule, MatIconModule, PlansListRow],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, PlansListRow],
   template: `
     <div class="my-0 mx-auto w-[80%] text-base sm:w-[600px] grid grid-cols-[1fr] grid-rows-[auto,_auto] pt-2">
       @if (planSummaries().length > 0) {
@@ -34,7 +36,7 @@ import { PlanSummary } from '@util/data-types/index';
       }
     </div>
     <div class="fixed bottom-6 right-6">
-      <button mat-fab (click)="addPlanClick($event)">
+      <button mat-fab [matTooltipShowDelay]="tooltipShowDelay" matTooltip="add new plan" (click)="addPlanClick($event)">
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -49,6 +51,7 @@ export class PlansList {
   protected readonly deletePlan = output<PlanSummary>();
 
   protected expandedPlanSummaryId = '';
+  protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected addPlanClick(ev: MouseEvent) {
     ev.stopPropagation();

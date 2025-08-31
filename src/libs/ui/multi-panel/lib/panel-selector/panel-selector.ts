@@ -18,8 +18,8 @@ export class PanelSelector {
   protected readonly buttonStyles = computed(() => {
     return this.selectorButtons().map((button) => {
       return button.name === this.selectedButtonName()
-        ? `grid bg-[var(--mat-sys-primary-fixed-dim)] cursor-pointer hover:bg-[var(--mat-sys-primary-fixed)] py-0.5`
-        : `grid cursor-pointer hover:bg-[var(--mat-sys-primary-fixed)] py-0.5`;
+        ? `grid bg-[var(--mat-sys-primary-fixed-dim)] cursor-pointer hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary-fixed),_transparent_35%)] py-0.5`
+        : `grid cursor-pointer hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary-fixed),_transparent_35%)] py-0.5`;
     });
   });
 }

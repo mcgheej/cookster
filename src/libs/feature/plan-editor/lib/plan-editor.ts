@@ -4,12 +4,11 @@ import { PlansDataService } from '@data-access/plans/index';
 import { MultiPanel } from '@ui/multi-panel/index';
 import { selectorButtons } from './selector-buttons';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatColors } from '@ui/mat-colors/index';
 import { SpeechService } from '@ui/text-speech/index';
 
 @Component({
   selector: 'ck-plan-editor',
-  imports: [MatDividerModule, MultiPanel, MatColors],
+  imports: [MatDividerModule, MultiPanel],
   templateUrl: './plan-editor.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
