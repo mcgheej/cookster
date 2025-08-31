@@ -25,13 +25,15 @@
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
+      "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
       "@ui/plan-editor-panels/*": ["libs/ui/plan-editor-panels/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
       "@ui/text-speech/*": ["libs/ui/text-speech/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],
-      "@util/data-types/*": ["libs/util/data-types/*"]
+      "@util/data-types/*": ["libs/util/data-types/*"],
+      "@util/date-utilities/*": ["libs/util/date-utilities/*"]
     }
   },
   "angularCompilerOptions": {

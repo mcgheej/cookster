@@ -61,6 +61,12 @@ body {
        // active-color: var(--mat-sys-primary),
     )
   );
+
+  @include mat.dialog-overrides(
+    (
+      container-shape: 4px,
+    )
+  );
 }
 
 mat-icon {
