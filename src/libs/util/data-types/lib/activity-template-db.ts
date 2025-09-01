@@ -7,4 +7,6 @@ export interface ActivityTemplateDB {
   duration: number;
   actions: ActivityAction[];
   color: string;
+  startMessage: string;
+  endMessage: string;
 }

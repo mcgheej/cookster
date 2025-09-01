@@ -1,0 +1,7 @@
+<div>
+  <h2>Kitchen</h2>
+  <p>Manage kitchen resources here.</p>
+  @for (resource of kitchenResources(); track $index) {
+    <div>{{ resource.name }}</div>
+  }
+</div>
