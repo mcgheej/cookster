@@ -35,10 +35,6 @@ import { FieldDescription } from './field-description.js';
         </div>
         @if (planProperties.id) {
           <ck-field-description></ck-field-description>
-          <!-- <div class="grid grid-cols-[3fr_1fr] gap-4 invisible">
-            <ck-field-kitchen></ck-field-kitchen>
-            <div></div>
-          </div> -->
         } @else {
           <div class="grid grid-cols-[3fr_1fr] gap-4">
             <ck-field-kitchen></ck-field-kitchen>

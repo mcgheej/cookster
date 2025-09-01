@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AfPlansService } from './af-plans';
 import { createPlanDbUpdates, Plan, PlanDB, PlanProperties, PlanSummary } from '@util/data-types/index';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';
 import { compareAsc } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { ActivitiesDataService } from './activities-data';
