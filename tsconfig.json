@@ -31,6 +31,7 @@
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
       "@ui/plan-editor-panels/*": ["libs/ui/plan-editor-panels/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
+      "@ui/status-bar/*": ["libs/ui/status-bar/*"],
       "@ui/text-speech/*": ["libs/ui/text-speech/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],
       "@util/data-types/*": ["libs/util/data-types/*"],

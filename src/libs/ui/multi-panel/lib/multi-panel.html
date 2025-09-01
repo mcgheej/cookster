@@ -1,11 +1,11 @@
 <div class="inline-flex size-full">
-  <!-- <div class="size-full grid grid-cols-[minmax(0,_auto)_minmax(0,_1fr)]"> -->
   <ck-panel-selector
     [selectorButtons]="selectorButtons()"
     [selectedButtonName]="selectedButtonName()"
     (panelSelectorClick)="toggleButton($event)">
   </ck-panel-selector>
-  <div class="bg-[var(--mat-sys-surface)] h-full transition-[width] grid grid-rows-1" [style.width.px]="panelWidth()">
+  <!-- <div class="bg-[var(--mat-sys-surface)] h-full transition-[width] grid grid-rows-1" [style.width.px]="panelWidth()"> -->
+  <div class="bg-[var(--mat-sys-surface)] h-full grid grid-rows-1" [style.width.px]="panelWidth()">
     <ck-panel-content [panelComponent]="selectedButtonPanelComponent()"></ck-panel-content>
   </div>
 </div>

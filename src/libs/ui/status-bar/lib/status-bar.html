@@ -1,0 +1,10 @@
+<div
+  class="h-full bg-[var(--mat-sys-surface-container)] text-[var(--mat-sys-on-surface)] text-sm grid grid-flow-col auto-cols-max">
+  @if (plan(); as plan) {
+    <div class="px-2 self-center">{{ plan.properties.name }}</div>
+    <div class="h-[75%] self-center">
+      <mat-divider [vertical]="true" class="h-full"></mat-divider>
+    </div>
+    <div class="px-2 self-center">{{ format(plan.properties.endTime, 'd MMM yyyy, HH:mm') }}</div>
+  }
+</div>
