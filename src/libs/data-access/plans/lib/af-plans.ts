@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, Unsubscribe } from '@angular/fire/auth';
-import { collection, Firestore, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { PlanDB } from '@util/data-types/index';
 import { doc } from 'firebase/firestore';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, map, Observable } from 'rxjs';
 
 interface PlanChange {
   type: 'added' | 'modified' | 'removed' | 'flush';
@@ -30,6 +30,14 @@ export class AfPlansService {
         stopListener = this.setupSnapshotListener();
       }
     });
+  }
+
+  createPlan(newPlan: Omit<PlanDB, 'id'>): Observable<void> {
+    return from(addDoc(collection(this.firestore, 'plans'), newPlan)).pipe(
+      map(() => {
+        return;
+      })
+    );
   }
 
   updatePlanProperties(id: string, updates: Partial<Omit<PlanDB, 'id'>>): Observable<void> {

@@ -35,6 +35,19 @@ export class PlanPropertiesFormService {
     this.loadFormData(this.form, planProperties);
   }
 
+  createPlanProperties() {
+    const properties = this.getNewPlanPropertiesFromForm(this.form);
+    this.plansData.createPlan(properties).subscribe({
+      next: () => {
+        this.snackBar.open('Plan created', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (error) => {
+        this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+        console.error('Error creating plan', error);
+      },
+    });
+  }
+
   savePlanProperties(currentProperties: PlanProperties) {
     const changedProperties = this.getChangedPlanPropertiesFromForm(this.form, currentProperties);
     this.plansData.updatePlanProperties(currentProperties.id, changedProperties).subscribe({
@@ -57,6 +70,25 @@ export class PlanPropertiesFormService {
     if (planProperties.id) {
       form.get(FIELD_KITCHEN)?.setValue(planProperties.kitchenName);
     }
+  }
+
+  private getNewPlanPropertiesFromForm(form: FormGroup): Partial<PlanProperties> {
+    const name = form.get(FIELD_NAME)?.value || 'unknown';
+    const description = form.get(FIELD_DESCRIPTION)?.value || '';
+    const color = form.get(FIELD_COLOR)?.value || DEFAULT_PLAN_COLOR;
+    const day = form.get(FIELD_DATE)?.value || set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const time = form.get(FIELD_TIME)?.value || set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+    const endTime = set(day, { hours: time.getHours(), minutes: time.getMinutes(), seconds: 0, milliseconds: 0 });
+    const { kitchenName, kitchenResources } = this.getKitchenData(form.get(FIELD_KITCHEN)?.value as Kitchen | null);
+
+    const changedProperties = {} as Partial<PlanProperties>;
+    changedProperties.name = name;
+    changedProperties.description = description;
+    changedProperties.color = color;
+    changedProperties.endTime = endTime;
+    changedProperties.kitchenName = kitchenName;
+    changedProperties.kitchenResources = kitchenResources;
+    return changedProperties;
   }
 
   private getChangedPlanPropertiesFromForm(
@@ -82,10 +114,10 @@ export class PlanPropertiesFormService {
     if (isDifferentMinute(endTime, currentProperties.endTime)) {
       properties.endTime = endTime;
     }
-    if (currentProperties.id === '') {
-      const { kitchenName, kitchenResources } = this.getKitchenData(form.get(FIELD_KITCHEN)?.value as Kitchen | null);
-      return { ...properties, kitchenName, kitchenResources } as Partial<PlanProperties>;
-    }
+    // if (currentProperties.id === '') {
+    //   const { kitchenName, kitchenResources } = this.getKitchenData(form.get(FIELD_KITCHEN)?.value as Kitchen | null);
+    //   return { ...properties, kitchenName, kitchenResources } as Partial<PlanProperties>;
+    // }
     return properties;
   }
 

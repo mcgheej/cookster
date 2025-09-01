@@ -64,12 +64,15 @@ export class PlanPropertiesDialog implements OnInit {
   }
 
   saveProperties() {
-    console.log('save clicked');
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    this.formService.savePlanProperties(this.planProperties);
+    if (this.planProperties.id) {
+      this.formService.savePlanProperties(this.planProperties);
+    } else {
+      this.formService.createPlanProperties();
+    }
     this.dialogRef.close(this.planProperties);
   }
 }

@@ -35,7 +35,6 @@ export class PlanPanel {
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected editPlan() {
-    console.log('Edit plan clicked');
     const plan = this.plan();
     if (plan) {
       this.dialog.open(PlanPropertiesDialog, {

@@ -62,8 +62,12 @@ export class PlansDataService {
     });
   }
 
+  createPlan(planProperties: Partial<PlanProperties>): Observable<void> {
+    return this.afPlansDB.createPlan(createPlanDbUpdates(planProperties) as Omit<PlanDB, 'id'>);
+  }
+
   updatePlanProperties(id: string, changedProperties: Partial<PlanProperties>): Observable<void> {
-    return this.afPlansDB.updatePlanProperties(id, createPlanDbUpdates(id, changedProperties));
+    return this.afPlansDB.updatePlanProperties(id, createPlanDbUpdates(changedProperties));
   }
 
   private getCurrentPlan$(): Observable<Plan | null> {

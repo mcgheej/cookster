@@ -6,7 +6,7 @@ export interface PlanDB extends PlanBase {
   date: Timestamp;
 }
 
-export function createPlanDbUpdates(id: string, planProperties: Partial<PlanProperties>): Partial<Omit<PlanDB, 'id'>> {
+export function createPlanDbUpdates(planProperties: Partial<PlanProperties>): Partial<Omit<PlanDB, 'id'>> {
   const updates = {} as Partial<Omit<PlanDB, 'id'>>;
   if (planProperties.name) {
     updates.name = planProperties.name;
