@@ -10,3 +10,6 @@ export * from './lib/activity-db';
 export * from './lib/plan-properties';
 export * from './lib/resource-lane';
 export * from './lib/plan';
+export * from './lib/kitchen';
+export * from './lib/kitchen-resource-db';
+export * from './lib/kitchen-db';

@@ -8,10 +8,22 @@ import { FieldName } from './field-name.js';
 import { MatButtonModule } from '@angular/material/button';
 import { FieldDate } from './field-date.js';
 import { FieldColor } from './field-color.js';
+import { FieldKitchen } from './field-kitchen.js';
+import { FieldDescription } from './field-description.js';
 
 @Component({
   selector: 'ck-plan-properties-dialog',
-  imports: [CommonModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FieldName, FieldDate, FieldColor],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    FieldName,
+    FieldDate,
+    FieldColor,
+    FieldKitchen,
+    FieldDescription,
+  ],
   template: `
     <h2 mat-dialog-title>{{ planProperties.id ? 'Edit Plan Properties' : 'Create Plan Properties' }}</h2>
     <form [formGroup]="form" (ngSubmit)="saveProperties()">
@@ -21,6 +33,19 @@ import { FieldColor } from './field-color.js';
           <ck-field-date></ck-field-date>
           <ck-field-color></ck-field-color>
         </div>
+        @if (planProperties.id) {
+          <ck-field-description></ck-field-description>
+          <!-- <div class="grid grid-cols-[3fr_1fr] gap-4 invisible">
+            <ck-field-kitchen></ck-field-kitchen>
+            <div></div>
+          </div> -->
+        } @else {
+          <div class="grid grid-cols-[3fr_1fr] gap-4">
+            <ck-field-kitchen></ck-field-kitchen>
+            <div></div>
+          </div>
+          <ck-field-description></ck-field-description>
+        }
       </div>
       <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
         <button mat-button [mat-dialog-close]="undefined">Cancel</button>
@@ -44,6 +69,11 @@ export class PlanPropertiesDialog implements OnInit {
 
   saveProperties() {
     console.log('save clicked');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.formService.savePlanProperties(this.planProperties);
     this.dialogRef.close(this.planProperties);
   }
 }
