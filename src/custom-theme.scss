@@ -127,6 +127,10 @@ mat-icon {
   }
 }
 
+.divider-light {
+  border-color: var(--mat-sys-error);
+}
+
 .divider-dark {
   // @include mat.divider-overrides(
   //   (

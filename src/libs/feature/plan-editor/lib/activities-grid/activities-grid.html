@@ -1,6 +1,10 @@
-<div class="grid grid-rows-[auto_minmax(0,_1fr)] grid-cols-1 bg-[var(--mat-sys-surface)]">
-  <div class="grid box-border border-b-2 divider-dark overflow-hidden" [class]="headerGridCols">
+<div class="size-full grid grid-rows-[auto_minmax(0,_1fr)] grid-cols-1 bg-[var(--mat-sys-surface)]">
+  <div class="grid border-b-2 divider-dark overflow-hidden" [class]="headerGridCols">
     <ck-activities-grid-menu />
     <div class="bg-[var(--mat-sys-surface)]" [class]="headerHeight"></div>
+    <!-- TODO: placeholder for resource lane headers -->
+  </div>
+  <div class="grid grid-rows-1" [class]="headerGridCols">
+    <ck-activities-grid-time-labels />
   </div>
 </div>

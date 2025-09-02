@@ -1,0 +1,17 @@
+<div class="size-full overflow-hidden">
+  <div class="grid grid-cols-1 border-b-2 divider-dark">
+    <!-- TODO: scroll control needs to be added here using translate style -->
+    @for (label of timeLabels(); track $index) {
+      <div class="grid" [class]="timeColumnGridCols">
+        <div
+          class="self-start justify-self-end mt-[-9px] mr-[4px] text-[10px] cursor-default select-none text-[var(--mat-sys-on-surface-variant)]">
+          {{ $first ? '' : label }}
+        </div>
+        <div
+          class="box-border w-full border-r-2 divider-dark"
+          [style.height.px]="pixelsPerHour()"
+          [ngStyle]="!$first ? { 'border-top': '1px solid var(--mat-sys-outline-variant)' } : {}"></div>
+      </div>
+    }
+  </div>
+</div>

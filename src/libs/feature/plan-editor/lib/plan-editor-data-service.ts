@@ -8,6 +8,7 @@ import {
   TemplatesPanel,
 } from '@ui/plan-editor-panels/index';
 import { ACTIVITIES_GRID } from '@util/app-config/index';
+import { TimeWindow } from '@util/data-types/index';
 
 @Injectable()
 export class PlanEditorDataService {
@@ -42,7 +43,17 @@ export class PlanEditorDataService {
   private readonly pixelsPerHour = signal<number>(ACTIVITIES_GRID.pixelsPerHourDense);
   readonly activitiesGridPixelsPerHour = computed(() => this.pixelsPerHour());
 
+  private readonly timeWindow = signal<TimeWindow>({
+    start: 0,
+    end: 24,
+  });
+  readonly activitiesGridTimeWindow = computed(() => this.timeWindow());
+
   setActivitiesGridPixelsPerHour(value: number) {
     this.pixelsPerHour.set(value);
+  }
+
+  setActivitiesGridTimeWindow(value: TimeWindow) {
+    this.timeWindow.set(value);
   }
 }

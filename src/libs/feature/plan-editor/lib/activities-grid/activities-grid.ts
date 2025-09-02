@@ -8,10 +8,11 @@ import {
   DEFAULT_TOOLTIP_SHOW_DELAY,
 } from '@util/app-config/lib/constants';
 import { ActivitiesGridMenu } from '../activities-grid-menu/activities-grid-menu';
+import { ActivitiesGridTimeLabels } from '../activities-grid-time-labels/activities-grid-time-labels';
 
 @Component({
   selector: 'ck-activities-grid',
-  imports: [MatButtonModule, MatIconModule, MatTooltipModule, ActivitiesGridMenu],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule, ActivitiesGridMenu, ActivitiesGridTimeLabels],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

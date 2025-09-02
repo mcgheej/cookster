@@ -13,3 +13,4 @@ export * from './lib/plan';
 export * from './lib/kitchen';
 export * from './lib/kitchen-resource-db';
 export * from './lib/kitchen-db';
+export * from './lib/time-window';
