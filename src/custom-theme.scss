@@ -53,6 +53,14 @@ body {
 }
 
 :root {
+  @include mat.menu-overrides(
+    (
+      container-color: var(--mat-sys-surface),
+      item-label-text-color: var(--mat-sys-on-surface),
+      item-label-text-weight: 400,
+      // item-label-text-size: 12px,
+    )
+  );
   @include mat.icon-button-overrides(
     (
       icon-color: var(--mat-sys-primary),
@@ -122,6 +130,14 @@ mat-icon {
     @include mat.icon-overrides(
       (
         color: var(--mat-sys-error),
+      )
+    );
+  }
+
+  &.on-surface-color {
+    @include mat.icon-overrides(
+      (
+        color: var(--mat-sys-on-surface),
       )
     );
   }
