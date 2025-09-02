@@ -4,5 +4,7 @@
       <ng-container *ngComponentOutlet="panelComponent()"></ng-container>
     }
   </div>
-  <mat-divider [vertical]="true"></mat-divider>
+  @if (panelComponent()) {
+    <mat-divider class="divider-dark" [vertical]="true"></mat-divider>
+  }
 </div>

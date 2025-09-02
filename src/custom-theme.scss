@@ -67,6 +67,30 @@ body {
       container-shape: 4px,
     )
   );
+
+  @include mat.divider-overrides(
+    (
+      color: var(--mat-sys-outline-variant),
+    )
+  );
+}
+
+mat-divider {
+  &.divider-dark {
+    @include mat.divider-overrides(
+      (
+        color: var(--mat-sys-outline),
+      )
+    );
+  }
+  &.divider-thick {
+    @include mat.divider-overrides(
+      (
+        // color: var(--mat-sys-outline),
+        width: 2px
+      )
+    );
+  }
 }
 
 mat-icon {
@@ -100,5 +124,34 @@ mat-icon {
         color: var(--mat-sys-error),
       )
     );
+  }
+}
+
+.divider-dark {
+  // @include mat.divider-overrides(
+  //   (
+  //     color: var(--mat-sys-outline),
+  //   )
+  // );
+  border-color: var(--mat-sys-outline);
+}
+
+.divider-thick {
+  border-width: 2px;
+}
+
+[matIconButton].small {
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 24px,
+      state-layer-size: 24px,
+      touch-target-display: none,
+    )
+  );
+  mat-icon {
+    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
   }
 }

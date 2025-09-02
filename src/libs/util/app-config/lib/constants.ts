@@ -6,6 +6,8 @@ export const INITIAL_ROUTE_AFTER_LOGIN = '/plans';
 // Plan Editor Layout
 export const COLLAPSED_PANEL_CONTENT_WIDTH = 0;
 export const EXPANDED_PANEL_CONTENT_WIDTH = 300;
+export const ACTIVITIES_GRID_HEADER_HEIGHT = 30;
+export const ACTIVITIES_GRID_TIME_COLUMN_WIDTH = 48;
 export const DEFAULT_PLAN_COLOR = 'basil';
 
 export const INITIAL_PLAN_DURATION_MINS = 60;
