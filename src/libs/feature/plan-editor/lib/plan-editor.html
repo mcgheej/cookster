@@ -2,7 +2,10 @@
   <div class="size-full grid grid-rows-[minmax(0,_1fr)_auto] grid-cols-[minmax(0,_1fr)]">
     <div class="size-full grid grid-cols-[auto_minmax(0,_1fr)] grid-rows-1">
       <ck-multi-panel [selectorButtons]="selectorButtons"></ck-multi-panel>
-      <div class="bg-[var(--mat-sys-surface)]"></div>
+      <div class="grid grid-rows-1 grid-cols-1">
+        <!-- <div class="bg-[var(--mat-sys-surface)]"></div> -->
+        <ck-activities-grid></ck-activities-grid>
+      </div>
     </div>
     <div class="h-[32px] w-full grid grid-rows-[auto_minmax(0,_1fr)]">
       <mat-divider></mat-divider>

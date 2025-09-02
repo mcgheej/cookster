@@ -1,0 +1,16 @@
+<div class="grid grid-rows-[auto_minmax(0,_1fr)] grid-cols-1 bg-[var(--mat-sys-surface)]">
+  <div class="grid grid-cols-[48px_minmax(0,_1fr)] overflow-hidden">
+    <div class="h-[48px] grid grid-cols-1 grid-rows-1">
+      <div class="self-center justify-self-center">
+        <button
+          matIconButton
+          [matTooltipShowDelay]="tooltipShowDelay"
+          matTooltip="edit plan properties"
+          (click)="openTimeColumnMenu()">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="h-[48px] bg-blue-400"></div>
+  </div>
+</div>
