@@ -23,5 +23,10 @@ export class ActivitiesGridTimeLabels {
 
   protected readonly pixelsPerHour = this.editorData.activitiesGridPixelsPerHour;
 
-  protected readonly timeColumnGridCols = `grid-cols-[${ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH}px_${ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH}px]`;
+  protected labelColumnClasses =
+    'grid grid-cols-[' +
+    ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH +
+    'px_' +
+    ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH +
+    'px]';
 }

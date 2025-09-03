@@ -9,16 +9,31 @@ import {
 } from '@util/app-config/lib/constants';
 import { ActivitiesGridMenu } from '../activities-grid-menu/activities-grid-menu';
 import { ActivitiesGridTimeLabels } from '../activities-grid-time-labels/activities-grid-time-labels';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ck-activities-grid',
-  imports: [MatButtonModule, MatIconModule, MatTooltipModule, ActivitiesGridMenu, ActivitiesGridTimeLabels],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    ActivitiesGridMenu,
+    ActivitiesGridTimeLabels,
+  ],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActivitiesGrid {
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
-  protected readonly headerGridCols = `grid-cols-[${ACTIVITIES_GRID_TIME_COLUMN_WIDTH}px_minmax(0,_1fr)]` as const;
-  protected readonly headerHeight = `h-[${ACTIVITIES_GRID_HEADER_HEIGHT}px]` as const;
+  protected gridClasses =
+    'size-full grid grid-cols-1 bg-[var(--mat-sys-surface)] grid-rows-[' +
+    ACTIVITIES_GRID_HEADER_HEIGHT +
+    'px_minmax(0,_1fr)]';
+
+  protected gridHeaderClasses =
+    'grid border-b-2 divider-dark overflow-hidden grid-cols-[' +
+    ACTIVITIES_GRID_TIME_COLUMN_WIDTH +
+    'px_minmax(0,_1fr)]';
 }

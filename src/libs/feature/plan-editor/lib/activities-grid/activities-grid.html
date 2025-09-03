@@ -1,10 +1,12 @@
-<div class="size-full grid grid-rows-[auto_minmax(0,_1fr)] grid-cols-1 bg-[var(--mat-sys-surface)]">
-  <div class="grid border-b-2 divider-dark overflow-hidden" [class]="headerGridCols">
+<!-- <div class="size-full grid grid-rows-[32px_minmax(0,_1fr)] grid-cols-1 bg-[var(--mat-sys-surface)]"> -->
+<div [ngClass]="gridClasses">
+  <!-- <div class="grid grid-cols-[48px_minmax(0,_1fr)] border-b-2 divider-dark overflow-hidden"> -->
+  <div [ngClass]="gridHeaderClasses">
     <ck-activities-grid-menu />
-    <div class="bg-[var(--mat-sys-surface)]" [class]="headerHeight"></div>
+    <div class="bg-[var(--mat-sys-surface)"></div>
     <!-- TODO: placeholder for resource lane headers -->
   </div>
-  <div class="grid grid-rows-1" [class]="headerGridCols">
+  <div class="grid grid-rows-1">
     <ck-activities-grid-time-labels />
   </div>
 </div>

@@ -40,8 +40,11 @@ export class PlanEditorDataService {
     },
   ] as const;
 
-  private readonly pixelsPerHour = signal<number>(ACTIVITIES_GRID.pixelsPerHourDense);
+  private readonly pixelsPerHour = signal<number>(ACTIVITIES_GRID.pixelsPerHourCompressed);
   readonly activitiesGridPixelsPerHour = computed(() => this.pixelsPerHour());
+
+  private readonly planEndTethered = signal<boolean>(true);
+  readonly activitiesGridPlanEndTethered = computed(() => this.planEndTethered());
 
   private readonly timeWindow = signal<TimeWindow>({
     start: 0,
@@ -55,5 +58,9 @@ export class PlanEditorDataService {
 
   setActivitiesGridTimeWindow(value: TimeWindow) {
     this.timeWindow.set(value);
+  }
+
+  setActivitiesGridPlanEndTethered(value: boolean) {
+    this.planEndTethered.set(value);
   }
 }

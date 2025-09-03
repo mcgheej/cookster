@@ -1,4 +1,5 @@
-<div class="grid grid-cols-1 grid-rows-1 border-r-2 divider-dark" [class]="headerHeight">
+<!-- <div class="grid grid-cols-1 grid-rows-1 border-r-2 divider-dark h-[32px]"> -->
+<div [ngClass]="menuButtonClasses">
   <button
     class="self-center justify-self-center small"
     matIconButton
@@ -16,22 +17,37 @@
       <mat-icon class="invisible">compress</mat-icon>
       <span>Time Zoom Scale</span>
     </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item [disabled]="true">
+      <mat-icon>electric_bolt</mat-icon>
+      <span>Actions...</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item [disabled]="true">
+      <mat-icon class="rotate-90">compare_arrows</mat-icon>
+      <span>Time snap...</span>
+    </button>
+    <button mat-menu-item (click)="togglePlanEndTethered()">
+      <mat-icon>{{ planEndTethered() ? 'lock_open' : 'lock_outline' }}</mat-icon>
+      <span>{{ planEndTethered() ? 'Untether plan end' : 'Tether plan end' }}</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item [disabled]="true">
+      <mat-icon>info_outline</mat-icon>
+      <span>Properties</span>
+    </button>
   </ng-template>
 </mat-menu>
 
 <mat-menu #pixelsPerHourMenu>
   <ng-template matMenuContent let-gridMenuData="gridMenuData">
-    <button mat-menu-item (click)="setPixelsPerHour(60)">
-      <mat-icon [class]="gridMenuData.pixelsPerHour === 60 ? 'visible' : 'invisible'">done</mat-icon>
-      <span>Compressed</span>
-    </button>
-    <button mat-menu-item (click)="setPixelsPerHour(120)">
-      <mat-icon [class]="gridMenuData.pixelsPerHour === 120 ? 'visible' : 'invisible'">done</mat-icon>
-      <span>Normal</span>
-    </button>
-    <button mat-menu-item (click)="setPixelsPerHour(180)">
-      <mat-icon [class]="gridMenuData.pixelsPerHour === 180 ? 'visible' : 'invisible'">done</mat-icon>
-      <span>Expanded</span>
-    </button>
+    @for (option of timeZoomOptions; track $index) {
+      <button mat-menu-item (click)="setPixelsPerHour(option.pixelsPerHour)">
+        <mat-icon [class]="gridMenuData.pixelsPerHour === option.pixelsPerHour ? 'visible' : 'invisible'"
+          >done</mat-icon
+        >
+        <span>{{ option.name }}</span>
+      </button>
+    }
   </ng-template>
 </mat-menu>
