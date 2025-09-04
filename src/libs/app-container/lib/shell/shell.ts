@@ -1,7 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '@data-access/authentication/index';
 import { NavBar } from './navbar/navbar';
@@ -10,7 +7,7 @@ import { PlansDataService } from '@data-access/plans/index';
 
 @Component({
   selector: 'ck-shell',
-  imports: [RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, NavBar],
+  imports: [RouterOutlet, NavBar],
   template: `
     <div class="size-full grid grid-rows-[auto_minmax(0,_1fr)]">
       <ck-navbar [loggedIn]="loggedIn()" (logout)="logout()"></ck-navbar>

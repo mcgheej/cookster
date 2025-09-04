@@ -1,0 +1,188 @@
+@use '@angular/material' as mat;
+
+@use './themes/blue-theme.css';
+
+html {
+  color-scheme: light;
+  @include mat.theme(
+    (
+      typography: Roboto,
+    )
+  );
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+mat-form-field {
+  display: block !important;
+
+  @include mat.theme(
+    (
+      density: -2,
+    )
+  );
+}
+
+html,
+body {
+  color-scheme: light;
+  height: 100%;
+}
+
+body {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+[matIconButton].ck-primary {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-primary),
+    )
+  );
+}
+
+.ck-accent {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-tertiary),
+      filled-label-text-color: var(--mat-sys-on-tertiary),
+      protected-label-text-color: var(--mat-sys-tertiary),
+      outlined-label-text-color: var(--mat-sys-tertiary),
+      text-label-text-color: var(--mat-sys-tertiary),
+      outlined-state-layer-color: var(--mat-sys-tertiary),
+      text-state-layer-color: var(--mat-sys-tertiary),
+      protected-state-layer-color: var(--mat-sys-tertiary),
+    )
+  );
+}
+
+[matIconButton].ck-accent {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-tertiary),
+    )
+  );
+}
+
+.ck-secondary {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-surface-dim),
+      filled-label-text-color: var(--mat-sys-on-surface),
+      protected-label-text-color: var(--mat-sys-secondary),
+      outlined-label-text-color: var(--mat-sys-secondary),
+      text-label-text-color: var(--mat-sys-secondary),
+      outlined-state-layer-color: var(--mat-sys-secondary),
+      text-state-layer-color: var(--mat-sys-secondary),
+      protected-state-layer-color: var(--mat-sys-secondary),
+    )
+  );
+}
+
+[matIconButton].ck-secondary {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-secondary),
+    )
+  );
+}
+
+.ck-error {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-error),
+      filled-label-text-color: var(--mat-sys-on-error),
+      protected-label-text-color: var(--mat-sys-error),
+      outlined-label-text-color: var(--mat-sys-error),
+      text-label-text-color: var(--mat-sys-error),
+      outlined-state-layer-color: var(--mat-sys-error),
+      text-state-layer-color: var(--mat-sys-error),
+      protected-state-layer-color: var(--mat-sys-error),
+    )
+  );
+}
+
+[matIconButton].ck-error {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-error),
+    )
+  );
+}
+
+.ck-square {
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 8px,
+      outlined-container-shape: 8px,
+      text-container-shape: 8px,
+      protected-container-shape: 8px,
+      tonal-container-shape: 8px,
+    )
+  );
+
+  @include mat.button-toggle-overrides(
+    (
+      shape: 8px,
+    )
+  );
+
+  --mat-icon-button-container-shape: 8px;
+}
+
+.ck-medium {
+  @include mat.theme(
+    (
+      density: -1,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-horizontal-padding: 20px,
+      outlined-horizontal-padding: 20px,
+      text-horizontal-padding: 20px,
+      protected-horizontal-padding: 20px,
+    )
+  );
+
+  @include mat.button-toggle-overrides(
+    (
+      height: 36px,
+    )
+  );
+}
+
+.ck-small {
+  @include mat.theme(
+    (
+      density: -2,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-horizontal-padding: 16px,
+      outlined-horizontal-padding: 16px,
+      text-horizontal-padding: 16px,
+      protected-horizontal-padding: 16px,
+    )
+  );
+
+  @include mat.button-toggle-overrides(
+    (
+      height: 32px,
+    )
+  );
+}
+
+mat-button-toggle-group.ck-contrast {
+  @include mat.button-toggle-overrides(
+    (
+      selected-state-background-color: var(--mat-sys-primary),
+      selected-state-text-color: var(--mat-sys-on-primary),
+    )
+  );
+}

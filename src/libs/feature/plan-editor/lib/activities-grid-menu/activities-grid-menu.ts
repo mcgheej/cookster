@@ -3,11 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-  ACTIVITIES_GRID,
-  ACTIVITIES_GRID_HEADER_HEIGHT,
-  DEFAULT_TOOLTIP_SHOW_DELAY,
-} from '@util/app-config/lib/constants';
+import { ACTIVITIES_GRID_HEADER_HEIGHT, DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { PlanEditorDataService } from '../plan-editor-data-service';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
