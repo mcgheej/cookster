@@ -4,8 +4,8 @@ import {
   ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH,
   TIMESLOTS,
 } from '@util/app-config/index';
-import { PlanEditorDataService } from '../plan-editor-data-service';
 import { CommonModule } from '@angular/common';
+import { PlanEditorDataService } from '../../plan-editor-data-service';
 
 @Component({
   selector: 'ck-activities-grid-time-labels',

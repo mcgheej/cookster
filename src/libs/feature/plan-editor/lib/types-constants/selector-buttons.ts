@@ -1,13 +1,5 @@
-import { signal } from '@angular/core';
 import { SelectorButton } from '@ui/multi-panel/index';
-import {
-  AlarmsPanel,
-  KitchenPanel,
-  SelectedActivityPanel,
-  PlanPanel,
-  TemplatesPanel,
-} from '@ui/plan-editor-panels/index';
-import { Plan } from '@util/data-types/lib/plan';
+import { AlarmsPanel, KitchenPanel, PlanPanel, SelectedActivityPanel, TemplatesPanel } from '../plan-editor-panels';
 
 export const selectorButtons: SelectorButton[] = [
   {

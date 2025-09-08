@@ -21,6 +21,13 @@ export const ACTIVITIES_GRID = {
   pixelsPerHourExpanded: 180,
 };
 
+export const RESOURCE_LANE_WIDTHS = {
+  collapsed: 0,
+  compressed: 300,
+  normal: 600,
+  expanded: 900,
+};
+
 export const TIMESLOTS: string[] = [
   '00:00',
   '01:00',

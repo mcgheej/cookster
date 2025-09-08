@@ -4,10 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ACTIVITIES_GRID_HEADER_HEIGHT, DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
-import { PlanEditorDataService } from '../plan-editor-data-service';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { timeZoomOptions } from './time-zoom-options';
+import { PlanEditorDataService } from '../../plan-editor-data-service';
 
 @Component({
   selector: 'ck-activities-grid-menu',

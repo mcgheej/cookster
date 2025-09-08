@@ -29,7 +29,6 @@
       "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
-      "@ui/plan-editor-panels/*": ["libs/ui/plan-editor-panels/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
       "@ui/status-bar/*": ["libs/ui/status-bar/*"],
       "@ui/text-speech/*": ["libs/ui/text-speech/*"],
