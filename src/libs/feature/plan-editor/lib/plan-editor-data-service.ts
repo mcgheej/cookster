@@ -2,7 +2,7 @@ import { computed, inject, Injectable, linkedSignal, signal, WritableSignal } fr
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PlansDataService } from '@data-access/plans/index';
 import { ACTIVITIES_GRID } from '@util/app-config/index';
-import { TimeWindow } from '@util/data-types/index';
+import { ResourceLane, TimeWindow } from '@util/data-types/index';
 import { LaneControl } from './types-constants/lane-control';
 
 @Injectable()
@@ -15,8 +15,10 @@ export class PlanEditorDataService {
   readonly laneControls: WritableSignal<LaneControl[]> = linkedSignal({
     source: () => ({ currentPlan: this.currentPlan }),
     computation: ({ currentPlan }, prev) => {
+      console.log('1', currentPlan());
       const plan = currentPlan();
       if (!plan) {
+        console.log('2 - no plan so return empty array');
         return [] as LaneControl[];
       }
       // If prev is undefined or prev.value is [] then this must be first time through so use plan properties to
@@ -32,14 +34,32 @@ export class PlanEditorDataService {
             flags[a.resourceIndex] = true;
           }
         });
+        console.log('3 - first time so create from plan properties', flags, plan.activities);
         return plan.properties.kitchenResources.map((kr, i) => ({
           visible: flags[i],
           name: kr.name,
           tooltip: !kr.description || kr.name.toLowerCase() === kr.description.toLowerCase() ? '' : kr.description,
+          laneWidth: 'narrow',
         })) as LaneControl[];
       }
+      console.log('4 - just return previous value', prev.value);
       return prev.value;
     },
+  });
+
+  readonly resourceLanes = computed(() => {
+    const laneControls = this.laneControls();
+    const plan = this.currentPlan();
+    if (!plan) {
+      return [];
+    }
+    return laneControls.map((lc, i) => {
+      return {
+        resourceIndex: i,
+        visible: lc.visible,
+        laneWidth: lc.laneWidth,
+      } as ResourceLane;
+    });
   });
 
   /** pixelsPerHour */

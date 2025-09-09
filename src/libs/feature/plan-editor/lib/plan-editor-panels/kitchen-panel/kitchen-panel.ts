@@ -19,9 +19,9 @@ export class KitchenPanel {
 
   protected toggleLane(index: number): void {
     const lanes = this.laneControls();
-    if (index >= 0 && index < lanes.length) {
+    if (index >= 1 && index < lanes.length) {
       lanes[index].visible = !lanes[index].visible;
-      this.laneControls.set(lanes);
+      this.laneControls.set([...lanes]);
     }
   }
 }

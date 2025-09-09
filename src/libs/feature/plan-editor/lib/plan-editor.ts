@@ -3,7 +3,7 @@ import { MultiPanel } from '@ui/multi-panel/index';
 import { MatDividerModule } from '@angular/material/divider';
 import { SpeechService } from '@ui/text-speech/index';
 import { StatusBar } from '@ui/status-bar/index';
-import { ActivitiesGrid } from './activities-grid/activities-grid/activities-grid';
+import { ActivitiesGrid } from './activities-grid/activities-grid';
 import { PlanEditorDataService } from './plan-editor-data-service';
 import { PlanEditorService } from './plan-editor-service';
 import { selectorButtons } from './types-constants/selector-buttons';

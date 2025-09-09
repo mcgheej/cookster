@@ -8,6 +8,6 @@ export const laneWidthPx: Record<LaneWidth, number> = {
 
 export interface ResourceLane {
   resourceIndex: number;
-  visibility: boolean;
+  visible: boolean;
   laneWidth: LaneWidth;
 }
