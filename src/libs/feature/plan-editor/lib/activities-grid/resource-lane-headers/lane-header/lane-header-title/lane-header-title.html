@@ -1,0 +1,10 @@
+<div
+  class="self-center justify-self-center select-none"
+  [matTooltip]="resourceLane().kitchenResource.description"
+  [matTooltipShowDelay]="defaultTooltipShowDelay"
+  [matTooltipDisabled]="
+    !resourceLane().kitchenResource.description ||
+    resourceLane().kitchenResource.description.toLowerCase() === resourceLane().kitchenResource.name.toLowerCase()
+  ">
+  {{ resourceLane().kitchenResource.name }}
+</div>

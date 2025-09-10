@@ -1,9 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import {
-  ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH,
-  ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH,
-  TIMESLOTS,
-} from '@util/app-config/index';
+import { TIMESLOTS } from '@util/app-config/index';
 import { CommonModule } from '@angular/common';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 
@@ -22,11 +18,4 @@ export class ActivitiesGridTimeLabels {
   });
 
   protected readonly pixelsPerHour = this.editorData.activitiesGridPixelsPerHour;
-
-  protected labelColumnClasses =
-    'grid grid-cols-[' +
-    ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH +
-    'px_' +
-    ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH +
-    'px]';
 }

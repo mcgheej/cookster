@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { PlansDataService } from '@data-access/plans/index';
 import { ACTIVITIES_GRID } from '@util/app-config/index';
 import { ResourceLane, TimeWindow } from '@util/data-types/index';
-import { LaneControl } from './types-constants/lane-control';
+import { LaneControl, LaneController } from './types-constants/lane-control';
 
 @Injectable()
 export class PlanEditorDataService {
@@ -12,50 +12,51 @@ export class PlanEditorDataService {
   readonly currentPlan = toSignal(this.plansData.currentPlan$, { initialValue: null });
   readonly activities = computed(() => this.currentPlan()?.activities || []);
 
-  readonly laneControls: WritableSignal<LaneControl[]> = linkedSignal({
+  readonly laneController: WritableSignal<LaneController> = linkedSignal({
     source: () => ({ currentPlan: this.currentPlan }),
     computation: ({ currentPlan }, prev) => {
-      console.log('1', currentPlan());
       const plan = currentPlan();
       if (!plan) {
-        console.log('2 - no plan so return empty array');
-        return [] as LaneControl[];
+        return { flagsInitialised: false, laneControls: [] } as LaneController;
       }
-      // If prev is undefined or prev.value is [] then this must be first time through so use plan properties to
-      // initialise the array
-      if (!prev || (prev.value && prev.value.length === 0)) {
+
+      if (!prev || !prev.value.flagsInitialised) {
         const flags = plan.properties.kitchenResources.map(() => false);
         if (flags.length === 0) {
-          return [] as LaneControl[];
+          return { flagsInitialised: false, laneControls: [] } as LaneController;
         }
         flags[0] = true; // Always show workspace lane (first lane)
+
         plan.activities.forEach((a) => {
           if (a.resourceIndex < flags.length) {
             flags[a.resourceIndex] = true;
           }
         });
-        console.log('3 - first time so create from plan properties', flags, plan.activities);
-        return plan.properties.kitchenResources.map((kr, i) => ({
-          visible: flags[i],
-          name: kr.name,
-          tooltip: !kr.description || kr.name.toLowerCase() === kr.description.toLowerCase() ? '' : kr.description,
-          laneWidth: 'narrow',
-        })) as LaneControl[];
+        const flagsInitialised = plan.activities.length !== 0;
+        return {
+          flagsInitialised,
+          laneControls: plan.properties.kitchenResources.map((kr, i) => ({
+            visible: flags[i],
+            name: kr.name,
+            description: kr.description,
+            tooltip: !kr.description || kr.name.toLowerCase() === kr.description.toLowerCase() ? '' : kr.description,
+            laneWidth: 'narrow',
+          })),
+        } as LaneController;
       }
-      console.log('4 - just return previous value', prev.value);
       return prev.value;
     },
   });
 
   readonly resourceLanes = computed(() => {
-    const laneControls = this.laneControls();
+    const laneControls = this.laneController().laneControls;
     const plan = this.currentPlan();
     if (!plan) {
       return [];
     }
     return laneControls.map((lc, i) => {
       return {
-        resourceIndex: i,
+        kitchenResource: plan.properties.kitchenResources[i],
         visible: lc.visible,
         laneWidth: lc.laneWidth,
       } as ResourceLane;

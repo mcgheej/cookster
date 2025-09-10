@@ -1,5 +1,5 @@
-<!-- <div class="grid grid-cols-1 grid-rows-1 border-r-2 divider-dark h-[32px]"> -->
-<div [ngClass]="menuButtonClasses">
+<!-- 32px = ACTIVITIES_GRID_HEADER_HEIGHT -->
+<div class="grid grid-cols-1 grid-rows-1 border-r-2 divider-dark h-[32px]">
   <button
     class="self-center justify-self-center small"
     matIconButton
@@ -15,14 +15,14 @@
   <ng-template matMenuContent let-gridMenuData="gridMenuData">
     <button mat-menu-item [matMenuTriggerFor]="pixelsPerHourMenu" [matMenuTriggerData]="{ gridMenuData: gridMenuData }">
       <mat-icon class="invisible">compress</mat-icon>
-      <span>Time Zoom Scale</span>
+      <span>Time zoom scale</span>
     </button>
-    <mat-divider></mat-divider>
+    <mat-divider [style.margin]="0"></mat-divider>
     <button mat-menu-item [disabled]="true">
       <mat-icon>electric_bolt</mat-icon>
       <span>Actions...</span>
     </button>
-    <mat-divider></mat-divider>
+    <mat-divider [style.margin]="0"></mat-divider>
     <button mat-menu-item [disabled]="true">
       <mat-icon class="rotate-90">compare_arrows</mat-icon>
       <span>Time snap...</span>
@@ -31,7 +31,7 @@
       <mat-icon>{{ planEndTethered() ? 'lock_open' : 'lock_outline' }}</mat-icon>
       <span>{{ planEndTethered() ? 'Untether plan end' : 'Tether plan end' }}</span>
     </button>
-    <mat-divider></mat-divider>
+    <mat-divider [style.margin]="0"></mat-divider>
     <button mat-menu-item [disabled]="true">
       <mat-icon>info_outline</mat-icon>
       <span>Properties</span>

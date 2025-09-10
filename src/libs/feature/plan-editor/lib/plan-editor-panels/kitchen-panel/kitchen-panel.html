@@ -1,6 +1,6 @@
 <div class="ml-[14px] pl-1 pt-2 font-bold text-sm select-none">Kitchen Resource Lanes:</div>
 <div class="pt-4">
-  @for (control of laneControls(); track $index) {
+  @for (control of laneController().laneControls; track $index) {
     <div class="pb-2 pl-4 grid grid-cols-[auto_minmax(0,_1fr)]">
       @if (control.visible) {
         <mat-icon

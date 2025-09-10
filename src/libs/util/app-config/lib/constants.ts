@@ -4,6 +4,7 @@ export const DEFAULT_TOOLTIP_SHOW_DELAY = 500;
 export const INITIAL_ROUTE_AFTER_LOGIN = '/plans';
 
 // Plan Editor Layout
+//
 export const COLLAPSED_PANEL_CONTENT_WIDTH = '0';
 export const EXPANDED_PANEL_CONTENT_WIDTH = '300';
 export const ACTIVITIES_GRID_HEADER_HEIGHT = '32';
@@ -11,6 +12,7 @@ export const ACTIVITIES_GRID_TIME_COLUMN_WIDTH = '48';
 export const ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH = '8';
 export const ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH = '40';
 export const ACTIVITIES_GRID_LANE_BORDER_WIDTH = 2;
+export const STATUS_BAR_HEIGHT = '32';
 
 export const DEFAULT_PLAN_COLOR = 'basil';
 
@@ -20,13 +22,6 @@ export const ACTIVITIES_GRID = {
   pixelsPerHourCompressed: 60,
   pixelsPerHourNormal: 120,
   pixelsPerHourExpanded: 180,
-};
-
-export const RESOURCE_LANE_WIDTHS = {
-  collapsed: 0,
-  compressed: 300,
-  normal: 600,
-  expanded: 900,
 };
 
 export const TIMESLOTS: string[] = [

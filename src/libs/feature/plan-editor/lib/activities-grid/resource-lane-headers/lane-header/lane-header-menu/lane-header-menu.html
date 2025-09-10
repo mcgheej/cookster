@@ -1,0 +1,40 @@
+<div class="grid grid-cols-1 grid-rows-1 h-[32px]">
+  <button
+    class="self-center justify-self-center small"
+    matIconButton
+    [matTooltipShowDelay]="defaultTooltipShowDelay"
+    matTooltip="resource lane menu"
+    [matMenuTriggerFor]="laneMenu"
+    [matMenuTriggerData]="{ resourceLane: resourceLane() }">
+    <mat-icon>more_horiz</mat-icon>
+  </button>
+</div>
+
+<mat-menu #laneMenu>
+  <ng-template matMenuContent let-resourceLane="resourceLane">
+    <div class="text-[var(--mat-sys-on-surface)] text-center select-none">
+      {{ resourceLane.kitchenResource.name }}
+    </div>
+    <mat-divider class="divider-dark divider-thick" [style.margin]="'8px 0 0 0'"></mat-divider>
+    <button mat-menu-item [matMenuTriggerFor]="laneWidthMenu" [matMenuTriggerData]="{ resourceLane: resourceLane }">
+      <mat-icon class="invisible">compress</mat-icon>
+      <span>Lane width</span>
+    </button>
+    <mat-divider [style.margin]="0"></mat-divider>
+    <button mat-menu-item>
+      <mat-icon>info_outline</mat-icon>
+      <span>Properties</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #laneWidthMenu>
+  <ng-template matMenuContent let-resourceLane="resourceLane">
+    @for (option of laneWidthOptions; track $index) {
+      <button mat-menu-item (click)="setLaneWidth(option.value)">
+        <mat-icon [class]="resourceLane.laneWidth === option.value ? 'visible' : 'invisible'">done</mat-icon>
+        <span>{{ option.label }}</span>
+      </button>
+    }
+  </ng-template>
+</mat-menu>

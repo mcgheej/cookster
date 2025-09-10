@@ -25,7 +25,6 @@ export class PlanEditor implements OnChanges {
   protected readonly selectorButtons = selectorButtons;
   protected readonly currentPlan = this.planEditorDataService.currentPlan;
   protected readonly activities = this.planEditorDataService.activities;
-  protected readonly flags = this.planEditorDataService.laneControls;
 
   ngOnChanges() {
     this.planEditorService.setPlanId(this.planId());

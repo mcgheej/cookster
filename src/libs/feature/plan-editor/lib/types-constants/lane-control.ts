@@ -1,6 +1,6 @@
 import { LaneWidth } from '@util/data-types/index';
 
-export interface laneController {
+export interface LaneController {
   flagsInitialised: boolean;
   laneControls: LaneControl[];
 }
@@ -8,6 +8,7 @@ export interface laneController {
 export interface LaneControl {
   visible: boolean;
   name: string;
+  description: string;
   tooltip: string;
   laneWidth: LaneWidth;
 }

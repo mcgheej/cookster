@@ -1,3 +1,5 @@
+import { PlanKitchenResource } from './plan-kitchen-resource';
+
 export type LaneWidth = 'narrow' | 'medium' | 'wide';
 export const supportedLaneWidths: LaneWidth[] = ['narrow', 'medium', 'wide'];
 export const laneWidthPx: Record<LaneWidth, number> = {
@@ -7,7 +9,7 @@ export const laneWidthPx: Record<LaneWidth, number> = {
 };
 
 export interface ResourceLane {
-  resourceIndex: number;
+  kitchenResource: PlanKitchenResource;
   visible: boolean;
   laneWidth: LaneWidth;
 }

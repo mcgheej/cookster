@@ -1,9 +1,8 @@
 <div class="size-full overflow-hidden">
-  <div class="grid grid-cols-1 border-b-2 divider-dark">
-    <!-- TODO: scroll control needs to be added here using translate style -->
+  <div class="grid grid-cols-1 border-b-2 divider-dark" [style.translate]="'0 0'">
     @for (label of timeLabels(); track $index) {
-      <!-- <div class="grid grid-cols-[40px_8px]"> -->
-      <div [ngClass]="labelColumnClasses">
+      <!-- 40px = ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH , 8px = ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH -->
+      <div class="grid grid-cols-[40px_8px]">
         <div
           class="self-start justify-self-end mt-[-9px] mr-[4px] text-[10px] cursor-default select-none text-[var(--mat-sys-on-surface-variant)]">
           {{ $first ? '' : label }}

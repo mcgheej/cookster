@@ -1,5 +1,7 @@
-<div [ngClass]="gridClasses">
-  <div [ngClass]="gridHeaderClasses">
+<!-- 32px = ACTIVITIES_GRID_HEADER_HEIGHT -->
+<div class="size-full grid grid-cols-1 bg-[var(--mat-sys-surface)] grid-rows-[32px_minmax(0,_1fr)]">
+  <!-- 48px = ACTIVITIES_GRID_TIME_COLUMN_WIDTH -->
+  <div class="grid border-b-2 divider-dark overflow-hidden grid-cols-[48px_minmax(0,_1fr)]">
     <ck-activities-grid-menu />
     <div class="bg-[var(--mat-sys-surface)">
       <ck-resource-lane-headers />
