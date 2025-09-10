@@ -1,6 +1,6 @@
 <div class="size-full overflow-hidden">
-  <div class="grid grid-cols-1 border-b-2 divider-dark" [style.translate]="'0 0'">
-    @for (label of timeLabels(); track $index) {
+  <div class="grid grid-cols-1 border-b-2 divider-dark" [style.translate]="scrollY()">
+    @for (label of hoursInGrid(); track $index) {
       <!-- 40px = ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH , 8px = ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH -->
       <div class="grid grid-cols-[40px_8px]">
         <div

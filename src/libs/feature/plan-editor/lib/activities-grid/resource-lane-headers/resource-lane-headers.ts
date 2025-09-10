@@ -10,6 +10,9 @@ import { LaneHeader } from './lane-header/lane-header';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResourceLaneHeaders {
-  protected readonly resourceLanes = inject(PlanEditorDataService).resourceLanes;
+  private readonly planEditorData = inject(PlanEditorDataService);
+
+  protected readonly resourceLanes = this.planEditorData.resourceLanes;
+  protected readonly scrollX = this.planEditorData.scrollX;
   protected laneWidthPx = laneWidthPx;
 }

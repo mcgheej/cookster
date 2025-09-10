@@ -73,10 +73,16 @@ export class PlanEditorDataService {
 
   /** timeWindow */
   private readonly timeWindow = signal<TimeWindow>({
-    start: 0,
-    end: 24,
+    start: 9,
+    end: 21,
   });
   readonly activitiesGridTimeWindow = computed(() => this.timeWindow());
+
+  /** Scroll Variables */
+  private readonly sX = signal<number>(0);
+  private readonly sY = signal<number>(0);
+  readonly scrollX = computed(() => this.sX());
+  readonly scrollY = computed(() => this.sY());
 
   setActivitiesGridPixelsPerHour(value: number) {
     this.pixelsPerHour.set(value);
@@ -88,5 +94,13 @@ export class PlanEditorDataService {
 
   setActivitiesGridTimeWindow(value: TimeWindow) {
     this.timeWindow.set(value);
+  }
+
+  setScrollX(value: number) {
+    this.sX.set(value);
+  }
+
+  setScrollY(value: number) {
+    this.sY.set(value);
   }
 }

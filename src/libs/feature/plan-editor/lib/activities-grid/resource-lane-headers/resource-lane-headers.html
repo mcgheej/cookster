@@ -1,10 +1,9 @@
 <div class="size-full overflow-hidden">
-  <div class="h-full flex" [style.translate.px]="0">
+  <div class="h-full flex" [style.translate.px]="scrollX().toString()">
     @for (lane of resourceLanes(); track $index) {
       <div class="h-full flex-none" [style.width.px]="lane.visible ? laneWidthPx[lane.laneWidth] : 0">
         @if (lane.visible) {
           <ck-lane-header [resourceLane]="lane"></ck-lane-header>
-          <!-- <div class="h-full border-r-2 divider-dark"></div> -->
         }
       </div>
     }
