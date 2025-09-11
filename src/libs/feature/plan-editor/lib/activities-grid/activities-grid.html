@@ -9,9 +9,9 @@
   </div>
   <!-- 48px = ACTIVITIES_GRID_TIME_COLUMN_WIDTH -->
   <div class="grid grid-rows-1 grid-cols-[48px_minmax(0,_1fr)]">
-    <ck-activities-grid-time-labels [hoursInGrid]="hoursInGrid()" />
+    <ck-time-labels [hoursInGrid]="hoursInGrid()" />
     <div class="overflow-auto relative" (scroll)="onScroll($event)">
-      <ck-time-grid [hoursInGrid]="hoursInGrid()" />
+      <ck-time-grid-layer [hoursInGrid]="hoursInGrid()" />
       <!-- resource lanes -->
     </div>
   </div>

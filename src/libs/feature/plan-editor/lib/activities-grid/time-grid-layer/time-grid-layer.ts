@@ -5,13 +5,13 @@ import { CommonModule } from '@angular/common';
 import { ACTIVITIES_GRID } from '@util/app-config/index';
 
 @Component({
-  selector: 'ck-time-grid',
+  selector: 'ck-time-grid-layer',
   host: { class: 'absolute top-0 left-0' },
   imports: [CommonModule],
-  templateUrl: './time-grid.html',
+  templateUrl: './time-grid-layer.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimeGrid {
+export class TimeGridLayer {
   private readonly planEditorData = inject(PlanEditorDataService);
 
   readonly hoursInGrid = input.required<string[]>();

@@ -4,10 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY, TIMESLOTS } from '@util/app-config/index';
 import { ActivitiesGridMenu } from './activities-grid-menu/activities-grid-menu';
-import { ActivitiesGridTimeLabels } from './activities-grid-time-labels/activities-grid-time-labels';
+import { TimeLabels } from './time-labels/time-labels';
 import { CommonModule } from '@angular/common';
 import { ResourceLaneHeaders } from './resource-lane-headers/resource-lane-headers';
-import { TimeGrid } from './time-grid/time-grid';
+import { TimeGridLayer } from './time-grid-layer/time-grid-layer';
 import { PlanEditorDataService } from '../plan-editor-data-service';
 
 @Component({
@@ -18,9 +18,9 @@ import { PlanEditorDataService } from '../plan-editor-data-service';
     MatIconModule,
     MatTooltipModule,
     ActivitiesGridMenu,
-    ActivitiesGridTimeLabels,
+    TimeLabels,
     ResourceLaneHeaders,
-    TimeGrid,
+    TimeGridLayer,
   ],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

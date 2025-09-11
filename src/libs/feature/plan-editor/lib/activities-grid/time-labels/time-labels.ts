@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 
 @Component({
-  selector: 'ck-activities-grid-time-labels',
+  selector: 'ck-time-labels',
   imports: [CommonModule],
-  templateUrl: './activities-grid-time-labels.html',
+  templateUrl: './time-labels.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ActivitiesGridTimeLabels {
+export class TimeLabels {
   private readonly editorData = inject(PlanEditorDataService);
 
   readonly hoursInGrid = input.required<string[]>();
