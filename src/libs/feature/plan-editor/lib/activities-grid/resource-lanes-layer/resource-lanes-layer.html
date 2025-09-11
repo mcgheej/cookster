@@ -1,0 +1,12 @@
+<div class="flex">
+  @for (lane of resourceLanes(); track $index) {
+    <div
+      class="flex-none"
+      [style.width.px]="lane.visible ? laneWidthPx[lane.laneWidth] : 0"
+      [style.height.px]="laneHeight()">
+      @if (lane.visible) {
+        <ck-lane-column [resourceLane]="lane"></ck-lane-column>
+      }
+    </div>
+  }
+</div>

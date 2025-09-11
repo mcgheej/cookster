@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ResourceLaneHeaders } from './resource-lane-headers/resource-lane-headers';
 import { TimeGridLayer } from './time-grid-layer/time-grid-layer';
 import { PlanEditorDataService } from '../plan-editor-data-service';
+import { ResourceLanesLayer } from './resource-lanes-layer/resource-lanes-layer';
 
 @Component({
   selector: 'ck-activities-grid',
@@ -21,6 +22,7 @@ import { PlanEditorDataService } from '../plan-editor-data-service';
     TimeLabels,
     ResourceLaneHeaders,
     TimeGridLayer,
+    ResourceLanesLayer,
   ],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

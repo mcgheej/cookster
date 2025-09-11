@@ -1,3 +1,5 @@
+import { LaneWidth, TimeWindow } from '@util/data-types/index';
+
 export const DEFAULT_SNACKBAR_DURATION = 3000;
 export const DEFAULT_TOOLTIP_SHOW_DELAY = 500;
 
@@ -23,6 +25,12 @@ export const ACTIVITIES_GRID = {
   pixelsPerHourNormal: 120,
   pixelsPerHourExpanded: 180,
 };
+
+export const DEFAULT_PIXELS_PER_HOUR = ACTIVITIES_GRID.pixelsPerHourNormal;
+
+export const DEFAULT_TIME_WINDOW: TimeWindow = { start: 9, end: 21 };
+
+export const DEFAULT_LANE_WIDTH: LaneWidth = 'narrow';
 
 export const TIMESLOTS: string[] = [
   '00:00',

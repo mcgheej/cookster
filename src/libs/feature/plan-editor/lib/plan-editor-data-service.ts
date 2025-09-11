@@ -1,7 +1,12 @@
 import { computed, inject, Injectable, linkedSignal, signal, WritableSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PlansDataService } from '@data-access/plans/index';
-import { ACTIVITIES_GRID } from '@util/app-config/index';
+import {
+  ACTIVITIES_GRID,
+  DEFAULT_LANE_WIDTH,
+  DEFAULT_PIXELS_PER_HOUR,
+  DEFAULT_TIME_WINDOW,
+} from '@util/app-config/index';
 import { ResourceLane, TimeWindow } from '@util/data-types/index';
 import { LaneControl, LaneController } from './types-constants/lane-control';
 
@@ -40,7 +45,7 @@ export class PlanEditorDataService {
             name: kr.name,
             description: kr.description,
             tooltip: !kr.description || kr.name.toLowerCase() === kr.description.toLowerCase() ? '' : kr.description,
-            laneWidth: 'narrow',
+            laneWidth: DEFAULT_LANE_WIDTH,
           })),
         } as LaneController;
       }
@@ -64,7 +69,7 @@ export class PlanEditorDataService {
   });
 
   /** pixelsPerHour */
-  private readonly pixelsPerHour = signal<number>(ACTIVITIES_GRID.pixelsPerHourCompressed);
+  private readonly pixelsPerHour = signal<number>(DEFAULT_PIXELS_PER_HOUR);
   readonly activitiesGridPixelsPerHour = computed(() => this.pixelsPerHour());
 
   /** planEndTethered */
@@ -72,10 +77,7 @@ export class PlanEditorDataService {
   readonly activitiesGridPlanEndTethered = computed(() => this.planEndTethered());
 
   /** timeWindow */
-  private readonly timeWindow = signal<TimeWindow>({
-    start: 9,
-    end: 21,
-  });
+  private readonly timeWindow = signal<TimeWindow>(DEFAULT_TIME_WINDOW);
   readonly activitiesGridTimeWindow = computed(() => this.timeWindow());
 
   /** Scroll Variables */
