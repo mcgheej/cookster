@@ -1,11 +1,23 @@
 <div [ngStyle]="tile().styles">
   <div class="size-full">
     <div
-      class="size-full text-left text-xs px-1 text-[var(--mat-sys-on-surface)] overflow-hidden select-none grid grid-cols-[1fr_auto]">
-      <div>{{ tile().activity.name }}</div>
-      @if (tile().activity.actions.length > 0) {
-        <mat-icon [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10">electric_bolt</mat-icon>
-      }
+      class="text-left text-xs px-1 text-[var(--mat-sys-on-surface)] overflow-hidden select-none grid grid-cols-[max-content_max-content]">
+      <mat-icon
+        [class]="tile().activity.actions.length > 0 ? 'visible' : 'invisible'"
+        [style.fontSize.px]="12"
+        [style.height.px]="12"
+        [style.width.px]="12"
+        [style.marginTop.px]="2"
+        [style.marginRight.px]="2"
+        >electric_bolt</mat-icon
+      >
+      <div
+        class="overflow-hidden"
+        [matTooltip]="startEndTimes()"
+        [matTooltipShowDelay]="showDelay"
+        matTooltipPosition="above">
+        {{ tile().activity.name }}
+      </div>
     </div>
   </div>
 </div>
