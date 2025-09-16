@@ -1,0 +1,29 @@
+<!-- <div>{{ 'Action: ' + tile().resourceAction.name }}</div> -->
+<div class="grid grid-cols-1 absolute left-0 w-full" [style.top.px]="tile().yPx">
+  <div
+    class="row-start-1 row-end-2 col-start-1 col-end-1 grid grid-cols-[1fr_1fr_16px]"
+    [style.gridTemplateRows]="componentHeight">
+    <div class="h-[16px] pl-0.5 justify-self-start self-start text-xs select-none">
+      {{ '' }}
+    </div>
+    <div class="h-[16px] justify-self-end self-start text-xs select-none">
+      {{ tile().resourceAction.name }}
+    </div>
+    <div></div>
+  </div>
+  <div
+    class="row-start-1 row-end-2 col-start-1 col-end-1 grid grid-cols-[1fr_16px]"
+    [style.gridTemplateRows]="componentHeight">
+    <div class="wave w-full h-1 bg-gray-500 self-center"></div>
+    <mat-icon
+      class="self-center cursor-pointer"
+      [style.color]="'#6a7282'"
+      [style.fontSize.px]="16"
+      [style.height.px]="16"
+      [style.width.px]="16"
+      [matTooltip]="tile().time + ' - ' + tile().resourceAction.name"
+      matTooltipShowDelay="500">
+      electric_bolt
+    </mat-icon>
+  </div>
+</div>

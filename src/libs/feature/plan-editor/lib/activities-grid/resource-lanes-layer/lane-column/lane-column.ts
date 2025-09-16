@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
-import { DEFAULT_COLOR_OPACITY, googleColors } from '@util/app-config/index';
+import { DEFAULT_COLOR_OPACITY, googleColors, RESOURCE_ACTION_COMPONENT_HEIGHT } from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
-import { activityDBsEqual, DisplayTile } from '@util/data-types/index';
+import { ActionDisplayTile, activityDBsEqual, DisplayTile } from '@util/data-types/index';
 import { laneWidthPx, ResourceLane, resourceLanesEqual } from '@util/data-types/lib/resource-lane';
 import { Tiler } from '@util/tiler/index';
-import { isSameMinute } from 'date-fns';
+import { format, isSameMinute, subMinutes } from 'date-fns';
 import { ActivityTile } from './activity-tile/activity-tile';
+import { getMinutesSinceMidnight } from '@util/date-utilities/index';
+import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
 
 @Component({
   selector: 'ck-lane-column',
-  imports: [CommonModule, ActivityTile],
+  imports: [CommonModule, ActivityTile, ResourceActionTile],
   templateUrl: './lane-column.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Tiler],
@@ -67,6 +69,9 @@ export class LaneColumn {
    */
   protected resourceActions = computed(() => this.resourceLane().kitchenResource.actions);
 
+  /**
+   * compute the activity tiles for this resource lane
+   */
   protected readonly activityTiles = computed(() => {
     const planEnd = this.planEndTime();
     const lane = this.distinctResourceLane();
@@ -86,6 +91,26 @@ export class LaneColumn {
     });
     return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item) }));
   });
+
+  protected readonly actionDisplayTiles = computed(() => {
+    const resourceActions = this.resourceActions();
+    const planEnd = this.planEndTime();
+    const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
+    const { startHours } = this.planEditorData.activitiesGridTimeWindow();
+    return resourceActions.map((a, index) => {
+      const time = subMinutes(planEnd, a.timeOffset);
+      return {
+        index,
+        resourceAction: a,
+        xPx: 0,
+        yPx: (getMinutesSinceMidnight(time) / 60 - startHours) * pixelsPerHour - RESOURCE_ACTION_COMPONENT_HEIGHT / 2,
+        time: format(time, 'HH:mm'),
+      } as ActionDisplayTile;
+    });
+  });
+
+  // Private Methods
+  // ---------------
 
   private getStyles(item: DisplayTile): Record<string, string> {
     const borderColor = googleColors[item.activity.color].color;

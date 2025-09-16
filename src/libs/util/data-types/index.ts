@@ -15,3 +15,4 @@ export * from './lib/kitchen-resource-db';
 export * from './lib/kitchen-db';
 export * from './lib/time-window';
 export * from './lib/display-tile';
+export * from './lib/action-display-tile';
