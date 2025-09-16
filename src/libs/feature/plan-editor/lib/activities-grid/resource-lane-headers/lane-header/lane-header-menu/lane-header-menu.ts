@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { LaneWidth, ResourceLane } from '@util/data-types/index';
-import { laneWidthOptions } from './lane-wdith-options';
+import { laneWidthOptions } from '../../../../types-constants/lane-width-options';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
 
 @Component({
@@ -24,7 +24,7 @@ export class LaneHeaderMenu {
   protected readonly defaultTooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
   protected readonly laneWidthOptions = laneWidthOptions;
 
-  setLaneWidth(optionValue: string) {
+  protected setLaneWidth(optionValue: string) {
     const resourceLane = this.resourceLane();
     if (optionValue !== resourceLane.laneWidth) {
       const index = resourceLane.kitchenResource.index;

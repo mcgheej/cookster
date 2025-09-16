@@ -6,8 +6,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { timeZoomOptions } from './time-zoom-options';
+import { timeZoomOptions } from '../../types-constants/time-zoom-options';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
+import { laneWidthOptions } from '../../types-constants/lane-width-options';
+import { LaneWidth } from '@util/data-types/index';
 
 @Component({
   selector: 'ck-activities-grid-menu',
@@ -18,8 +20,8 @@ import { PlanEditorDataService } from '../../plan-editor-data-service';
 export class ActivitiesGridMenu {
   private readonly editorData = inject(PlanEditorDataService);
 
-  protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
-  protected timeZoomOptions = timeZoomOptions;
+  protected readonly planEndTethered = this.editorData.activitiesGridPlanEndTethered;
+  private readonly laneController = this.editorData.laneController;
 
   protected readonly gridMenuData = computed(() => {
     return {
@@ -27,7 +29,22 @@ export class ActivitiesGridMenu {
     };
   });
 
-  protected readonly planEndTethered = this.editorData.activitiesGridPlanEndTethered;
+  protected readonly laneWidths = computed(() => {
+    const laneControls = this.laneController().laneControls;
+    let result = '';
+    laneControls.forEach((lc) => {
+      if (result === '') {
+        result = lc.laneWidth;
+      } else if (result !== lc.laneWidth) {
+        result = 'varied';
+      }
+    });
+    return result;
+  });
+
+  protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
+  protected timeZoomOptions = timeZoomOptions;
+  protected readonly laneWidthOptions = laneWidthOptions;
 
   setPixelsPerHour(pixelsPerHour: number) {
     if (pixelsPerHour !== this.editorData.activitiesGridPixelsPerHour()) {
@@ -37,5 +54,17 @@ export class ActivitiesGridMenu {
 
   protected togglePlanEndTethered() {
     this.editorData.setActivitiesGridPlanEndTethered(!this.planEndTethered());
+  }
+
+  protected setLaneWidths(optionValue: string) {
+    const laneControls = [...this.laneController().laneControls];
+    laneControls.forEach((lc, i) => {
+      laneControls[i] = { ...laneControls[i], laneWidth: optionValue as LaneWidth };
+    });
+    this.laneController.set({
+      ...this.laneController(),
+      flagsInitialised: true,
+      laneControls,
+    });
   }
 }

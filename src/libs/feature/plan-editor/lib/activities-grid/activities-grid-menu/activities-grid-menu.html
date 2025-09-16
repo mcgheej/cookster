@@ -17,6 +17,10 @@
       <mat-icon class="invisible">compress</mat-icon>
       <span>Time zoom scale</span>
     </button>
+    <button mat-menu-item [matMenuTriggerFor]="laneWidthMenu">
+      <mat-icon class="invisible">compress</mat-icon>
+      <span>Lane width</span>
+    </button>
     <mat-divider [style.margin]="0"></mat-divider>
     <button mat-menu-item [disabled]="true">
       <mat-icon>electric_bolt</mat-icon>
@@ -47,6 +51,17 @@
           >done</mat-icon
         >
         <span>{{ option.name }}</span>
+      </button>
+    }
+  </ng-template>
+</mat-menu>
+
+<mat-menu #laneWidthMenu>
+  <ng-template matMenuContent>
+    @for (option of laneWidthOptions; track $index) {
+      <button mat-menu-item (click)="setLaneWidths(option.value)">
+        <mat-icon [class]="laneWidths() === option.value ? 'visible' : 'invisible'">done</mat-icon>
+        <span>{{ option.label }}</span>
       </button>
     }
   </ng-template>
