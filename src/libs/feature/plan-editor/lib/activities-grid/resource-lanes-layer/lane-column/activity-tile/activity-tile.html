@@ -1,0 +1,11 @@
+<div [ngStyle]="tile().styles">
+  <div class="size-full">
+    <div
+      class="size-full text-left text-xs px-1 text-[var(--mat-sys-on-surface)] overflow-hidden select-none grid grid-cols-[1fr_auto]">
+      <div>{{ tile().activity.name }}</div>
+      @if (tile().activity.actions.length > 0) {
+        <mat-icon [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10">electric_bolt</mat-icon>
+      }
+    </div>
+  </div>
+</div>

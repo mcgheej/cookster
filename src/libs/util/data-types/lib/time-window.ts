@@ -1,4 +1,4 @@
 export interface TimeWindow {
-  start: number;
-  end: number;
+  startHours: number;
+  endHours: number;
 }

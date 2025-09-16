@@ -17,6 +17,8 @@ export const ACTIVITIES_GRID_LANE_BORDER_WIDTH = 2;
 export const STATUS_BAR_HEIGHT = '32';
 
 export const DEFAULT_PLAN_COLOR = 'basil';
+export const DEFAULT_COLOR_OPACITY = 0.4;
+export const DIALOG_COLOR_OPACITY = 0.6;
 
 export const INITIAL_PLAN_DURATION_MINS = 60;
 
@@ -28,7 +30,7 @@ export const ACTIVITIES_GRID = {
 
 export const DEFAULT_PIXELS_PER_HOUR = ACTIVITIES_GRID.pixelsPerHourNormal;
 
-export const DEFAULT_TIME_WINDOW: TimeWindow = { start: 9, end: 21 };
+export const DEFAULT_TIME_WINDOW: TimeWindow = { startHours: 9, endHours: 21 };
 
 export const DEFAULT_LANE_WIDTH: LaneWidth = 'narrow';
 

@@ -1,0 +1,8 @@
+<div class="h-full border-r-2 divider-dark relative">
+  @for (action of resourceActions(); track $index) {
+    <div>{{ 'Action: ' + action.name }}</div>
+  }
+  @for (tile of activityTiles(); track $index) {
+    <ck-activity-tile [tile]="tile"></ck-activity-tile>
+  }
+</div>

@@ -32,8 +32,8 @@ export class ActivitiesGrid {
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected readonly hoursInGrid = computed(() => {
-    const { start, end } = this.planEditorData.activitiesGridTimeWindow();
-    return TIMESLOTS.filter((_, i) => i >= start && i < end);
+    const { startHours, endHours } = this.planEditorData.activitiesGridTimeWindow();
+    return TIMESLOTS.filter((_, i) => i >= startHours && i < endHours);
   });
 
   protected onScroll(ev: any) {

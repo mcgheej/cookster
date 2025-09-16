@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { collection, Firestore, onSnapshot, query, where } from '@angular/fire/firestore';
+import { collection, Firestore, onSnapshot, orderBy, query, where } from '@angular/fire/firestore';
 import { ActivityDB } from '@util/data-types/index';
 import { Unsubscribe, User } from 'firebase/auth';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map } from 'rxjs';
@@ -64,7 +64,7 @@ export class AfActivitiesService {
 
   private setupSnapshotListener(planId: string): Unsubscribe {
     const activitiesCollection = collection(this.firestore, `activities`);
-    const q = query(activitiesCollection, where('planId', '==', planId));
+    const q = query(activitiesCollection, where('planId', '==', planId), orderBy('startTimeOffset', 'desc'));
     return onSnapshot(q, (snapshot) => {
       const changes: ActivityChange[] = [];
       snapshot.docChanges().forEach((change) => {

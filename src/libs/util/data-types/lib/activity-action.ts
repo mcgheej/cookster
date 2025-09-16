@@ -38,3 +38,7 @@ export class ActivityAction extends ResourceAction {
     return `${actionTimeString} - ${this.name}`;
   }
 }
+
+export function activityActionsEqual(a: ActivityAction, b: ActivityAction): boolean {
+  return a.name === b.name && a.timeOffset === b.timeOffset && a.referencePoint === b.referencePoint;
+}

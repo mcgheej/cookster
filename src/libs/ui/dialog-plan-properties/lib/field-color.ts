@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FIELD_COLOR, PlanPropertiesFormService } from './plan-properties-form-service.ts';
 import { googleColors } from '@util/app-config/lib/google-colors';
-import { DEFAULT_PLAN_COLOR } from '@util/app-config/index';
+import { DEFAULT_PLAN_COLOR, DIALOG_COLOR_OPACITY } from '@util/app-config/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { opaqueColor } from '@util/color-utilities/index.js';
 
 @Component({
   selector: 'ck-field-color',
@@ -20,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
               [style.fontSize.px]="16"
               [style.height.px]="16"
               class="relative top-[3px]"
-              [style.color]="googleColors[selected].color"
+              [style.color]="getSelectedColor()"
               >circle</mat-icon
             >
             <span>{{ selected }}</span>
@@ -41,10 +42,10 @@ export class FieldColor {
   protected readonly form = inject(PlanPropertiesFormService).form;
 
   protected readonly controlName = FIELD_COLOR;
-  readonly googleColors = googleColors;
+  // readonly googleColors = googleColors;
   readonly googleColorsArray = Object.entries(googleColors).map(([key, value]) => ({
     name: value.name,
-    color: value.color,
+    color: opaqueColor(value.color, DIALOG_COLOR_OPACITY),
   }));
 
   selected = DEFAULT_PLAN_COLOR;
@@ -53,5 +54,9 @@ export class FieldColor {
     this.form.get(FIELD_COLOR)?.valueChanges.subscribe((value) => {
       this.selected = value ?? googleColors[DEFAULT_PLAN_COLOR].name.toLocaleLowerCase();
     });
+  }
+
+  protected getSelectedColor(): string {
+    return opaqueColor(googleColors[this.selected].color, DIALOG_COLOR_OPACITY);
   }
 }

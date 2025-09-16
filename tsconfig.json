@@ -33,8 +33,10 @@
       "@ui/status-bar/*": ["libs/ui/status-bar/*"],
       "@ui/text-speech/*": ["libs/ui/text-speech/*"],
       "@util/app-config/*": ["libs/util/app-config/*"],
+      "@util/color-utilities/*": ["libs/util/color-utilities/*"],
       "@util/data-types/*": ["libs/util/data-types/*"],
-      "@util/date-utilities/*": ["libs/util/date-utilities/*"]
+      "@util/date-utilities/*": ["libs/util/date-utilities/*"],
+      "@util/tiler/*": ["libs/util/tiler/*"]
     }
   },
   "angularCompilerOptions": {

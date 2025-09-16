@@ -1,4 +1,4 @@
-import { PlanKitchenResource } from './plan-kitchen-resource';
+import { PlanKitchenResource, planKitchenResourcesEqual } from './plan-kitchen-resource';
 
 export type LaneWidth = 'narrow' | 'medium' | 'wide';
 export const supportedLaneWidths: LaneWidth[] = ['narrow', 'medium', 'wide'];
@@ -12,4 +12,12 @@ export interface ResourceLane {
   kitchenResource: PlanKitchenResource;
   visible: boolean;
   laneWidth: LaneWidth;
+}
+
+export function resourceLanesEqual(a: ResourceLane, b: ResourceLane): boolean {
+  return (
+    planKitchenResourcesEqual(a.kitchenResource, b.kitchenResource) &&
+    a.visible === b.visible &&
+    a.laneWidth === b.laneWidth
+  );
 }

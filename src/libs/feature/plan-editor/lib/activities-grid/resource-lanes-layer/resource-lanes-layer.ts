@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { CommonModule } from '@angular/common';
 import { laneWidthPx } from '@util/data-types/index';
-import { LaneColumn } from './lane-content/lane-column';
+import { LaneColumn } from './lane-column/lane-column';
 
 @Component({
   selector: 'ck-resource-lanes-layer',
