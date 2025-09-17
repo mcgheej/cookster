@@ -76,6 +76,7 @@ export class LaneColumn {
     const planEnd = this.planEndTime();
     const lane = this.distinctResourceLane();
     const activities = this.resourceActivities();
+    const selectedActivityId = this.planEditorData.selectedActivityId();
     const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
     const timeWindow = this.planEditorData.activitiesGridTimeWindow();
     if (isSameMinute(planEnd, new Date(0))) {
@@ -89,7 +90,7 @@ export class LaneColumn {
       rightMarginPx: 16,
       gapPx: 4,
     });
-    return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item) }));
+    return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item, selectedActivityId) }));
   });
 
   /**
@@ -115,13 +116,23 @@ export class LaneColumn {
   // Private Methods
   // ---------------
 
-  private getStyles(item: DisplayTile): Record<string, string> {
-    const borderColor = googleColors[item.activity.color].color;
-    const backgroundColor = opaqueColor(borderColor, DEFAULT_COLOR_OPACITY);
+  private getStyles(item: DisplayTile, selectedActivityId: string): Record<string, string> {
+    const color = googleColors[item.activity.color].color;
+    let borderColor = color;
+    let borderWidth = '2px';
+    if (item.activity.id === selectedActivityId) {
+      borderColor = googleColors[item.activity.color].contrastColor;
+      borderWidth = '4px';
+    }
+    const backgroundColor = opaqueColor(color, DEFAULT_COLOR_OPACITY);
     const border = `2px solid ${borderColor}`;
+    const borderLeftWidth = `${borderWidth}`;
+    const borderRightWidth = `${borderWidth}`;
     return {
       boxSizing: 'border-box',
       border,
+      borderLeftWidth,
+      borderRightWidth,
       position: 'absolute',
       top: `${item.topPx}px`,
       left: `${item.leftPx}px`,

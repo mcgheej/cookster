@@ -102,6 +102,9 @@ export class PlanEditorDataService {
     });
   });
 
+  private _selectedActivityId = signal<string>('');
+  readonly selectedActivityId = computed(() => this._selectedActivityId());
+
   /**
    * activitiesGridPixelsPerHour
    * ---------------------------
@@ -187,5 +190,13 @@ export class PlanEditorDataService {
    */
   setScrollY(value: number) {
     this.sY.set(value);
+  }
+
+  /**
+   *
+   * @param activityId
+   */
+  setSelectedActivityId(activityId: string) {
+    this._selectedActivityId.set(activityId);
   }
 }
