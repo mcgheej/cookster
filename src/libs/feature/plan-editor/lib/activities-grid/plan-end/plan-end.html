@@ -1,0 +1,19 @@
+@if (pxPlanEndY(); as pxPlanEndY) {
+  <div class="absolute left-0" [style.top.px]="pxPlanEndY">
+    <div [style.height.px]="planEndBarHeight" [style.width.px]="activitiesGridWidth()">
+      <div class="size-full bg-[var(--mat-sys-primary)]"></div>
+    </div>
+  </div>
+  @if (planEndTethered()) {
+    <div class="absolute left-1 cursor-pointer" [style.top.px]="pxPlanEndY">
+      <mat-icon [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10">lock_outline</mat-icon>
+    </div>
+  }
+  @if (!planEndTethered()) {
+    <div class="absolute left-1 cursor-pointer" [style.top.px]="pxPlanEndY">
+      <span [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10" class="material-symbols-outlined"
+        >no_encryption</span
+      >
+    </div>
+  }
+}

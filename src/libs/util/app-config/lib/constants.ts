@@ -16,6 +16,7 @@ export const ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH = '40';
 export const ACTIVITIES_GRID_LANE_BORDER_WIDTH = 2;
 export const STATUS_BAR_HEIGHT = '32';
 export const RESOURCE_ACTION_COMPONENT_HEIGHT = 32; // px
+export const PLAN_END_BAR_HEIGHT = 3; // px
 
 export const DEFAULT_PLAN_COLOR = 'basil';
 export const DEFAULT_COLOR_OPACITY = 0.4;
@@ -23,13 +24,13 @@ export const DIALOG_COLOR_OPACITY = 0.6;
 
 export const INITIAL_PLAN_DURATION_MINS = 60;
 
-export const ACTIVITIES_GRID = {
-  pixelsPerHourCompressed: 60,
-  pixelsPerHourNormal: 120,
-  pixelsPerHourExpanded: 180,
+export const ACTIVITIES_GRID_PIXELS_PER_HOUR = {
+  compressed: 60,
+  normal: 120,
+  expanded: 180,
 };
 
-export const DEFAULT_PIXELS_PER_HOUR = ACTIVITIES_GRID.pixelsPerHourNormal;
+export const DEFAULT_PIXELS_PER_HOUR = ACTIVITIES_GRID_PIXELS_PER_HOUR.normal;
 
 export const DEFAULT_TIME_WINDOW: TimeWindow = { startHours: 9, endHours: 21 };
 

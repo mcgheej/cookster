@@ -92,6 +92,9 @@ export class LaneColumn {
     return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item) }));
   });
 
+  /**
+   * compute the resource action display tiles for this resoirce lane
+   */
   protected readonly actionDisplayTiles = computed(() => {
     const resourceActions = this.resourceActions();
     const planEnd = this.planEndTime();

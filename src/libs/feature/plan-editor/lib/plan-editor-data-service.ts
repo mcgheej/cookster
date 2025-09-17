@@ -2,7 +2,7 @@ import { computed, inject, Injectable, linkedSignal, signal, untracked, Writable
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PlansDataService } from '@data-access/plans/index';
 import { DEFAULT_LANE_WIDTH, DEFAULT_PIXELS_PER_HOUR, DEFAULT_TIME_WINDOW } from '@util/app-config/index';
-import { planKitchenResourcesEqual, ResourceLane, TimeWindow } from '@util/data-types/index';
+import { laneWidthPx, planKitchenResourcesEqual, ResourceLane, TimeWindow } from '@util/data-types/index';
 import { LaneController, laneControllersEqual } from './types-constants/lane-control';
 
 @Injectable()
@@ -110,15 +110,27 @@ export class PlanEditorDataService {
   readonly activitiesGridPixelsPerHour = computed(() => this.pixelsPerHour());
 
   /**
+   * activitiesGridWidth
+   * -------------------
+   */
+  readonly activitiesGridWidth = computed(() => {
+    const lanes = this.resourceLanes();
+    return lanes.reduce((sum, lane) => {
+      const width = lane.visible ? laneWidthPx[lane.laneWidth] : 0;
+      return sum + width;
+    }, 0);
+  });
+
+  /**
    * activitiesGridPlanEndTethered
-   * ----------------------------
+   * -----------------------------
    */
   private readonly planEndTethered = signal<boolean>(true);
   readonly activitiesGridPlanEndTethered = computed(() => this.planEndTethered());
 
   /**
    * activitiesGridTimeWindow
-   * -------------------------
+   * ------------------------
    */
   private readonly timeWindow = signal<TimeWindow>(DEFAULT_TIME_WINDOW);
   readonly activitiesGridTimeWindow = computed(() => this.timeWindow());
@@ -131,6 +143,9 @@ export class PlanEditorDataService {
   private readonly sY = signal<number>(0);
   readonly scrollX = computed(() => this.sX());
   readonly scrollY = computed(() => this.sY());
+
+  // Public methods
+  // ==============
 
   /**
    * Set the number of pixels per hour for the activities grid. This controls the zoom level of the grid.

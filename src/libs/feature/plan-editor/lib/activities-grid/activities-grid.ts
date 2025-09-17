@@ -10,6 +10,8 @@ import { ResourceLaneHeaders } from './resource-lane-headers/resource-lane-heade
 import { TimeGridLayer } from './time-grid-layer/time-grid-layer';
 import { PlanEditorDataService } from '../plan-editor-data-service';
 import { ResourceLanesLayer } from './resource-lanes-layer/resource-lanes-layer';
+import { Plan } from '@util/data-types/index';
+import { PlanEnd } from './plan-end/plan-end';
 
 @Component({
   selector: 'ck-activities-grid',
@@ -23,6 +25,7 @@ import { ResourceLanesLayer } from './resource-lanes-layer/resource-lanes-layer'
     ResourceLaneHeaders,
     TimeGridLayer,
     ResourceLanesLayer,
+    PlanEnd,
   ],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
