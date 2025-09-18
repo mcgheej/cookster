@@ -1,29 +1,35 @@
 import { SelectorButton } from '@ui/multi-panel/index';
 import { AlarmsPanel, KitchenPanel, PlanPanel, SelectedActivityPanel, TemplatesPanel } from '../plan-editor-panels';
 
+export const PLAN_PANEL_NAME = 'Plan';
+export const KITCHEN_PANEL_NAME = 'Kitchen';
+export const TEMPLATES_PANEL_NAME = 'Templates';
+export const ALARMS_PANEL_NAME = 'Alarms';
+export const SELECTED_ACTIVITY_PANEL_NAME = 'Activity';
+
 export const selectorButtons: SelectorButton[] = [
   {
-    name: 'Plan',
+    name: PLAN_PANEL_NAME,
     iconName: 'view_quilt',
     panelComponent: PlanPanel,
   },
   {
-    name: 'Kitchen',
+    name: KITCHEN_PANEL_NAME,
     iconName: 'kitchen',
     panelComponent: KitchenPanel,
   },
   {
-    name: 'Templates',
+    name: TEMPLATES_PANEL_NAME,
     iconName: 'grid_goldenratio',
     panelComponent: TemplatesPanel,
   },
   {
-    name: 'Alarms',
+    name: ALARMS_PANEL_NAME,
     iconName: 'alarm',
     panelComponent: AlarmsPanel,
   },
   {
-    name: 'Activity',
+    name: SELECTED_ACTIVITY_PANEL_NAME,
     iconName: 'schedule',
     panelComponent: SelectedActivityPanel,
   },
