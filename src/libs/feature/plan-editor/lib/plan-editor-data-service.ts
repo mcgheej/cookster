@@ -1,13 +1,25 @@
-import { computed, inject, Injectable, linkedSignal, signal, untracked, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, linkedSignal, signal, WritableSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PlansDataService } from '@data-access/plans/index';
-import { DEFAULT_LANE_WIDTH, DEFAULT_PIXELS_PER_HOUR, DEFAULT_TIME_WINDOW } from '@util/app-config/index';
-import { laneWidthPx, planKitchenResourcesEqual, ResourceLane, TimeWindow } from '@util/data-types/index';
+import {
+  DEFAULT_LANE_WIDTH,
+  DEFAULT_PIXELS_PER_HOUR,
+  DEFAULT_PLAN_COLOR,
+  DEFAULT_TIME_WINDOW,
+  googleColors,
+} from '@util/app-config/index';
+import { ActivityDB, laneWidthPx, planKitchenResourcesEqual, ResourceLane, TimeWindow } from '@util/data-types/index';
 import { LaneController, laneControllersEqual } from './types-constants/lane-control';
+import { ActivitiesDataService } from '@data-access/plans/lib/activities-data';
 
 @Injectable()
 export class PlanEditorDataService {
   private readonly plansData = inject(PlansDataService);
+  private readonly activitiesData = inject(ActivitiesDataService);
+
+  private readonly activitiesMap = toSignal(this.activitiesData.activitiesMap$, {
+    initialValue: new Map<string, ActivityDB>(),
+  });
 
   /**
    * currentPlan
@@ -20,6 +32,17 @@ export class PlanEditorDataService {
    * The "activities" signal is an array of type "ActivityDB[]". It will be an empty array if the
    * "currentPlan" value is "null", otherwise it will contain "ActivityDB" objects that have been defined
    * in the current plan.
+   *
+   * kitchenResources
+   * --------------------
+   * The "kitchenResources" signal is an array of type "KitchenResource[]". It will be an empty array if the
+   * "currentPlan" value is "null", otherwise it will contain "KitchenResource" objects that have been defined
+   * in the current plan.
+   *
+   * planColor
+   * ---------
+   * The "planColor" signal is a string representing the colour of the current plan. If there is no current plan,
+   * it defaults to a predefined colour. The result is a hex colour string.
    */
   readonly currentPlan = toSignal(this.plansData.currentPlan$, { initialValue: null });
   readonly activities = computed(() => this.currentPlan()?.activities || []);
@@ -41,6 +64,10 @@ export class PlanEditorDataService {
       },
     }
   );
+  readonly planColor = computed(() => {
+    const plan = this.currentPlan();
+    return plan ? googleColors[plan.properties.color].color : googleColors[DEFAULT_PLAN_COLOR].color;
+  });
 
   /**
    * laneController
@@ -102,8 +129,22 @@ export class PlanEditorDataService {
     });
   });
 
+  /**
+   * selectedActivityId
+   * ------------------
+   */
   private _selectedActivityId = signal<string>('');
   readonly selectedActivityId = computed(() => this._selectedActivityId());
+
+  /**
+   * selectedActivity
+   * ----------------
+   */
+  readonly selectedActivity = computed(() => {
+    const activityId = this._selectedActivityId();
+    const activitiesMap = this.activitiesMap();
+    return activitiesMap.get(activityId) || null;
+  });
 
   /**
    * activitiesGridPixelsPerHour
@@ -153,10 +194,10 @@ export class PlanEditorDataService {
   /**
    * Set the number of pixels per hour for the activities grid. This controls the zoom level of the grid.
    *
-   * @param value Number of pixels per hour to set for the activities grid
+   * @param newPixelsPerHour Number of pixels per hour to set for the activities grid
    */
-  setActivitiesGridPixelsPerHour(value: number) {
-    this.pixelsPerHour.set(value);
+  setActivitiesGridPixelsPerHour(newPixelsPerHour: number) {
+    this.pixelsPerHour.set(newPixelsPerHour);
   }
 
   /**
@@ -170,26 +211,26 @@ export class PlanEditorDataService {
 
   /**
    *
-   * @param value
+   * @param newTimeWindow
    */
-  setActivitiesGridTimeWindow(value: TimeWindow) {
-    this.timeWindow.set(value);
+  setActivitiesGridTimeWindow(newTimeWindow: TimeWindow) {
+    this.timeWindow.set(newTimeWindow);
   }
 
   /**
    *
-   * @param value
+   * @param newScrollX
    */
-  setScrollX(value: number) {
-    this.sX.set(value);
+  setScrollX(newScrollX: number) {
+    this.sX.set(newScrollX);
   }
 
   /**
    *
-   * @param value
+   * @param newScrollY
    */
-  setScrollY(value: number) {
-    this.sY.set(value);
+  setScrollY(newScrollY: number) {
+    this.sY.set(newScrollY);
   }
 
   /**

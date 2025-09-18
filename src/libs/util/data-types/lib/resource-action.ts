@@ -1,8 +1,6 @@
-export class ResourceAction {
-  constructor(
-    public name: string = '',
-    public timeOffset: number = 0
-  ) {}
+export interface ResourceAction {
+  name: string;
+  timeOffset: number;
 }
 
 export function resourceActionsEqual(a: ResourceAction, b: ResourceAction): boolean {

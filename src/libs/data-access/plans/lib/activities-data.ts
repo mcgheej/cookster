@@ -1,15 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { AfActivitiesService } from './af-activities';
 import { ActivityDB } from '@util/data-types/index';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ActivitiesDataService {
   private readonly db = inject(AfActivitiesService);
 
   private readonly activities = new Map<string, ActivityDB>();
-  private readonly activitiesSubject$ = new BehaviorSubject<ActivityDB[]>([]);
-  readonly activities$ = this.activitiesSubject$.asObservable();
+  private readonly activitiesMapSubject$ = new BehaviorSubject<Map<string, ActivityDB>>(this.activities);
+  readonly activitiesMap$ = this.activitiesMapSubject$.asObservable();
+  readonly activities$ = this.activitiesMap$.pipe(map((map) => Array.from(map.values())));
 
   private _currentPlanId = '';
   set currentPlanId(planId: string) {
@@ -36,7 +37,7 @@ export class ActivitiesDataService {
             break;
         }
       });
-      this.activitiesSubject$.next(Array.from(this.activities.values()));
+      this.activitiesMapSubject$.next(this.activities);
     });
   }
 }
