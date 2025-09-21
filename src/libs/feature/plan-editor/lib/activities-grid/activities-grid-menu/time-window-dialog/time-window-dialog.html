@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Time Window</h2>
+<!-- <div mat-dialog-content> -->
+<div class="relative text-xs w-[960px] h-[100px] m-[0_24px]">
+  <div
+    class="absolute cursor-pointer top-[20px] w-[960px] h-[30px] box-border bg-[var(--mat-sys-surface-dim)] border-1 border-[var(--mat-sys-primary)]"
+    (click)="clickOnBarBackground($event)"></div>
+  @for (t of timeslots; track $index) {
+    <div class="absolute top-0 text-center" [style.left.px]="t.leftPx" [style.width.px]="t.widthPx">{{ t.t }}</div>
+  }
+  <div
+    class="absolute cursor-pointer top-[20px] h-[30px] bg-[var(--mat-sys-primary-container)] box-border border-1 border-[var(--mat-sys-primary)]"
+    [style.left.px]="timeWindowRegion().leftPx"
+    [style.width.px]="timeWindowRegion().widthPx"
+    (click)="clickOnTimeWindowBackground($event)"></div>
+  <div
+    class="absolute top-[20px] h-[30px] bg-[var(--mat-sys-error-container)] box-border border-1 border-[var(--mat-sys-primary)]"
+    [style.left.px]="planWindowRegion().leftPx"
+    [style.width.px]="planWindowRegion().widthPx"></div>
+</div>
+<!-- </div> -->
+<mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+  <button mat-button (click)="saveChanges()">Save</button>
+</mat-dialog-actions>

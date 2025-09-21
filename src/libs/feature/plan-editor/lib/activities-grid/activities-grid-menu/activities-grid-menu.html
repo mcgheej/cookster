@@ -27,11 +27,15 @@
       <span>Actions...</span>
     </button>
     <mat-divider [style.margin]="0"></mat-divider>
+    <button mat-menu-item (click)="service.openTimeWindowDialog()">
+      <mat-icon>calendar_view_day</mat-icon>
+      <span>Time window...</span>
+    </button>
     <button mat-menu-item [disabled]="true">
       <mat-icon class="rotate-90">compare_arrows</mat-icon>
       <span>Time snap...</span>
     </button>
-    <button mat-menu-item (click)="togglePlanEndTethered()">
+    <button mat-menu-item (click)="service.togglePlanEndTethered()">
       <mat-icon>{{ planEndTethered() ? 'lock_open' : 'lock_outline' }}</mat-icon>
       <span>{{ planEndTethered() ? 'Untether plan end' : 'Tether plan end' }}</span>
     </button>
@@ -46,7 +50,7 @@
 <mat-menu #pixelsPerHourMenu>
   <ng-template matMenuContent let-gridMenuData="gridMenuData">
     @for (option of timeZoomOptions; track $index) {
-      <button mat-menu-item (click)="setPixelsPerHour(option.pixelsPerHour)">
+      <button mat-menu-item (click)="service.setPixelsPerHour(option.pixelsPerHour)">
         <mat-icon [class]="gridMenuData.pixelsPerHour === option.pixelsPerHour ? 'visible' : 'invisible'"
           >done</mat-icon
         >
@@ -59,7 +63,7 @@
 <mat-menu #laneWidthMenu>
   <ng-template matMenuContent>
     @for (option of laneWidthOptions; track $index) {
-      <button mat-menu-item (click)="setLaneWidths(option.value)">
+      <button mat-menu-item (click)="service.setLaneWidths(option.value)">
         <mat-icon [class]="laneWidths() === option.value ? 'visible' : 'invisible'">done</mat-icon>
         <span>{{ option.label }}</span>
       </button>
