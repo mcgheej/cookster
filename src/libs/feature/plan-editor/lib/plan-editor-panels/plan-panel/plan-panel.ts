@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PlanPropertiesDialog } from '@ui/dialog-plan-properties/lib/plan-properties-dialog';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 import { format } from 'date-fns';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
+import { PlanPanelService } from './plan-panel-service';
 
 @Component({
   selector: 'ck-plan-panel',
@@ -34,34 +33,22 @@ import { PlanEditorDataService } from '../../plan-editor-data-service';
           matIconButton
           [matTooltipShowDelay]="tooltipShowDelay"
           matTooltip="edit plan properties"
-          (click)="editPlan()">
+          (click)="service.editPlan(plan)">
           <mat-icon>edit_attributes</mat-icon>
         </button>
       </div>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PlanPanelService],
 })
 export class PlanPanel {
-  private readonly dialog = inject(MatDialog);
   private readonly planEditorData = inject(PlanEditorDataService);
+  protected readonly service = inject(PlanPanelService);
 
   protected readonly currentPlan = this.planEditorData.currentPlan;
   protected readonly planColor = this.planEditorData.planColor;
 
   protected format = format;
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
-
-  protected editPlan() {
-    const plan = this.currentPlan();
-    if (plan) {
-      this.dialog.open(PlanPropertiesDialog, {
-        data: plan.properties,
-        width: '600px',
-        maxWidth: '800px',
-        maxHeight: '100vh',
-        height: '775px',
-      });
-    }
-  }
 }

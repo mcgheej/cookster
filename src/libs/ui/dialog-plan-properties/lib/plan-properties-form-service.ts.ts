@@ -1,8 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PlansDataService } from '@data-access/plans/index';
-import { DEFAULT_PLAN_COLOR, DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
+import { DEFAULT_PLAN_COLOR } from '@util/app-config/index';
 import { Kitchen, PlanProperties } from '@util/data-types/index';
 import { getDateToLastHour, isDifferentMinute } from '@util/date-utilities/index';
 import { set } from 'date-fns';
@@ -17,8 +15,6 @@ export const FIELD_DESCRIPTION = 'planDescription';
 @Injectable()
 export class PlanPropertiesFormService {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly snackBar = inject(MatSnackBar);
-  private readonly plansData = inject(PlansDataService);
 
   private now = new Date();
 
@@ -35,30 +31,12 @@ export class PlanPropertiesFormService {
     this.loadFormData(this.form, planProperties);
   }
 
-  createPlanProperties() {
-    const properties = this.getNewPlanPropertiesFromForm(this.form);
-    this.plansData.createPlan(properties).subscribe({
-      next: () => {
-        this.snackBar.open('Plan created', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
-      },
-      error: (error) => {
-        this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
-        console.error('Error creating plan', error);
-      },
-    });
+  createPlanProperties(): Partial<PlanProperties> {
+    return this.getNewPlanPropertiesFromForm(this.form);
   }
 
-  savePlanProperties(currentProperties: PlanProperties) {
-    const changedProperties = this.getChangedPlanPropertiesFromForm(this.form, currentProperties);
-    this.plansData.updatePlanProperties(currentProperties.id, changedProperties).subscribe({
-      next: () => {
-        this.snackBar.open('Plan updated', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
-      },
-      error: (error) => {
-        this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
-        console.error('Error creating plan', error);
-      },
-    });
+  savePlanProperties(currentProperties: PlanProperties): Partial<PlanProperties> {
+    return this.getChangedPlanPropertiesFromForm(this.form, currentProperties);
   }
 
   private loadFormData(form: FormGroup, planProperties: PlanProperties) {

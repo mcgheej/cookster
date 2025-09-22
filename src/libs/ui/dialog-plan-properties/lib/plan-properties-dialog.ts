@@ -54,7 +54,7 @@ import { FieldDescription } from './field-description.js';
 })
 export class PlanPropertiesDialog implements OnInit {
   private readonly formService = inject(PlanPropertiesFormService);
-  private readonly dialogRef = inject(MatDialogRef<PlanPropertiesDialog>);
+  private readonly dialogRef: MatDialogRef<PlanPropertiesDialog, Partial<PlanProperties>> = inject(MatDialogRef);
   protected readonly planProperties: PlanProperties = inject(MAT_DIALOG_DATA);
 
   protected form = this.formService.form;
@@ -69,10 +69,10 @@ export class PlanPropertiesDialog implements OnInit {
       return;
     }
     if (this.planProperties.id) {
-      this.formService.savePlanProperties(this.planProperties);
+      this.dialogRef.close(this.formService.savePlanProperties(this.planProperties));
     } else {
-      this.formService.createPlanProperties();
+      this.dialogRef.close(this.formService.createPlanProperties());
     }
-    this.dialogRef.close(this.planProperties);
+    // this.dialogRef.close(this.planProperties);
   }
 }
