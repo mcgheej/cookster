@@ -27,6 +27,7 @@
       "@feature/plans/*": ["libs/feature/plans/*"],
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
       "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
+      "@ui/dialog-time-window/*": ["libs/ui/dialog-time-window/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],

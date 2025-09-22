@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { LaneWidth, TimeWindow } from '@util/data-types/index';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TimeWindowDialog, TimeWindowDialogData } from './time-window-dialog/time-window-dialog';
+import { TimeWindowDialog, TimeWindowDialogData } from '@ui/dialog-time-window/index';
 
 @Injectable()
 export class ActivitiesGridMenuService {

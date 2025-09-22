@@ -16,6 +16,27 @@
     class="absolute top-[20px] h-[30px] bg-[var(--mat-sys-error-container)] box-border border-1 border-[var(--mat-sys-primary)]"
     [style.left.px]="planWindowRegion().leftPx"
     [style.width.px]="planWindowRegion().widthPx"></div>
+  @if (timeWindowRegion().widthPx > 72) {
+    <div
+      class="absolute top-[50px] h-[14px] w-[1px] bg-[var(--mat-sys-primary)]"
+      [style.left.px]="timeWindowRegion().leftPx"></div>
+    <div
+      class="absolute top-[50px] h-[14px] w-[1px] bg-[var(--mat-sys-primary)]"
+      [style.left.px]="timeWindowRegion().leftPx + timeWindowRegion().widthPx - 1"></div>
+    <div
+      class="absolute top-[57px] h-[1px] bg-[var(--mat-sys-primary)]"
+      [style.left.px]="timeWindowRegion().leftPx"
+      [style.width.px]="timeWindowRegion().widthPx"></div>
+    <div
+      class="absolute top-[50px] h-[14px] w-[72px] bg-[var(--mat-sys-surface)]"
+      [style.left.px]="timeWindowRegion().leftPx + timeWindowRegion().widthPx / 2 - 36"></div>
+    <div
+      class="absolute top-[50px] text-center text-[10px]"
+      [style.left.px]="timeWindowRegion().leftPx"
+      [style.width.px]="timeWindowRegion().widthPx">
+      Time Window
+    </div>
+  }
 </div>
 <!-- </div> -->
 <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
