@@ -5,6 +5,7 @@ import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable }
 import { compareAsc } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { ActivitiesDataService } from './activities-data';
+import { createPlanFactory } from '@util/data-types/lib/plan';
 
 @Injectable({ providedIn: 'root' })
 export class PlansDataService {
@@ -90,7 +91,8 @@ export class PlansDataService {
           return null;
         }
 
-        this.lastEmittedPlan = new Plan(currentPlanSummary, currentPlanActivities);
+        // this.lastEmittedPlan = new Plan(currentPlanSummary, currentPlanActivities);
+        this.lastEmittedPlan = createPlanFactory(currentPlanSummary, currentPlanActivities);
         return this.lastEmittedPlan;
       })
     );

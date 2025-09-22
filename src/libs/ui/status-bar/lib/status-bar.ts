@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { Plan } from '@util/data-types/lib/plan';
+import { Plan } from '@util/data-types/index';
 import { format } from 'date-fns';
 
 @Component({
