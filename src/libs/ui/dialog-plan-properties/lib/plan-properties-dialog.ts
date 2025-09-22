@@ -73,6 +73,5 @@ export class PlanPropertiesDialog implements OnInit {
     } else {
       this.dialogRef.close(this.formService.createPlanProperties());
     }
-    // this.dialogRef.close(this.planProperties);
   }
 }
