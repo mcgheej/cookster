@@ -21,7 +21,7 @@ export class PlanPanelService {
           width: '600px',
           maxWidth: '800px',
           maxHeight: '100vh',
-          height: '775px',
+          height: '525px',
         }
       );
       dialogRef.afterClosed().subscribe((result) => {

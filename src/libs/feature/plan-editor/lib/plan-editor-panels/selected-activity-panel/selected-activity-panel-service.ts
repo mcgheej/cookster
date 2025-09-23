@@ -91,7 +91,7 @@ export class SelectedActivityPanelService {
     const dialogRef: MatDialogRef<ActivityPropertiesDialog, ActivityDB> = this.dialog.open(ActivityPropertiesDialog, {
       width: '600px',
       maxHeight: '100vh',
-      height: '734px',
+      height: '750px',
       data: {
         activity: selectedActivity,
         plan: plan,

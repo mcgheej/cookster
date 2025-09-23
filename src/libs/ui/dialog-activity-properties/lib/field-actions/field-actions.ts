@@ -1,10 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { ActivityPropertiesFormService } from '../activity-properties-form-service';
 import { activityActionText } from '@util/data-types/index';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 
 @Component({
   selector: 'ck-field-actions',
-  imports: [],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './field-actions.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -17,4 +21,6 @@ export class FieldActions {
     const actions = this.actions();
     return actions.map((a) => activityActionText(a));
   });
+
+  protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 }

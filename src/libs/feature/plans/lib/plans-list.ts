@@ -36,7 +36,11 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
       }
     </div>
     <div class="fixed bottom-6 right-6">
-      <button mat-fab [matTooltipShowDelay]="tooltipShowDelay" matTooltip="add new plan" (click)="addPlanClick($event)">
+      <button
+        mat-mini-fab
+        [matTooltipShowDelay]="tooltipShowDelay"
+        matTooltip="add new plan"
+        (click)="addPlanClick($event)">
         <mat-icon>add</mat-icon>
       </button>
     </div>

@@ -19,6 +19,7 @@ export const RESOURCE_ACTION_COMPONENT_HEIGHT = 32; // px
 export const PLAN_END_BAR_HEIGHT = 3; // px
 
 export const DEFAULT_PLAN_COLOR = 'basil';
+export const DEFAULT_ACTIVITY_COLOR = 'tomato';
 export const DEFAULT_COLOR_OPACITY = 0.4;
 export const DIALOG_COLOR_OPACITY = 0.6;
 
