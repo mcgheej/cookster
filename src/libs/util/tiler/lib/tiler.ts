@@ -8,10 +8,9 @@ import { TilerConfig } from './tiler-config';
 
 @Injectable()
 export class Tiler {
-  private conurbations: TileConurbation[] = [];
+  conurbations: TileConurbation[] = [];
 
   generateDisplayTiles(activities: ActivityDB[], planEnd: Date, config: TilerConfig): DisplayTile[] {
-    this.conurbations = [];
     if (activities.length === 0) {
       return [];
     }
@@ -21,7 +20,8 @@ export class Tiler {
     return this.finishDisplayTiles(config);
   }
 
-  private buildConurbations(activities: ActivityDB[], planEnd: Date): void {
+  buildConurbations(activities: ActivityDB[], planEnd: Date): void {
+    this.conurbations = [];
     const tiles = activities.map((a) => this.activityToDisplayTile(a, planEnd)).sort(sortByStartThenEnd);
     let conurb = new TileConurbation(tiles[0]);
     tiles.slice(1).forEach((tile) => {

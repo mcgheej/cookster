@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -11,5 +11,9 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActivityPanelButtons {
+  protected readonly edit = output<void>();
+  protected readonly createTemplate = output<void>();
+  protected readonly delete = output<void>();
+
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 }

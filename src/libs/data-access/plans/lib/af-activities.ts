@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { collection, Firestore, onSnapshot, orderBy, query, where } from '@angular/fire/firestore';
+import { collection, doc, Firestore, onSnapshot, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
 import { ActivityDB } from '@util/data-types/index';
 import { Unsubscribe, User } from 'firebase/auth';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, Observable } from 'rxjs';
 
 interface ActivityChange {
   type: 'added' | 'modified' | 'removed' | 'flush';
@@ -60,6 +60,12 @@ export class AfActivitiesService {
         stopListener = this.setupSnapshotListener(planId);
       }
     });
+  }
+
+  updateActivity(a: ActivityDB): Observable<void> {
+    const { id, ...activity } = a;
+    const docRef = doc(this.firestore, `activities/${a.id}`);
+    return from(updateDoc(docRef, activity));
   }
 
   private setupSnapshotListener(planId: string): Unsubscribe {

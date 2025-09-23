@@ -1,0 +1,11 @@
+<div class="mt-4 grid grid-cols-[1fr]" [formGroup]="form">
+  <mat-form-field floatLabel="auto">
+    <mat-label>Description</mat-label>
+    <textarea
+      matInput
+      style="resize: none"
+      [formControlName]="controlName"
+      placeholder="Add a description here..."
+      rows="5"></textarea>
+  </mat-form-field>
+</div>

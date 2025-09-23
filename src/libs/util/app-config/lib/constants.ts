@@ -23,6 +23,7 @@ export const DEFAULT_COLOR_OPACITY = 0.4;
 export const DIALOG_COLOR_OPACITY = 0.6;
 
 export const INITIAL_PLAN_DURATION_MINS = 60;
+export const INITIAL_ACTIVITY_DURATION_MINS = 30;
 
 export const ACTIVITIES_GRID_PIXELS_PER_HOUR = {
   compressed: 60,

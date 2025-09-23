@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>{{ data.activity.id ? 'Edit Activity' : 'Create Activity' }}</h2>
+<form [formGroup]="form" (ngSubmit)="saveActivity()">
+  <div class="px-[24px]">
+    <ck-field-name />
+    <div class="grid grid-cols-[10fr_6fr] gap-4">
+      <ck-field-time-duration />
+      <ck-field-color />
+    </div>
+    <div class="grid grid-cols-[10fr_6fr] gap-4">
+      <ck-field-resource />
+      <div></div>
+    </div>
+    <ck-field-actions />
+    <ck-field-description />
+  </div>
+  <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+    <button mat-button [mat-dialog-close]="undefined" color="accent">Cancel</button>
+    <button mat-button color="accent" type="submit" (click)="saveActivity()">Save</button>
+  </mat-dialog-actions>
+</form>

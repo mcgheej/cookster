@@ -26,6 +26,7 @@
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
+      "@ui/dialog-activity-properties/*": ["libs/ui/dialog-activity-properties/*"],
       "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
       "@ui/dialog-time-window/*": ["libs/ui/dialog-time-window/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AfActivitiesService } from './af-activities';
 import { ActivityDB } from '@util/data-types/index';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ActivitiesDataService {
@@ -37,7 +37,11 @@ export class ActivitiesDataService {
             break;
         }
       });
-      this.activitiesMapSubject$.next(this.activities);
+      this.activitiesMapSubject$.next(new Map(this.activities));
     });
+  }
+
+  updateActivity(a: ActivityDB): Observable<void> {
+    return this.db.updateActivity(a);
   }
 }

@@ -25,3 +25,16 @@ export function activityActionTextTimed(
   const actionTimeString = format(actionTime, 'HH:mm');
   return `${actionTimeString} - ${action.name}`;
 }
+
+export function activityActionText(action: ActivityAction): string {
+  const durationMins = Math.abs(action.timeOffset);
+  const direction =
+    action.referencePoint === 'start'
+      ? action.timeOffset >= 0
+        ? 'after start'
+        : 'before start'
+      : action.timeOffset >= 0
+        ? 'before end'
+        : 'after end';
+  return `${action.name} ${durationMins} minutes ${direction}`;
+}
