@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ActivityAction, Plan, ActivityDB, activityActionText } from '@util/data-types/index';
+import { ActivityAction, Plan, ActivityDB } from '@util/data-types/index';
 import { ActivityActionFormService } from './activity-action-form-service';
 import { MatButtonModule } from '@angular/material/button';
 import { FieldActionName } from './field-action-name/field-action-name';
