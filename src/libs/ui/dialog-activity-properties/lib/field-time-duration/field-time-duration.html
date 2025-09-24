@@ -4,9 +4,13 @@
       <mat-label>Time</mat-label>
       <input matInput [matTimepicker]="timepicker" [formControlName]="timeControlName" />
       @if (form.get(timeControlName)?.invalid && form.get(timeControlName)?.touched) {
-        @if (form.controls.startTime.errors?.['outsidePlan']) {
-          <mat-error>Activity outside plan period</mat-error>
-        }
+        <mat-error> {{ getErrorMessage(timeControlName) }}</mat-error>
+        <!-- <mat-error *ngIf="form.controls.startTime.errors?.['outsidePlan']">Activity outside plan period</mat-error>
+        <div>
+          @if (form.controls.startTime.errors?.['outsidePlan']) {
+            <mat-error>Activity outside plan period</mat-error>
+          }
+        </div> -->
       }
       <mat-timepicker #timepicker />
       <mat-timepicker-toggle matSuffix [for]="timepicker" />

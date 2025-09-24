@@ -15,4 +15,11 @@ export class FieldTimeDuration {
   readonly form = inject(ActivityPropertiesFormService).form;
   readonly timeControlName = F_START_TIME;
   readonly durationControlName = F_DURATION;
+
+  protected getErrorMessage(controlName: string): string {
+    if (this.form.get(controlName)?.errors?.['outsidePlan']) {
+      return 'Activity outside plan period';
+    }
+    return '';
+  }
 }

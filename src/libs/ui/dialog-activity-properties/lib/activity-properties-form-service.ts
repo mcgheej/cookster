@@ -1,11 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION, defaultGoogleColor, INITIAL_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
 import { ActivityAction, ActivityDB, Plan, PlanKitchenResource, PlanProperties } from '@util/data-types/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
-import { subMinutes } from 'date-fns';
+import { addMinutes, isAfter, isValid, subMinutes } from 'date-fns';
 
 export const F_NAME = 'name';
 export const F_START_TIME = 'startTime';
@@ -26,14 +26,17 @@ const defaultResource: PlanKitchenResource = {
 export class ActivityPropertiesFormService {
   private readonly snackBar = inject(MatSnackBar);
 
-  readonly form = inject(FormBuilder).group({
-    [F_NAME]: ['', [Validators.required]],
-    [F_START_TIME]: [new Date(), [Validators.required]],
-    [F_DURATION]: [new Date(0, 0, 0, 0, INITIAL_ACTIVITY_DURATION_MINS), [Validators.required]],
-    [F_COLOR]: [defaultGoogleColor, [Validators.required]],
-    [F_RESOURCE]: [defaultResource, [Validators.required]],
-    [F_DESCRIPTION]: [''],
-  });
+  readonly form = inject(FormBuilder).group(
+    {
+      [F_NAME]: ['', [Validators.required]],
+      [F_START_TIME]: [new Date(), [Validators.required]],
+      [F_DURATION]: [new Date(0, 0, 0, 0, INITIAL_ACTIVITY_DURATION_MINS), [Validators.required]],
+      [F_COLOR]: [defaultGoogleColor, [Validators.required]],
+      [F_RESOURCE]: [defaultResource, [Validators.required]],
+      [F_DESCRIPTION]: [''],
+    },
+    { validators: [this.validateActivityBeforePlanEnd()] }
+  );
 
   readonly kitchenResources = signal<PlanKitchenResource[]>([]);
 
@@ -96,4 +99,40 @@ export class ActivityPropertiesFormService {
       color: f.get(F_COLOR)?.value ?? defaultGoogleColor,
     } as ActivityDB;
   }
+
+  private validateActivityBeforePlanEnd(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const startTime = control.get(F_START_TIME)?.value as Date;
+      const duration = control.get(F_DURATION)?.value as Date;
+      if (isValid(startTime) && isValid(duration) && this.plan) {
+        const isValid = !isAfter(
+          addMinutes(startTime, getMinutesSinceMidnight(duration)),
+          this.plan.properties.endTime
+        );
+        if (control.get(F_START_TIME)?.errors) {
+          if (isValid) {
+            delete control.get(F_START_TIME)?.errors?.['outsidePlan'];
+            if (isEmpty(control.get(F_START_TIME)?.errors)) {
+              control.get(F_START_TIME)?.setErrors(null);
+            }
+          } else {
+            control.get(F_START_TIME)?.setErrors({ outsidePlan: true });
+          }
+        } else {
+          control.get(F_START_TIME)?.setErrors(isValid ? null : { outsidePlan: true });
+        }
+      }
+      return null;
+    };
+  }
+}
+
+function isEmpty(obj: any): boolean {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
 }

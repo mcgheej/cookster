@@ -2,13 +2,13 @@
 <form [formGroup]="form" (ngSubmit)="saveActivity()">
   <div class="px-[24px]">
     <ck-field-name />
-    <div class="grid grid-cols-[10fr_6fr] gap-4">
+    <div class="grid grid-cols-[1fr]">
       <ck-field-time-duration />
-      <ck-field-color />
+      <div></div>
     </div>
     <div class="grid grid-cols-[10fr_6fr] gap-4">
       <ck-field-resource />
-      <div></div>
+      <ck-field-color />
     </div>
     <ck-field-actions />
     <ck-field-description />
