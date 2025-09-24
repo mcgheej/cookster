@@ -12,7 +12,9 @@
     <div class="py-0.5 text-[14px] text-[var(--mat-sys-on-surface-variant)] select-none italic">No actions added</div>
   } @else {
     @for (actionText of actionsText(); track $index) {
-      <div class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer">{{ actionText }}</div>
+      <div class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer" (click)="editAction.emit($index)">
+        {{ actionText }}
+      </div>
     }
   }
 </div>

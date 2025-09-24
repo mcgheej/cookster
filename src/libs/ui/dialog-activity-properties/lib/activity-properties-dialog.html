@@ -10,11 +10,11 @@
       <ck-field-resource />
       <ck-field-color />
     </div>
-    <ck-field-actions />
+    <ck-field-actions (editAction)="editAction($event)" />
     <ck-field-description />
   </div>
   <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
-    <button mat-button [mat-dialog-close]="undefined" color="accent">Cancel</button>
-    <button mat-button color="accent" type="submit" (click)="saveActivity()">Save</button>
+    <button matButton [mat-dialog-close]="undefined">Cancel</button>
+    <button matButton type="submit">Save</button>
   </mat-dialog-actions>
 </form>

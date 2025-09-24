@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
 import { ActivityPropertiesFormService } from '../activity-properties-form-service';
 import { activityActionText } from '@util/data-types/index';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,8 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 })
 export class FieldActions {
   private readonly formService = inject(ActivityPropertiesFormService);
+
+  protected readonly editAction = output<number>();
 
   protected readonly actions = this.formService.actions;
 

@@ -12,10 +12,10 @@ export interface ConfirmSnackData {
   template: `
     <div class="w-full flex items-center">
       <div class="text-white text-base grow select-none">{{ data.title }}</div>
-      <button mat-button class="w-16 cursor-pointer" (click)="cancel()">
+      <button matButton class="w-16 cursor-pointer" (click)="cancel()">
         {{ data.cancelButtonLabel ?? 'Cancel' }}
       </button>
-      <button mat-button color="accent" class="w-16 cursor-pointer" (click)="confirm()">
+      <button matButton color="accent" class="w-16 cursor-pointer" (click)="confirm()">
         {{ data.actionButtonLabel }}
       </button>
     </div>

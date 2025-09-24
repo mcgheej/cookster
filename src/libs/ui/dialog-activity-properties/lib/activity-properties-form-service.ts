@@ -1,11 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION, defaultGoogleColor, INITIAL_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
 import { ActivityAction, ActivityDB, Plan, PlanKitchenResource, PlanProperties } from '@util/data-types/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
 import { addMinutes, isAfter, isValid, subMinutes } from 'date-fns';
+import { ActivityActionDialog, ActivityActionDialogData } from './dialog-activity-action/activity-action-dialog';
 
 export const F_NAME = 'name';
 export const F_START_TIME = 'startTime';
@@ -24,6 +26,7 @@ const defaultResource: PlanKitchenResource = {
 
 @Injectable()
 export class ActivityPropertiesFormService {
+  private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
 
   readonly form = inject(FormBuilder).group(
@@ -50,6 +53,30 @@ export class ActivityPropertiesFormService {
     this.actions.set([...activity.actions]);
     this.kitchenResources.set(plan.properties.kitchenResources);
     this.loadFormData(this.form, activity, plan.properties);
+  }
+
+  editAction(actionIndex: number): void {
+    if (!this.activity || !this.plan) {
+      return undefined;
+    }
+    const dialogRef: MatDialogRef<ActivityActionDialog, ActivityAction> = this.dialog.open(ActivityActionDialog, {
+      width: '500px',
+      maxHeight: '100vh',
+      height: '600px',
+      data: {
+        actionIndex,
+        action: this.actions()[actionIndex],
+        activity: this.getActivityFromForm(this.activity, this.plan?.properties.endTime, this.form),
+        plan: this.plan,
+      } as ActivityActionDialogData,
+    });
+    dialogRef.afterClosed().subscribe((newAction) => {
+      if (newAction) {
+        const updatedActions = [...this.actions()];
+        updatedActions[actionIndex] = newAction;
+        this.actions.set(updatedActions);
+      }
+    });
   }
 
   getActivity(): ActivityDB | undefined {
@@ -95,7 +122,7 @@ export class ActivityPropertiesFormService {
       startTimeOffset,
       planId: activity.planId,
       resourceIndex: f.get(F_RESOURCE)?.value.index ?? 0,
-      actions: [...activity.actions],
+      actions: this.actions(),
       color: f.get(F_COLOR)?.value ?? defaultGoogleColor,
     } as ActivityDB;
   }

@@ -44,6 +44,10 @@ export class ActivityPropertiesDialog implements OnInit {
     this.formService.initialise(this.data.activity, this.data.plan);
   }
 
+  editAction(actionIndex: number): void {
+    this.formService.editAction(actionIndex);
+  }
+
   saveActivity(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

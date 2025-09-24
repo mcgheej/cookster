@@ -44,8 +44,8 @@ import { FieldDescription } from './field-description.js';
         }
       </div>
       <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
-        <button mat-button [mat-dialog-close]="undefined">Cancel</button>
-        <button mat-button [disabled]="form.invalid" type="submit">Save</button>
+        <button matButton [mat-dialog-close]="undefined">Cancel</button>
+        <button matButton [disabled]="form.invalid" type="submit">Save</button>
       </mat-dialog-actions>
     </form>
   `,
