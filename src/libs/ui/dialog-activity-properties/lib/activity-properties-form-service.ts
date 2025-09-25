@@ -7,7 +7,11 @@ import { ActivityAction, ActivityDB, Plan, PlanKitchenResource, PlanProperties }
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
 import { addMinutes, isAfter, isValid, subMinutes } from 'date-fns';
-import { ActivityActionDialog, ActivityActionDialogData } from './dialog-activity-action/activity-action-dialog';
+import {
+  ActivityActionDialog,
+  ActivityActionDialogData,
+  ActivityActionDialogResult,
+} from './dialog-activity-action/activity-action-dialog';
 
 export const F_NAME = 'name';
 export const F_START_TIME = 'startTime';
@@ -55,26 +59,63 @@ export class ActivityPropertiesFormService {
     this.loadFormData(this.form, activity, plan.properties);
   }
 
+  addAction(): void {
+    if (!this.activity || !this.plan) {
+      return undefined;
+    }
+    const dialogRef: MatDialogRef<ActivityActionDialog, ActivityActionDialogResult> = this.dialog.open(
+      ActivityActionDialog,
+      {
+        width: '500px',
+        maxHeight: '100vh',
+        height: '600px',
+        data: {
+          actionIndex: -1,
+          action: { name: 'New Action', timeOffset: 30, referencePoint: 'start' } as ActivityAction,
+          activity: this.getActivityFromForm(this.activity, this.plan?.properties.endTime, this.form),
+          plan: this.plan,
+        } as ActivityActionDialogData,
+      }
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (result.operation === 'save') {
+          const updatedActions = [...this.actions(), ...[result.action]];
+          this.actions.set(updatedActions);
+        }
+      }
+    });
+  }
+
   editAction(actionIndex: number): void {
     if (!this.activity || !this.plan) {
       return undefined;
     }
-    const dialogRef: MatDialogRef<ActivityActionDialog, ActivityAction> = this.dialog.open(ActivityActionDialog, {
-      width: '500px',
-      maxHeight: '100vh',
-      height: '600px',
-      data: {
-        actionIndex,
-        action: this.actions()[actionIndex],
-        activity: this.getActivityFromForm(this.activity, this.plan?.properties.endTime, this.form),
-        plan: this.plan,
-      } as ActivityActionDialogData,
-    });
-    dialogRef.afterClosed().subscribe((newAction) => {
-      if (newAction) {
-        const updatedActions = [...this.actions()];
-        updatedActions[actionIndex] = newAction;
-        this.actions.set(updatedActions);
+    const dialogRef: MatDialogRef<ActivityActionDialog, ActivityActionDialogResult> = this.dialog.open(
+      ActivityActionDialog,
+      {
+        width: '500px',
+        maxHeight: '100vh',
+        height: '600px',
+        data: {
+          actionIndex,
+          action: this.actions()[actionIndex],
+          activity: this.getActivityFromForm(this.activity, this.plan?.properties.endTime, this.form),
+          plan: this.plan,
+        } as ActivityActionDialogData,
+      }
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (result.operation === 'save') {
+          const updatedActions = [...this.actions()];
+          updatedActions[actionIndex] = result.action;
+          this.actions.set(updatedActions);
+        } else if (result.operation === 'delete') {
+          const updatedActions = [...this.actions()];
+          updatedActions.splice(actionIndex, 1);
+          this.actions.set(updatedActions);
+        }
       }
     });
   }

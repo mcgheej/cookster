@@ -16,6 +16,8 @@ export interface ActivityActionDialogData {
   plan: Plan;
 }
 
+export type ActivityActionDialogResult = { operation: 'save'; action: ActivityAction } | { operation: 'delete' };
+
 @Component({
   selector: 'ck-activity-action-dialog',
   imports: [
@@ -32,7 +34,7 @@ export interface ActivityActionDialogData {
   providers: [ActivityActionFormService],
 })
 export class ActivityActionDialog implements OnInit {
-  private readonly dialogRef = inject(MatDialogRef<ActivityActionDialog, ActivityAction>);
+  private readonly dialogRef = inject(MatDialogRef<ActivityActionDialog, ActivityActionDialogResult>);
   protected readonly data: ActivityActionDialogData = inject(MAT_DIALOG_DATA);
   protected readonly formService = inject(ActivityActionFormService);
 
@@ -42,11 +44,17 @@ export class ActivityActionDialog implements OnInit {
     this.formService.initialise(this.data.action, this.data.activity, this.data.plan);
   }
 
+  deleteAction(ev: MouseEvent): void {
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.dialogRef.close({ operation: 'delete' });
+  }
+
   saveAction(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    this.dialogRef.close(this.formService.getAction());
+    this.dialogRef.close({ operation: 'save', action: this.formService.getAction() });
   }
 }

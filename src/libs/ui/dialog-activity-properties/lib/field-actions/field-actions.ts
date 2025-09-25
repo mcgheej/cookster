@@ -15,6 +15,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 export class FieldActions {
   private readonly formService = inject(ActivityPropertiesFormService);
 
+  protected readonly addAction = output<void>();
   protected readonly editAction = output<number>();
 
   protected readonly actions = this.formService.actions;
@@ -25,4 +26,10 @@ export class FieldActions {
   });
 
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
+
+  protected onAddAction(ev: MouseEvent): void {
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.addAction.emit();
+  }
 }

@@ -44,6 +44,10 @@ export class ActivityPropertiesDialog implements OnInit {
     this.formService.initialise(this.data.activity, this.data.plan);
   }
 
+  addAction(): void {
+    this.formService.addAction();
+  }
+
   editAction(actionIndex: number): void {
     this.formService.editAction(actionIndex);
   }
