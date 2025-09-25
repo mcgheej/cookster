@@ -1,6 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { collection, doc, Firestore, onSnapshot, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  Firestore,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from '@angular/fire/firestore';
 import { ActivityDB } from '@util/data-types/index';
 import { Unsubscribe, User } from 'firebase/auth';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, Observable } from 'rxjs';
@@ -62,6 +73,29 @@ export class AfActivitiesService {
     });
   }
 
+  createActivity(a: ActivityDB): Observable<ActivityDB> {
+    const { id, ...activity } = a;
+    return from(
+      addDoc(collection(this.firestore, 'activities'), {
+        name: activity.name,
+        description: activity.description,
+        duration: activity.duration,
+        startTimeOffset: activity.startTimeOffset,
+        planId: activity.planId,
+        resourceIndex: activity.resourceIndex,
+        actions: activity.actions,
+        color: activity.color,
+      })
+    ).pipe(
+      map((docRef) => {
+        return {
+          id: docRef.id,
+          ...activity,
+        };
+      })
+    );
+  }
+
   updateActivity(a: ActivityDB): Observable<void> {
     const { id, ...activity } = a;
     const docRef = doc(this.firestore, `activities/${a.id}`);
@@ -78,5 +112,10 @@ export class AfActivitiesService {
       });
       this.activitiesChangesSubject$.next(changes);
     });
+  }
+
+  deleteActivity(id: string): Observable<void> {
+    const docRef = doc(this.firestore, `activities/${id}`);
+    return from(deleteDoc(docRef));
   }
 }

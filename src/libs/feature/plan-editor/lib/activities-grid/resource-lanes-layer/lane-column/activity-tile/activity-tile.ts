@@ -28,7 +28,8 @@ export class ActivityTile {
 
   protected readonly showDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
-  protected activityClicked() {
+  protected activityClicked(ev: MouseEvent) {
+    ev.stopPropagation();
     if (this.tile().activity.id === this.selectedActivityId()) {
       this.planEditorData.setSelectedActivityId('');
     } else {

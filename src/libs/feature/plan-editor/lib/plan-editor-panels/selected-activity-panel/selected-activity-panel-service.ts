@@ -14,6 +14,7 @@ import {
   googleColors,
 } from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
+import { DeleteActivitySnack } from './delete-activity-snack/delete-activity-snack';
 
 @Injectable()
 export class SelectedActivityPanelService {
@@ -125,8 +126,17 @@ export class SelectedActivityPanelService {
     console.log('create template from activity');
   }
 
-  deleteActivity() {
-    console.log('delete activity');
+  deleteActivity(selectedActivity: ActivityDB) {
+    this.snackBar
+      .openFromComponent(DeleteActivitySnack, {
+        duration: 0,
+        verticalPosition: 'bottom',
+        data: 'Delete activity?',
+      })
+      .onAction()
+      .subscribe(() => {
+        this.doDeleteAccrual(selectedActivity.id);
+      });
   }
 
   getRGBColor(activityColor: string) {
@@ -134,5 +144,17 @@ export class SelectedActivityPanelService {
     return rgbColor
       ? opaqueColor(rgbColor, DEFAULT_COLOR_OPACITY)
       : opaqueColor(googleColors[defaultGoogleColor].color, DEFAULT_COLOR_OPACITY);
+  }
+
+  private doDeleteAccrual(id: string): void {
+    this.snackBar.open('Deleting activity...', undefined, { duration: 0 });
+    this.plansData.deleteActivity(id).subscribe({
+      next: () => {
+        this.snackBar.open('Activity deleted', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (error) => {
+        this.snackBar.open(`Error deleting activity: ${error}`, undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+    });
   }
 }

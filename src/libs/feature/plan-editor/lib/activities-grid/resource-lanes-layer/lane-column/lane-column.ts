@@ -1,15 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
-import { DEFAULT_COLOR_OPACITY, googleColors, RESOURCE_ACTION_COMPONENT_HEIGHT } from '@util/app-config/index';
+import {
+  DEFAULT_ACTIVITY_COLOR,
+  DEFAULT_COLOR_OPACITY,
+  DEFAULT_SNACKBAR_DURATION,
+  googleColors,
+  INITIAL_ACTIVITY_DURATION_MINS,
+  RESOURCE_ACTION_COMPONENT_HEIGHT,
+} from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
-import { ActionDisplayTile, activityDBsEqual, DisplayTile } from '@util/data-types/index';
+import { ActionDisplayTile, ActivityDB, activityDBsEqual, DisplayTile, Plan } from '@util/data-types/index';
 import { laneWidthPx, ResourceLane, resourceLanesEqual } from '@util/data-types/lib/resource-lane';
-import { Tiler } from '@util/tiler/index';
-import { format, isSameMinute, subMinutes } from 'date-fns';
+import { exceedsMaxParallelActivities, Tiler } from '@util/tiler/index';
+import { format, getHours, getMinutes, isSameMinute, subMinutes } from 'date-fns';
 import { ActivityTile } from './activity-tile/activity-tile';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivityDialogData, ActivityPropertiesDialog } from '@ui/dialog-activity-properties/index';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PlansDataService } from '@data-access/plans/lib/plans-data';
 
 @Component({
   selector: 'ck-lane-column',
@@ -19,7 +30,10 @@ import { ResourceActionTile } from './resource-action-tile/resource-action-tile'
   providers: [Tiler],
 })
 export class LaneColumn {
+  private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
   private readonly planEditorData = inject(PlanEditorDataService);
+  private readonly plansData = inject(PlansDataService);
   private readonly tiler = inject(Tiler);
 
   readonly resourceLane = input.required<ResourceLane>();
@@ -113,6 +127,23 @@ export class LaneColumn {
     });
   });
 
+  private readonly plan = this.planEditorData.currentPlan;
+  private readonly timeWindow = this.planEditorData.activitiesGridTimeWindow;
+  private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
+
+  // Methods
+  // -------
+
+  createNewActivity(ev: MouseEvent): void {
+    ev.stopPropagation();
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    const minsSinceMidnight = Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.timeWindow().startHours * 60;
+    this.createActivity(minsSinceMidnight, this.resourceLane(), plan);
+  }
+
   // Private Methods
   // ---------------
 
@@ -142,4 +173,58 @@ export class LaneColumn {
       borderRadius: '6px',
     };
   }
+
+  private createActivity(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): void {
+    const newActivity = this.createActivityInstance(minutesSinceMidnight, resourceLane, plan);
+    const dialogRef: MatDialogRef<ActivityPropertiesDialog, ActivityDB> = this.dialog.open(ActivityPropertiesDialog, {
+      width: '600px',
+      maxHeight: '100vh',
+      height: '750px',
+      data: {
+        activity: newActivity,
+        plan: plan,
+      } as ActivityDialogData,
+    });
+    dialogRef.afterClosed().subscribe((newActivity) => {
+      if (newActivity) {
+        // check if new activity location exceeds max parallel activities for the resource lane in question
+        const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
+        if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
+          this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
+            duration: DEFAULT_SNACKBAR_DURATION,
+          });
+        } else {
+          this.plansData.createActivity(newActivity).subscribe({
+            next: () => {
+              this.snackBar.open('Activity created', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+            },
+            error: (err) => {
+              console.error('Error creating activity', err);
+              this.snackBar.open('Error creating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+            },
+          });
+        }
+      }
+    });
+  }
+
+  private createActivityInstance(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): ActivityDB {
+    return {
+      id: '',
+      name: 'New Activity',
+      description: '',
+      duration: INITIAL_ACTIVITY_DURATION_MINS,
+      actions: [],
+      color: DEFAULT_ACTIVITY_COLOR,
+      startMessage: '',
+      endMessage: '',
+      startTimeOffset: calcStartTimeOffsetToQuarterHour(plan.properties.endTime, minutesSinceMidnight),
+      planId: plan.properties.id,
+      resourceIndex: resourceLane.kitchenResource.index,
+    } as ActivityDB;
+  }
+}
+
+function calcStartTimeOffsetToQuarterHour(endDate: Date, minutesFromDayStart: number): number {
+  return getHours(endDate) * 60 + getMinutes(endDate) - Math.round(minutesFromDayStart / 15) * 15;
 }
