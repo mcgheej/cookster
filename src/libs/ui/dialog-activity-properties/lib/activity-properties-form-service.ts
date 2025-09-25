@@ -19,6 +19,8 @@ export const F_DURATION = 'duration';
 export const F_COLOR = 'color';
 export const F_RESOURCE = 'resource';
 export const F_DESCRIPTION = 'description';
+export const F_START_MESSAGE = 'startMessage';
+export const F_END_MESSAGE = 'endMessage';
 
 const defaultResource: PlanKitchenResource = {
   index: 0,
@@ -41,6 +43,8 @@ export class ActivityPropertiesFormService {
       [F_COLOR]: [defaultGoogleColor, [Validators.required]],
       [F_RESOURCE]: [defaultResource, [Validators.required]],
       [F_DESCRIPTION]: [''],
+      [F_START_MESSAGE]: [''],
+      [F_END_MESSAGE]: [''],
     },
     { validators: [this.validateActivityBeforePlanEnd()] }
   );
@@ -146,6 +150,8 @@ export class ActivityPropertiesFormService {
     form.get(F_COLOR)?.setValue(activity.color || defaultGoogleColor);
     form.get(F_RESOURCE)?.setValue(plan.kitchenResources[activity.resourceIndex] || defaultResource);
     form.get(F_DESCRIPTION)?.setValue(activity.description);
+    form.get(F_START_MESSAGE)?.setValue(activity.startMessage || '');
+    form.get(F_END_MESSAGE)?.setValue(activity.endMessage || '');
   }
 
   private getActivityFromForm(activity: ActivityDB, planEnd: Date, f: FormGroup): ActivityDB {
@@ -165,6 +171,8 @@ export class ActivityPropertiesFormService {
       resourceIndex: f.get(F_RESOURCE)?.value.index ?? 0,
       actions: this.actions(),
       color: f.get(F_COLOR)?.value ?? defaultGoogleColor,
+      startMessage: f.get(F_START_MESSAGE)?.value ?? '',
+      endMessage: f.get(F_END_MESSAGE)?.value ?? '',
     } as ActivityDB;
   }
 

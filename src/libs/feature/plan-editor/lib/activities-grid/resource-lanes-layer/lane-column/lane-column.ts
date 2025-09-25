@@ -18,7 +18,11 @@ import { ActivityTile } from './activity-tile/activity-tile';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivityDialogData, ActivityPropertiesDialog } from '@ui/dialog-activity-properties/index';
+import {
+  ActivityPropertiesDialogData,
+  ActivityPropertiesDialog,
+  openActivityPropertiesDialog,
+} from '@ui/dialog-activity-properties/index';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/lib/plans-data';
 
@@ -176,15 +180,7 @@ export class LaneColumn {
 
   private createActivity(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): void {
     const newActivity = this.createActivityInstance(minutesSinceMidnight, resourceLane, plan);
-    const dialogRef: MatDialogRef<ActivityPropertiesDialog, ActivityDB> = this.dialog.open(ActivityPropertiesDialog, {
-      width: '600px',
-      maxHeight: '100vh',
-      height: '750px',
-      data: {
-        activity: newActivity,
-        plan: plan,
-      } as ActivityDialogData,
-    });
+    const dialogRef = openActivityPropertiesDialog({ activity: newActivity, plan: plan }, this.dialog);
     dialogRef.afterClosed().subscribe((newActivity) => {
       if (newActivity) {
         // check if new activity location exceeds max parallel activities for the resource lane in question

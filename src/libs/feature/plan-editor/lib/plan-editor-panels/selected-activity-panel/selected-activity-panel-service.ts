@@ -5,7 +5,11 @@ import { PlansDataService } from '@data-access/plans/lib/plans-data';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { addMinutes, format, interval, intervalToDuration, subMinutes } from 'date-fns';
 import { activityActionTextTimed, ActivityDB } from '@util/data-types/index';
-import { ActivityDialogData, ActivityPropertiesDialog } from '@ui/dialog-activity-properties/index';
+import {
+  ActivityPropertiesDialogData,
+  ActivityPropertiesDialog,
+  openActivityPropertiesDialog,
+} from '@ui/dialog-activity-properties/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
 import {
   DEFAULT_COLOR_OPACITY,
@@ -89,16 +93,7 @@ export class SelectedActivityPanelService {
     if (!selectedActivity || !plan) {
       return;
     }
-    const dialogRef: MatDialogRef<ActivityPropertiesDialog, ActivityDB> = this.dialog.open(ActivityPropertiesDialog, {
-      width: '600px',
-      maxHeight: '100vh',
-      height: '750px',
-      data: {
-        activity: selectedActivity,
-        plan: plan,
-        // activitiesInLane: plan.activities.filter((a) => a.resourceIndex === selectedActivity.resourceIndex),
-      } as ActivityDialogData,
-    });
+    const dialogRef = openActivityPropertiesDialog({ activity: selectedActivity, plan: plan }, this.dialog);
     dialogRef.afterClosed().subscribe((newActivity) => {
       if (newActivity) {
         // check if new activity location exceeds max parallel activities for the resource lane in question

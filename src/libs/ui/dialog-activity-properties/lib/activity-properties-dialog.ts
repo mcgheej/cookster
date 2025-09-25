@@ -10,8 +10,9 @@ import { FieldColor } from './field-color/field-color';
 import { FieldResource } from './field-resource/field-resource';
 import { FieldDescription } from './field-description/field-description';
 import { FieldActions } from './field-actions/field-actions';
+import { FieldStartEndMessages } from './field-start-end-messages/field-start-end-messages';
 
-export interface ActivityDialogData {
+export interface ActivityPropertiesDialogData {
   activity: ActivityDB;
   plan: Plan;
 }
@@ -28,6 +29,7 @@ export interface ActivityDialogData {
     FieldResource,
     FieldActions,
     FieldDescription,
+    FieldStartEndMessages,
   ],
   templateUrl: './activity-properties-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +38,7 @@ export interface ActivityDialogData {
 export class ActivityPropertiesDialog implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<ActivityPropertiesDialog, ActivityDB>);
   private readonly formService = inject(ActivityPropertiesFormService);
-  protected readonly data: ActivityDialogData = inject(MAT_DIALOG_DATA);
+  protected readonly data: ActivityPropertiesDialogData = inject(MAT_DIALOG_DATA);
 
   protected readonly form = this.formService.form;
 
