@@ -10,7 +10,10 @@
       <ck-field-resource />
       <ck-field-color />
     </div>
-    <ck-field-actions (addAction)="addAction()" (editAction)="editAction($event)" />
+    <ck-field-actions
+      [actionSummaries]="actionSummaries()"
+      (addAction)="addAction()"
+      (editAction)="editAction($event)" />
     <ck-field-description />
     <ck-field-start-end-messages />
   </div>

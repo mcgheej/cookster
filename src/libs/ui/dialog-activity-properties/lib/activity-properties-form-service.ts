@@ -1,17 +1,26 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION, defaultGoogleColor, INITIAL_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
-import { ActivityAction, ActivityDB, Plan, PlanKitchenResource, PlanProperties } from '@util/data-types/index';
+import {
+  ActivityAction,
+  activityActionText,
+  activityActionTime,
+  ActivityDB,
+  Plan,
+  PlanKitchenResource,
+  PlanProperties,
+} from '@util/data-types/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
-import { addMinutes, isAfter, isValid, subMinutes } from 'date-fns';
+import { addMinutes, format, isAfter, isValid, subMinutes } from 'date-fns';
 import {
   ActivityActionDialog,
   ActivityActionDialogData,
   ActivityActionDialogResult,
 } from './dialog-activity-action/activity-action-dialog';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 export const F_NAME = 'name';
 export const F_START_TIME = 'startTime';
@@ -51,20 +60,47 @@ export class ActivityPropertiesFormService {
 
   readonly kitchenResources = signal<PlanKitchenResource[]>([]);
 
-  private plan: Plan | null = null;
-  private activity: ActivityDB | null = null;
-  readonly actions = signal<ActivityAction[]>([]);
+  readonly plan = signal<Plan | null>(null);
+  readonly activity = signal<ActivityDB | null>(null);
+  private readonly actions = signal<ActivityAction[]>([]);
+
+  private formChanges = toSignal(this.form.valueChanges, { initialValue: undefined });
+
+  readonly actionSummaries = computed(() => {
+    const actions = this.actions();
+    const activity = this.activity();
+    const plan = this.plan();
+    const formChanges = this.formChanges();
+    if (!activity || !plan || !formChanges) {
+      return [];
+    }
+    const newActivity = this.getActivityFromForm(activity, plan.properties.endTime, this.form);
+    return actions.map((a) => {
+      const actionTime = activityActionTime(
+        a,
+        newActivity.startTimeOffset,
+        newActivity.duration,
+        plan.properties.endTime
+      );
+      return {
+        overflow: isAfter(actionTime, plan.properties.endTime),
+        text: '[' + format(actionTime, 'HH:mm') + '] ' + activityActionText(a),
+      };
+    });
+  });
 
   initialise(activity: ActivityDB, plan: Plan) {
-    this.activity = activity;
-    this.plan = plan;
+    this.activity.set(activity);
+    this.plan.set(plan);
     this.actions.set([...activity.actions]);
     this.kitchenResources.set(plan.properties.kitchenResources);
     this.loadFormData(this.form, activity, plan.properties);
   }
 
   addAction(): void {
-    if (!this.activity || !this.plan) {
+    const plan = this.plan();
+    const activity = this.activity();
+    if (!activity || !plan) {
       return undefined;
     }
     const dialogRef: MatDialogRef<ActivityActionDialog, ActivityActionDialogResult> = this.dialog.open(
@@ -76,8 +112,8 @@ export class ActivityPropertiesFormService {
         data: {
           actionIndex: -1,
           action: { name: 'New Action', timeOffset: 30, referencePoint: 'start' } as ActivityAction,
-          activity: this.getActivityFromForm(this.activity, this.plan?.properties.endTime, this.form),
-          plan: this.plan,
+          activity: this.getActivityFromForm(activity, plan.properties.endTime, this.form),
+          plan,
         } as ActivityActionDialogData,
       }
     );
@@ -92,7 +128,9 @@ export class ActivityPropertiesFormService {
   }
 
   editAction(actionIndex: number): void {
-    if (!this.activity || !this.plan) {
+    const plan = this.plan();
+    const activity = this.activity();
+    if (!activity || !plan) {
       return undefined;
     }
     const dialogRef: MatDialogRef<ActivityActionDialog, ActivityActionDialogResult> = this.dialog.open(
@@ -104,8 +142,8 @@ export class ActivityPropertiesFormService {
         data: {
           actionIndex,
           action: this.actions()[actionIndex],
-          activity: this.getActivityFromForm(this.activity, this.plan?.properties.endTime, this.form),
-          plan: this.plan,
+          activity: this.getActivityFromForm(activity, plan.properties.endTime, this.form),
+          plan,
         } as ActivityActionDialogData,
       }
     );
@@ -125,14 +163,16 @@ export class ActivityPropertiesFormService {
   }
 
   getActivity(): ActivityDB | undefined {
-    if (!this.activity || !this.plan) {
+    const plan = this.plan();
+    const activity = this.activity();
+    if (!activity || !plan) {
       return undefined;
     }
-    const newActivity = this.getActivityFromForm(this.activity, this.plan.properties.endTime, this.form);
-    const activitiesInLane = this.plan.activities.filter(
+    const newActivity = this.getActivityFromForm(activity, plan.properties.endTime, this.form);
+    const activitiesInLane = plan.activities.filter(
       (a) => a.resourceIndex === newActivity.resourceIndex && a.id !== newActivity.id
     );
-    if (exceedsMaxParallelActivities(newActivity, activitiesInLane, this.plan)) {
+    if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
       this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
         duration: DEFAULT_SNACKBAR_DURATION,
       });
@@ -178,13 +218,14 @@ export class ActivityPropertiesFormService {
 
   private validateActivityBeforePlanEnd(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
+      if (!this.plan) {
+        return null;
+      }
+      const plan = this.plan() as Plan;
       const startTime = control.get(F_START_TIME)?.value as Date;
       const duration = control.get(F_DURATION)?.value as Date;
-      if (isValid(startTime) && isValid(duration) && this.plan) {
-        const isValid = !isAfter(
-          addMinutes(startTime, getMinutesSinceMidnight(duration)),
-          this.plan.properties.endTime
-        );
+      if (isValid(startTime) && isValid(duration) && plan) {
+        const isValid = !isAfter(addMinutes(startTime, getMinutesSinceMidnight(duration)), plan.properties.endTime);
         if (control.get(F_START_TIME)?.errors) {
           if (isValid) {
             delete control.get(F_START_TIME)?.errors?.['outsidePlan'];

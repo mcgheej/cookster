@@ -10,19 +10,29 @@ export function activityActionsEqual(a: ActivityAction, b: ActivityAction): bool
   return a.name === b.name && a.timeOffset === b.timeOffset && a.referencePoint === b.referencePoint;
 }
 
+export function activityActionTime(
+  action: ActivityAction,
+  activityStartTimeOffset: number,
+  activityDuration: number,
+  planEnd: Date
+): Date {
+  const activityStartTime = subMinutes(planEnd, activityStartTimeOffset);
+  const activityEndTime = addMinutes(activityStartTime, activityDuration);
+  return action.referencePoint === 'start'
+    ? addMinutes(activityStartTime, action.timeOffset)
+    : subMinutes(activityEndTime, action.timeOffset);
+}
+
 export function activityActionTextTimed(
   action: ActivityAction,
   activityStartTimeOffset: number,
   activityDuration: number,
   planEnd: Date
 ): string {
-  const activityStartTime = subMinutes(planEnd, activityStartTimeOffset);
-  const activityEndTime = addMinutes(activityStartTime, activityDuration);
-  const actionTime =
-    action.referencePoint === 'start'
-      ? addMinutes(activityStartTime, action.timeOffset)
-      : subMinutes(activityEndTime, action.timeOffset);
-  const actionTimeString = format(actionTime, 'HH:mm');
+  const actionTimeString = format(
+    activityActionTime(action, activityStartTimeOffset, activityDuration, planEnd),
+    'HH:mm'
+  );
   return `${actionTimeString} - ${action.name}`;
 }
 

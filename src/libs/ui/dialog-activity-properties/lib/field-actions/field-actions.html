@@ -13,12 +13,15 @@
       </button>
     </div>
   </div>
-  @if (actionsText().length === 0) {
+  @if (actionSummaries().length === 0) {
     <div class="py-0.5 text-[14px] text-[var(--mat-sys-on-surface-variant)] select-none italic">No actions added</div>
   } @else {
-    @for (actionText of actionsText(); track $index) {
-      <div class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer" (click)="editAction.emit($index)">
-        {{ actionText }}
+    @for (summary of actionSummaries(); track $index) {
+      <div
+        class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer"
+        [style.color]="summary.overflow ? 'var(--mat-sys-error)' : 'var(--mat-sys-on-surface-variant)'"
+        (click)="editAction.emit($index)">
+        {{ summary.text }}
       </div>
     }
   }

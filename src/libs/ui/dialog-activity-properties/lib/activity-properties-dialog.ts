@@ -41,7 +41,7 @@ export class ActivityPropertiesDialog implements OnInit {
   protected readonly data: ActivityPropertiesDialogData = inject(MAT_DIALOG_DATA);
 
   protected readonly form = this.formService.form;
-
+  protected readonly actionSummaries = this.formService.actionSummaries;
   ngOnInit(): void {
     this.formService.initialise(this.data.activity, this.data.plan);
   }

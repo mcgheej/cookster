@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { ActivityPropertiesFormService } from '../activity-properties-form-service';
-import { activityActionText } from '@util/data-types/index';
+import { activityActionText, activityActionTextTimed, activityActionTime } from '@util/data-types/index';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
+import { format, isAfter } from 'date-fns';
 
 @Component({
   selector: 'ck-field-actions',
@@ -15,15 +16,25 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 export class FieldActions {
   private readonly formService = inject(ActivityPropertiesFormService);
 
+  readonly actionSummaries = input.required<{ overflow: boolean; text: string }[]>();
   protected readonly addAction = output<void>();
   protected readonly editAction = output<number>();
 
-  protected readonly actions = this.formService.actions;
-
-  protected actionsText = computed(() => {
-    const actions = this.actions();
-    return actions.map((a) => activityActionText(a));
-  });
+  // protected actionSummaries = computed(() => {
+  //   const actions = this.formService.actions();
+  //   const activity = this.formService.activity();
+  //   const plan = this.formService.plan();
+  //   if (!activity || !plan) {
+  //     return [];
+  //   }
+  //   return actions.map((a) => {
+  //     const actionTime = activityActionTime(a, activity.startTimeOffset, activity.duration, plan.properties.endTime);
+  //     return {
+  //       overflow: isAfter(actionTime, plan.properties.endTime),
+  //       text: '[' + format(actionTime, 'HH:mm') + '] ' + activityActionText(a),
+  //     };
+  //   });
+  // });
 
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
