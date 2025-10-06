@@ -1,6 +1,6 @@
 import { ReferencePoint } from './reference-point';
 import { ResourceAction } from './resource-action';
-import { addMinutes, format, subMinutes } from 'date-fns';
+import { addMinutes, format, isAfter, subMinutes } from 'date-fns';
 
 export interface ActivityAction extends ResourceAction {
   referencePoint: ReferencePoint;
@@ -8,6 +8,16 @@ export interface ActivityAction extends ResourceAction {
 
 export function activityActionsEqual(a: ActivityAction, b: ActivityAction): boolean {
   return a.name === b.name && a.timeOffset === b.timeOffset && a.referencePoint === b.referencePoint;
+}
+
+export function activityActionAfterPlanEnd(
+  action: ActivityAction,
+  activityStartTimeOffset: number,
+  activityDuration: number,
+  planEnd: Date
+): boolean {
+  const actionTime = activityActionTime(action, activityStartTimeOffset, activityDuration, planEnd);
+  return isAfter(actionTime, planEnd);
 }
 
 export function activityActionTime(

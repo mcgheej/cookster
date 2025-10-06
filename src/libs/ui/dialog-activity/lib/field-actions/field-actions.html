@@ -1,5 +1,5 @@
 <div
-  class="mt-3 mb-5 p-[4px_16px] h-[150px] text-[16px] bg-[var(--mat-sys-surface-variant)] border-b-[1px] rounded-tl-[4px] rounded-tr-[4px] overflow-auto">
+  class="mt-3 p-[4px_16px] h-[150px] text-[16px] bg-[var(--mat-sys-surface-variant)] border-b-[1px] rounded-tl-[4px] rounded-tr-[4px] overflow-auto">
   <div class="grid grid-cols-[minmax(0,_1fr)_24px]">
     <div class="py-0.5 text-[12px] text-[var(--mat-sys-on-surface-variant)] select-none">Actions</div>
     <div class="h-[24px]">
@@ -17,15 +17,17 @@
     <div class="py-0.5 text-[14px] text-[var(--mat-sys-on-surface-variant)] select-none italic">No actions added</div>
   } @else {
     @for (summary of actionSummaries(); track $index) {
-      <!-- <div
+      <div
         class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer"
-        [style.color]="summary.overflow ? 'var(--mat-sys-error)' : 'var(--mat-sys-on-surface-variant)'"
-        (click)="editAction.emit($index)">
+        [style.color]="summary.color"
+        (click)="onEditAction($event, $index)">
         {{ summary.text }}
-      </div> -->
-      <div class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer" (click)="onEditAction($event, $index)">
-        {{ summary }}
       </div>
     }
   }
 </div>
+@if (errorText()) {
+  <div class="ml-[16px] text-[12px] text-[var(--mat-sys-error)] select-none">{{ errorText() }}</div>
+} @else {
+  <div class="ml-[16px] text-[12px] text-[var(--mat-sys-on-surface-variant)] select-none">Click action to edit</div>
+}
