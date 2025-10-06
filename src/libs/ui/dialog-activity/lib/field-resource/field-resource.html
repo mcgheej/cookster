@@ -1,0 +1,16 @@
+<div class="grid grid-cols-[1fr] gap-4" [formGroup]="form">
+  <mat-form-field floatLabel="auto">
+    <mat-label>Resource</mat-label>
+    <mat-select [formControlName]="controlName" panelWidth="">
+      @for (resource of kitchenResources(); track $index) {
+        <mat-option [value]="resource">{{ resource.name }}</mat-option>
+      }
+    </mat-select>
+    @if (form.get(controlName)?.invalid && form.get(controlName)?.touched) {
+      <mat-error>Resource must be selected</mat-error>
+    }
+    @if (form.get(controlName)?.invalid && !form.get(controlName)?.touched) {
+      <mat-hint>Select a kitchen</mat-hint>
+    }
+  </mat-form-field>
+</div>

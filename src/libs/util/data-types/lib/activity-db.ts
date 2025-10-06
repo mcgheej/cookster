@@ -30,3 +30,19 @@ export function activityDBsEqual(a: ActivityDB, b: ActivityDB): boolean {
   }
   return true;
 }
+
+export function dummyActivity(): ActivityDB {
+  return {
+    id: '',
+    name: 'Dummy Activity',
+    description: '',
+    duration: 0,
+    actions: [],
+    color: 'basil',
+    startMessage: '',
+    endMessage: '',
+    startTimeOffset: 0,
+    planId: '',
+    resourceIndex: 0,
+  } as ActivityDB;
+}

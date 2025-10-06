@@ -24,6 +24,25 @@ export function createPlanFactory(planSummary: PlanSummary, activities: Activity
   };
 }
 
+export function dummyPlan(): Plan {
+  const now = new Date();
+  return {
+    properties: {
+      id: '',
+      name: 'Dummy Plan',
+      description: '',
+      color: 'basil',
+      kitchenName: 'My Kitchen',
+      kitchenResources: [],
+      startTime: now,
+      endTime: now,
+      contentEnd: now,
+      durationMins: 0,
+    } as PlanProperties,
+    activities: [],
+  };
+}
+
 /**
  *
  * @param plan

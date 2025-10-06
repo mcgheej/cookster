@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>{{ data.actionIndex < 0 ? 'Create Activity Action' : 'Edit Activity Action' }}</h2>
+<form [formGroup]="form" (ngSubmit)="saveAction()">
+  <div class="px-[24px]">
+    <ck-field-action-name />
+    <div class="grid grid-cols-[90px_1fr] gap-2">
+      <ck-field-action-offset />
+      <div class="mt-[24px]">mins</div>
+    </div>
+    <ck-field-action-direction />
+    <ck-field-action-reference-point />
+  </div>
+  <!-- <div class="px-[24px] mt-[24px] select-none">{{ formService.actionText() }}</div> -->
+  <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+    <button matButton [mat-dialog-close]="undefined">Cancel</button>
+    @if (data.actionIndex >= 0) {
+      <button matButton (click)="deleteAction($event)">Delete</button>
+    }
+    <button matButton type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

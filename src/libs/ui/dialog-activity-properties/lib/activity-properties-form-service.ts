@@ -21,6 +21,7 @@ import {
   ActivityActionDialogResult,
 } from './dialog-activity-action/activity-action-dialog';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { isEmptyObject } from '@util/misc-utilities/index';
 
 export const F_NAME = 'name';
 export const F_START_TIME = 'startTime';
@@ -229,7 +230,7 @@ export class ActivityPropertiesFormService {
         if (control.get(F_START_TIME)?.errors) {
           if (isValid) {
             delete control.get(F_START_TIME)?.errors?.['outsidePlan'];
-            if (isEmpty(control.get(F_START_TIME)?.errors)) {
+            if (isEmptyObject(control.get(F_START_TIME)?.errors)) {
               control.get(F_START_TIME)?.setErrors(null);
             }
           } else {
@@ -242,14 +243,4 @@ export class ActivityPropertiesFormService {
       return null;
     };
   }
-}
-
-function isEmpty(obj: any): boolean {
-  for (const prop in obj) {
-    if (Object.hasOwn(obj, prop)) {
-      return false;
-    }
-  }
-
-  return true;
 }

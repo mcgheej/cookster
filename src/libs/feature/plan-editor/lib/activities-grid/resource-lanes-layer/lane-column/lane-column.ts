@@ -17,14 +17,10 @@ import { format, getHours, getMinutes, isSameMinute, subMinutes } from 'date-fns
 import { ActivityTile } from './activity-tile/activity-tile';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import {
-  ActivityPropertiesDialogData,
-  ActivityPropertiesDialog,
-  openActivityPropertiesDialog,
-} from '@ui/dialog-activity-properties/index';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/lib/plans-data';
+import { openActivityDialog } from '@ui/activity-dialog/index';
 
 @Component({
   selector: 'ck-lane-column',
@@ -180,7 +176,7 @@ export class LaneColumn {
 
   private createActivity(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): void {
     const newActivity = this.createActivityInstance(minutesSinceMidnight, resourceLane, plan);
-    const dialogRef = openActivityPropertiesDialog({ activity: newActivity, plan: plan }, this.dialog);
+    const dialogRef = openActivityDialog({ activity: newActivity, plan: plan }, this.dialog);
     dialogRef.afterClosed().subscribe((newActivity) => {
       if (newActivity) {
         // check if new activity location exceeds max parallel activities for the resource lane in question

@@ -1,0 +1,19 @@
+<div class="mt-3 grid grid-cols-[1fr]" [formGroup]="form">
+  <div class="grid grid-cols-[1fr_1fr] gap-4">
+    <mat-form-field floatLabel="auto">
+      <mat-label>Time</mat-label>
+      <input matInput [matTimepicker]="timepicker" [formControlName]="timeControlName" />
+      @if (form.get(timeControlName)?.invalid && form.get(timeControlName)?.touched) {
+        <mat-error> {{ getErrorMessage() }}</mat-error>
+      }
+      <mat-timepicker #timepicker />
+      <mat-timepicker-toggle matSuffix [for]="timepicker" />
+    </mat-form-field>
+    <mat-form-field floatLabel="auto">
+      <mat-label>Duration</mat-label>
+      <input matInput [matTimepicker]="durationpicker" [formControlName]="durationControlName" />
+      <mat-timepicker interval="5m" #durationpicker />
+      <mat-timepicker-toggle matSuffix [for]="durationpicker" />
+    </mat-form-field>
+  </div>
+</div>
