@@ -1,6 +1,14 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  NonNullableFormBuilder,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION, defaultGoogleColor, INITIAL_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
@@ -14,8 +22,9 @@ import {
   PlanProperties,
 } from '@util/data-types/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
+import { isEmptyObject } from '@util/misc-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
-import { subMinutes } from 'date-fns';
+import { addMinutes, isAfter, isValid, subMinutes } from 'date-fns';
 
 // export const F_NAME = 'name';
 // export const F_START_TIME = 'startTime';
@@ -52,8 +61,8 @@ export class ActivityFormService {
       description: [''],
       startMessage: [''],
       endMessage: [''],
-    }
-    // { validators: [this.validateActivityBeforePlanEnd()] }
+    },
+    { validators: [this.validateActivityBeforePlanEnd()] }
   );
 
   private readonly formChanges = toSignal(this.form.valueChanges, { initialValue: undefined });
@@ -152,5 +161,35 @@ export class ActivityFormService {
       startMessage: f.controls.startMessage.value ?? '',
       endMessage: f.controls.endMessage.value ?? '',
     } as ActivityDB;
+  }
+
+  private validateActivityBeforePlanEnd(): ValidatorFn {
+    return (): ValidationErrors | null => {
+      if (!this.form || !this.plan) {
+        return null;
+      }
+      const plan = this.plan();
+      const startTime = this.form.controls.startTime.value;
+      const duration = this.form.controls.duration.value;
+      if (isValid(startTime) && isValid(duration) && plan) {
+        const isAfterPlanEnd = isAfter(
+          addMinutes(startTime, getMinutesSinceMidnight(duration)),
+          plan.properties.endTime
+        );
+        if (this.form.controls.startTime.errors) {
+          if (isAfterPlanEnd) {
+            this.form.controls.startTime.setErrors({ outsidePlan: true });
+          } else {
+            delete this.form.controls.startTime.errors['outsidePlan'];
+            if (isEmptyObject(this.form.controls.startTime.errors)) {
+              this.form.controls.startTime.setErrors(null);
+            }
+          }
+        } else {
+          this.form.controls.startTime.setErrors(isAfterPlanEnd ? { outsidePlan: true } : null);
+        }
+      }
+      return null;
+    };
   }
 }
