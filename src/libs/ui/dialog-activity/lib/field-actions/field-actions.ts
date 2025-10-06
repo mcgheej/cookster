@@ -112,10 +112,8 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
       const currDuration = (changes['activity'].currentValue as ActivityDB).duration;
       const prevDuration = (changes['activity'].previousValue as ActivityDB | undefined)?.duration;
       if (prevStartTimeOffset && prevStartTimeOffset !== currStartTimeOffset) {
-        console.log('Activity start changed so need to revalidate actions');
         this.onValidatorChange();
       } else if (prevDuration && prevDuration !== currDuration) {
-        console.log('Activity duration changed so need to revalidate actions');
         this.onValidatorChange();
       }
     }
