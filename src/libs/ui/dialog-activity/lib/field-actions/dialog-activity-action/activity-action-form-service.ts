@@ -1,17 +1,21 @@
 import { inject, Injectable } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { ActivityAction, ActivityDB, Plan, ReferencePoint } from '@util/data-types/index';
+import { NonNullableFormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ActivityAction, activityActionAfterPlanEnd, ActivityDB, Plan, ReferencePoint } from '@util/data-types/index';
+import { isEmptyObject } from '@util/misc-utilities/index';
 
 export type BeforeAfter = 'before' | 'after';
 
 @Injectable()
 export class ActivityActionFormService {
-  readonly form = inject(NonNullableFormBuilder).group({
-    name: ['', [Validators.required]],
-    offset: [0, [Validators.required]],
-    direction: ['after' as BeforeAfter, [Validators.required]],
-    referencePoint: ['start' as ReferencePoint, [Validators.required]],
-  });
+  readonly form = inject(NonNullableFormBuilder).group(
+    {
+      name: ['', [Validators.required]],
+      offset: [0, [Validators.required]],
+      direction: ['after' as BeforeAfter, [Validators.required]],
+      referencePoint: ['start' as ReferencePoint, [Validators.required]],
+    },
+    { validators: [this.validateActionBeforePlanEnd()] }
+  );
 
   private action: ActivityAction | null = null;
   private plan: Plan | null = null;
@@ -67,6 +71,34 @@ export class ActivityActionFormService {
       name: f.controls.name.value ?? 'Unnamed action',
       timeOffset,
       referencePoint,
+    };
+  }
+
+  private validateActionBeforePlanEnd(): ValidatorFn {
+    return (): ValidationErrors | null => {
+      if (!this.form || !this.plan || !this.activity) {
+        return null;
+      }
+      const action = this.unloadFormData();
+      const isAfterPlanEnd = activityActionAfterPlanEnd(
+        action,
+        this.activity.startTimeOffset,
+        this.activity.duration,
+        this.plan.properties.endTime
+      );
+      if (this.form.controls.name.errors) {
+        if (isAfterPlanEnd) {
+          this.form.controls.name.setErrors({ outsidePlan: true });
+        } else {
+          delete this.form.controls.name.errors['outsidePlan'];
+          if (isEmptyObject(this.form.controls.name.errors)) {
+            this.form.controls.name.setErrors(null);
+          }
+        }
+      } else {
+        this.form.controls.name.setErrors(isAfterPlanEnd ? { outsidePlan: true } : null);
+      }
+      return null;
     };
   }
 }

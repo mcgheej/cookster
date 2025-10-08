@@ -8,6 +8,7 @@ import { FieldActionOffset } from './fields/field-action.offset';
 import { FieldActionDirection } from './fields/field-action-direction';
 import { FieldActionReferencePoint } from './fields/field-action-reference-point';
 import { ActivityActionFormService } from './activity-action-form-service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 export interface ActivityActionDialogData {
   actionIndex: number;
@@ -24,6 +25,7 @@ export type ActivityActionDialogResult = { operation: 'save'; action: ActivityAc
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
+    MatFormFieldModule,
     FieldActionName,
     FieldActionOffset,
     FieldActionDirection,
@@ -56,5 +58,12 @@ export class ActivityActionDialog implements OnInit {
       return;
     }
     this.dialogRef.close({ operation: 'save', action: this.formService.getActivityActionFromForm() });
+  }
+
+  getErrorMessage(): string {
+    if (this.form.controls.name.errors?.['outsidePlan']) {
+      return 'Action outside plan period';
+    }
+    return '';
   }
 }

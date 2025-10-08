@@ -13,7 +13,7 @@ import { ActivityActionFormService } from '../activity-action-form-service';
         <mat-label>Activity Name</mat-label>
         <input type="text" matInput [formControlName]="controlName" placeholder="Name your activity..." />
         @if (form.get(controlName)?.invalid && form.get(controlName)?.touched) {
-          <mat-error>Name is required</mat-error>
+          <mat-error>{{ getErrorMessage() }}</mat-error>
         }
         @if (form.get(controlName)?.invalid && !form.get(controlName)?.touched) {
           <mat-hint>The activity must have a name</mat-hint>
@@ -26,4 +26,13 @@ import { ActivityActionFormService } from '../activity-action-form-service';
 export class FieldActionName {
   readonly form = inject(ActivityActionFormService).form;
   readonly controlName = 'name';
+
+  getErrorMessage(): string {
+    if (this.form.controls.name.errors?.['outsidePlan']) {
+      return 'Action outside plan period';
+    } else if (this.form.controls.name.errors?.['required']) {
+      return 'Name is required';
+    }
+    return '';
+  }
 }
