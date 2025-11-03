@@ -3,6 +3,7 @@ import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { LaneWidth, TimeWindow } from '@util/data-types/index';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimeWindowDialog, TimeWindowDialogData } from '@ui/dialog-time-window/index';
+import { TimeSnapDialog } from '@ui/dialog-time-snap/index';
 
 @Injectable()
 export class ActivitiesGridMenuService {
@@ -50,6 +51,18 @@ export class ActivitiesGridMenuService {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.editorData.setActivitiesGridTimeWindow(result);
+      }
+    });
+  }
+
+  openTimeSnapDialog() {
+    const dialogRef: MatDialogRef<TimeSnapDialog, number> = this.dialog.open(TimeSnapDialog, {
+      width: '350px',
+      data: this.editorData.timeSnapMins(),
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.editorData.setTimeSnapMins(result);
       }
     });
   }

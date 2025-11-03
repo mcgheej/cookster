@@ -5,6 +5,10 @@ export const DEFAULT_TOOLTIP_SHOW_DELAY = 500;
 
 export const INITIAL_ROUTE_AFTER_LOGIN = '/plans';
 
+export type TimeSnapMins = 5 | 10 | 15 | 20 | 30 | 60;
+export const TIME_SNAP_MINS_VALUES: TimeSnapMins[] = [5, 10, 15, 20, 30, 60];
+export const DEFAULT_TIME_SNAP_MINS = 15;
+
 // Plan Editor Layout
 //
 export const COLLAPSED_PANEL_CONTENT_WIDTH = '0';

@@ -31,7 +31,7 @@
       <mat-icon>calendar_view_day</mat-icon>
       <span>Time window...</span>
     </button>
-    <button mat-menu-item [disabled]="true">
+    <button mat-menu-item (click)="service.openTimeSnapDialog()">
       <mat-icon class="rotate-90">compare_arrows</mat-icon>
       <span>Time snap...</span>
     </button>

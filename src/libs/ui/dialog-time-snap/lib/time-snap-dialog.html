@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Resource Action Time Snap</h2>
+<form [formGroup]="form" (ngSubmit)="onClose()">
+  <div class="px-[24px]">
+    <div class="grid grid-cols-[1fr_1fr] gap-4" [formGroup]="form">
+      <mat-form-field floatLabel="auto">
+        <mat-label>Snap to Value</mat-label>
+        <mat-select [formControlName]="controlName" panelWidth="">
+          @for (v of snapToValues; track $index) {
+            <mat-option [value]="v">{{ v + ' mins' }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get(controlName)?.invalid && form.get(controlName)?.touched) {
+          <mat-error>Value must be selected</mat-error>
+        }
+        @if (form.get(controlName)?.invalid && !form.get(controlName)?.touched) {
+          <mat-hint>Select a snap to value</mat-hint>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+    <button mat-button [mat-dialog-close]="undefined" color="accent">Cancel</button>
+    <button mat-button color="accent" type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

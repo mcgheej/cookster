@@ -5,6 +5,7 @@ import {
   DEFAULT_LANE_WIDTH,
   DEFAULT_PIXELS_PER_HOUR,
   DEFAULT_PLAN_COLOR,
+  DEFAULT_TIME_SNAP_MINS,
   DEFAULT_TIME_WINDOW,
   googleColors,
 } from '@util/app-config/index';
@@ -147,6 +148,13 @@ export class PlanEditorDataService {
   });
 
   /**
+   * timeSnapMins
+   * --------------
+   */
+  private readonly _timeSnapMins = signal<number>(DEFAULT_TIME_SNAP_MINS);
+  readonly timeSnapMins = computed(() => this._timeSnapMins());
+
+  /**
    * activitiesGridPixelsPerHour
    * ---------------------------
    */
@@ -190,6 +198,14 @@ export class PlanEditorDataService {
 
   // Public methods
   // ==============
+
+  /**
+   * Set the time snap minutes for the plan editor. This controls the granularity of time-based drags when
+   * snap enabled by holding down shift key.
+   */
+  setTimeSnapMins(newTimeSnapMins: number) {
+    this._timeSnapMins.set(newTimeSnapMins);
+  }
 
   /**
    * Set the number of pixels per hour for the activities grid. This controls the zoom level of the grid.

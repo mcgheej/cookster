@@ -28,6 +28,7 @@
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
       "@ui/activity-dialog/*": ["libs/ui/dialog-activity/*"],
       "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
+      "@ui/dialog-time-snap/*": ["libs/ui/dialog-time-snap/*"],
       "@ui/dialog-time-window/*": ["libs/ui/dialog-time-window/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
