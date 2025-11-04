@@ -10,19 +10,10 @@ import { timeZoomOptions } from '../../types-constants/time-zoom-options';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { laneWidthOptions } from '../../types-constants/lane-width-options';
 import { ActivitiesGridMenuService } from './activities-grid-menu-service';
-import { CdkAutofill } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'ck-activities-grid-menu',
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatIconModule,
-    MatMenuModule,
-    MatTooltipModule,
-    CdkAutofill,
-  ],
+  imports: [CommonModule, MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule, MatTooltipModule],
   templateUrl: './activities-grid-menu.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ActivitiesGridMenuService],
