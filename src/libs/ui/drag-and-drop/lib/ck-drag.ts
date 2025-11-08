@@ -49,6 +49,10 @@ export class CkDrag implements AfterViewInit {
   private lockPointerX = -1;
   private lockPointerY = -1;
 
+  /**
+   * Offset between the pointer position and the top-left corner of the
+   * host element when the drag started.
+   */
   private offset: Point = { x: 0, y: 0 };
 
   /**

@@ -1,6 +1,5 @@
-import { signal, Type, WritableSignal } from '@angular/core';
+import { signal, Type } from '@angular/core';
 import { DropArea } from '../../drop-areas/drop-area';
-import { PointerData } from '../../types/pointer-data';
 import { DragData, DragEndProps, DragMoveProps, DragOperation, DragStartProps } from '../drag-operation';
 import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/preview-component-base';
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';

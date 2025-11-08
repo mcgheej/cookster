@@ -1,4 +1,3 @@
-import { Point } from '@util/data-types/index';
 import { AcceptedDragOperation } from './accepted-drag-operation';
 import { Type } from '@angular/core';
 import { PreviewComponentBase } from './preview-component-base';

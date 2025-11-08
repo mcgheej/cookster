@@ -11,10 +11,7 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from './drop-areas/preview-component-base';
-import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
-import { Point } from '@util/data-types/index';
-import { DragData } from './drag-operations/drag-operation';
-import { DropAreaData } from './drop-areas/drop-area';
+import { fromEvent, Subject, Subscription } from 'rxjs';
 
 /**
  * Service responsible for managing drag-and-drop overlay components. When a drag
@@ -132,25 +129,13 @@ export class DragAndDropOverlay {
     component: Type<PreviewComponentBase>,
     r: Renderer2,
     previewProps: WritableSignal<PreviewComponentProps>
-    // position: WritableSignal<Point>,
-    // dragPointerOffset: Point,
-    // dragData: DragData,
-    // dropAreaData: DropAreaData,
-    // dropAreaElement?: HTMLElement
   ): void {
     if (this.attachedComponentRef) {
       this.detachComponent(r);
     }
     this.attachedComponentRef = createComponent(component, {
       environmentInjector: this.injector,
-      bindings: [
-        inputBinding('previewProps', previewProps),
-        // inputBinding('position', position),
-        // inputBinding('dragPointerOffset', () => dragPointerOffset),
-        // inputBinding('dragData', () => dragData),
-        // inputBinding('dropAreaData', () => dropAreaData),
-        // inputBinding('dropAreaElement', () => dropAreaElement),
-      ],
+      bindings: [inputBinding('previewProps', previewProps)],
     });
     r.appendChild(this.overlayElement, this.attachedComponentRef.location.nativeElement);
     this.appRef.attachView(this.attachedComponentRef.hostView);

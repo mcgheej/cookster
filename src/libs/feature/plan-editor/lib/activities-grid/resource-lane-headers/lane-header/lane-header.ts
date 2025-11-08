@@ -11,7 +11,6 @@ import {
   CkDrop,
   DropAreaResourceLaneHeader,
   PreviewNewActionInResourceHeader,
-  PreviewNoDrop,
 } from '@ui/drag-and-drop/index';
 
 @Component({
