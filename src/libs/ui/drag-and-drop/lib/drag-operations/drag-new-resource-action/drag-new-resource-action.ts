@@ -1,0 +1,91 @@
+import { signal, Type, WritableSignal } from '@angular/core';
+import { DropArea } from '../../drop-areas/drop-area';
+import { PointerData } from '../../types/pointer-data';
+import { DragData, DragEndProps, DragMoveProps, DragOperation, DragStartProps } from '../drag-operation';
+import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/preview-component-base';
+import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
+
+export interface DragNewResourceActionData extends DragData {}
+
+export class DragNewResourceAction extends DragOperation implements DragNewResourceActionData {
+  /**
+   * The drop areas associated with this drag operation. Initialised on drag start and cleared on drag end.
+   */
+  private associatedDropAreas: DropArea[] = [];
+
+  /**
+   * The preview component provides feedback to the user relating to the current drag
+   * operation. When the dragPosition is over an accepted drop area, the preview component
+   * is set to a value determined by the drop area. When the dragPosition is not over an accepted
+   * drop area, the preview component is set to PreviewNoDrop.
+   */
+  private previewComponent: Type<PreviewComponentBase> = PreviewNoDrop;
+
+  /**
+   * The last drop area that the pointer was over during the drag operation. If the last
+   * dragPosition was not over any drop area, this value is null.
+   */
+  private lastDropArea: DropArea | null = null;
+
+  private previewProps = signal<PreviewComponentProps>({} as PreviewComponentProps);
+
+  constructor(configData: DragNewResourceActionData) {
+    super(configData as DragData);
+  }
+
+  start(props: DragStartProps): void {
+    const { pointerPos, associatedDropAreas, overlayService, dragOperation, renderer } = props;
+    this.associatedDropAreas = associatedDropAreas;
+
+    for (let i = 0; i < this.associatedDropAreas.length; i++) {
+      const preview = this.associatedDropAreas[i].drag({ dragId: dragOperation.id, pointerPos });
+      if (preview) {
+        console.log(preview);
+        this.lastDropArea = this.associatedDropAreas[i];
+        this.previewComponent = preview;
+        break;
+      }
+    }
+
+    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this });
+    overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
+  }
+
+  move(props: DragMoveProps): void {
+    const { pointerPos, overlayService, dragOperation, renderer } = props;
+
+    if (this.lastDropArea) {
+      const preview = this.lastDropArea.drag({ dragId: dragOperation.id, pointerPos });
+      if (preview) {
+        this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this });
+        return;
+      }
+    }
+
+    overlayService.detachComponent(renderer);
+    const lastDropAreaId = this.lastDropArea ? this.lastDropArea.id : '';
+    this.lastDropArea = null as DropArea | null;
+    this.previewComponent = PreviewNoDrop;
+    for (let i = 0; i < this.associatedDropAreas.length; i++) {
+      if (this.associatedDropAreas[i].id === lastDropAreaId) {
+        continue;
+      }
+      const preview = this.associatedDropAreas[i].drag({ dragId: dragOperation.id, pointerPos });
+      if (preview) {
+        this.lastDropArea = this.associatedDropAreas[i];
+        this.previewComponent = preview;
+        break;
+      }
+    }
+
+    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this });
+    overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
+  }
+
+  end(props: DragEndProps): void {
+    props.overlayService.detachComponent(props.renderer);
+    this.associatedDropAreas = [];
+    this.lastDropArea = null;
+    this.previewComponent = PreviewNoDrop;
+  }
+}

@@ -21,10 +21,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/lib/plans-data';
 import { openActivityDialog } from '@ui/activity-dialog/index';
+import { AcceptedDragOperation, CkDrop, DropAreaResourceLaneColumn, PreviewNoDrop } from '@ui/drag-and-drop/index';
 
 @Component({
   selector: 'ck-lane-column',
-  imports: [CommonModule, ActivityTile, ResourceActionTile],
+  imports: [CommonModule, ActivityTile, ResourceActionTile, CkDrop],
   templateUrl: './lane-column.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Tiler],
@@ -43,6 +44,18 @@ export class LaneColumn {
    */
   protected readonly distinctResourceLane = computed(() => this.resourceLane(), {
     equal: (a, b) => resourceLanesEqual(a, b),
+  });
+
+  protected dropArea = computed(() => {
+    const index = this.resourceLane().kitchenResource.index;
+    const dragId = `drag-new-resource-action-lane-${index}`;
+    const dropId = `drop-area-resource-lane-column-${index}`;
+    return new DropAreaResourceLaneColumn({
+      id: dropId,
+      acceptedDragOperations: new Map<string, AcceptedDragOperation>([
+        [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNoDrop)],
+      ]),
+    });
   });
 
   /**

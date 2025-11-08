@@ -1,4 +1,4 @@
-<div class="h-full border-r-2 divider-dark relative" (click)="createNewActivity($event)">
+<div [ckDrop]="dropArea()" class="h-full border-r-2 divider-dark relative" (click)="createNewActivity($event)">
   @for (actionTile of actionDisplayTiles(); track $index) {
     <ck-resource-action-tile [tile]="actionTile"></ck-resource-action-tile>
     <!-- <div>{{ 'Action: ' + actionTile.resourceAction.name }}</div> -->

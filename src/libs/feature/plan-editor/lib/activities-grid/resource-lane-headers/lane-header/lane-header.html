@@ -1,6 +1,6 @@
-<div class="h-full border-r-2 divider-dark">
+<div [ckDrop]="dropArea()" class="h-full border-r-2 divider-dark">
   <div class="size-full grid grid-cols-[36px_minmax(0,_1fr)_36px]">
-    <ck-resource-action-icon></ck-resource-action-icon>
+    <ck-resource-action-icon [resourceLane]="resourceLane()"></ck-resource-action-icon>
     <ck-lane-header-title [resourceLane]="resourceLane()"></ck-lane-header-title>
     <ck-lane-header-menu [resourceLane]="resourceLane()"></ck-lane-header-menu>
   </div>
