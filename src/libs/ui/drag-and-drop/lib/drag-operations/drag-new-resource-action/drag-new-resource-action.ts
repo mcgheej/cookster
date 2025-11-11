@@ -19,6 +19,7 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
    * drop area, the preview component is set to PreviewNoDrop.
    */
   private previewComponent: Type<PreviewComponentBase> = PreviewNoDrop;
+  private clipArea: DOMRect | undefined = undefined;
 
   /**
    * The last drop area that the pointer was over during the drag operation. If the last
@@ -37,16 +38,19 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
     this.associatedDropAreas = associatedDropAreas;
 
     for (let i = 0; i < this.associatedDropAreas.length; i++) {
-      const preview = this.associatedDropAreas[i].drag({ dragId: dragOperation.id, pointerPos });
+      const { previewComponent: preview, clipArea } = this.associatedDropAreas[i].check({
+        dragId: dragOperation.id,
+        pointerPos,
+      });
       if (preview) {
-        console.log(preview);
         this.lastDropArea = this.associatedDropAreas[i];
         this.previewComponent = preview;
+        this.clipArea = clipArea;
         break;
       }
     }
 
-    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this });
+    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
     overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
   }
 
@@ -54,9 +58,9 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
     const { pointerPos, overlayService, dragOperation, renderer } = props;
 
     if (this.lastDropArea) {
-      const preview = this.lastDropArea.drag({ dragId: dragOperation.id, pointerPos });
+      const { previewComponent: preview } = this.lastDropArea.check({ dragId: dragOperation.id, pointerPos });
       if (preview) {
-        this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this });
+        this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
         return;
       }
     }
@@ -65,19 +69,24 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
     const lastDropAreaId = this.lastDropArea ? this.lastDropArea.id : '';
     this.lastDropArea = null as DropArea | null;
     this.previewComponent = PreviewNoDrop;
+    this.clipArea = undefined as DOMRect | undefined;
     for (let i = 0; i < this.associatedDropAreas.length; i++) {
       if (this.associatedDropAreas[i].id === lastDropAreaId) {
         continue;
       }
-      const preview = this.associatedDropAreas[i].drag({ dragId: dragOperation.id, pointerPos });
+      const { previewComponent: preview, clipArea } = this.associatedDropAreas[i].check({
+        dragId: dragOperation.id,
+        pointerPos,
+      });
       if (preview) {
         this.lastDropArea = this.associatedDropAreas[i];
         this.previewComponent = preview;
+        this.clipArea = clipArea;
         break;
       }
     }
 
-    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this });
+    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
     overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
   }
 

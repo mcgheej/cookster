@@ -6,6 +6,7 @@ export interface PreviewComponentProps {
   pointerPos: PointerData;
   dropArea: DropArea | null;
   dragOp: DragOperation;
+  clipArea: DOMRect | undefined;
 }
 
 export abstract class PreviewComponentBase {}

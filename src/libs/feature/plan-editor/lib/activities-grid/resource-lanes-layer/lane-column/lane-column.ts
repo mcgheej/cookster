@@ -22,6 +22,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/lib/plans-data';
 import { openActivityDialog } from '@ui/activity-dialog/index';
 import { AcceptedDragOperation, CkDrop, DropAreaResourceLaneColumn, PreviewNoDrop } from '@ui/drag-and-drop/index';
+import { PreviewNewActionInResourceLaneColumn } from '@ui/drag-and-drop/lib/drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
 
 @Component({
   selector: 'ck-lane-column',
@@ -53,8 +54,16 @@ export class LaneColumn {
     return new DropAreaResourceLaneColumn({
       id: dropId,
       acceptedDragOperations: new Map<string, AcceptedDragOperation>([
-        [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNoDrop)],
+        [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNewActionInResourceLaneColumn)],
       ]),
+      scrollX: this.planEditorData.activitiesGridScrollX,
+      scrollY: this.planEditorData.activitiesGridScrollY,
+      resourceLane: this.resourceLane,
+      pixelsPerHour: this.planEditorData.activitiesGridPixelsPerHour,
+      timeWindow: this.planEditorData.activitiesGridTimeWindow,
+      timeSnapMins: this.planEditorData.timeSnapMins,
+      activitiesGridRect: this.planEditorData.activitiesGridRect,
+      activitiesGridBoundingRect: this.planEditorData.activitiesGridBoundingRect,
     });
   });
 

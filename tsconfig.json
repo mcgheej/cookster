@@ -33,6 +33,7 @@
       "@ui/drag-and-drop/*": ["libs/ui/drag-and-drop/*"],
       "@ui/mat-colors/*": ["libs/ui/mat-colors/*"],
       "@ui/multi-panel/*": ["libs/ui/multi-panel/*"],
+      "@ui/tfx-resize-observer/*": ["libs/ui/tfx-resize-observer/*"],
       "@ui/snack-bars/*": ["libs/ui/snack-bars/*"],
       "@ui/status-bar/*": ["libs/ui/status-bar/*"],
       "@ui/text-speech/*": ["libs/ui/text-speech/*"],

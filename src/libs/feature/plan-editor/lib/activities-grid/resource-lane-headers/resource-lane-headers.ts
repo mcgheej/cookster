@@ -13,6 +13,6 @@ export class ResourceLaneHeaders {
   private readonly planEditorData = inject(PlanEditorDataService);
 
   protected readonly resourceLanes = this.planEditorData.resourceLanes;
-  protected readonly scrollX = this.planEditorData.scrollX;
+  protected readonly scrollX = this.planEditorData.activitiesGridScrollX;
   protected laneWidthPx = laneWidthPx;
 }

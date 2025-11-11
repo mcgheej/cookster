@@ -10,8 +10,8 @@ import { ResourceLaneHeaders } from './resource-lane-headers/resource-lane-heade
 import { TimeGridLayer } from './time-grid-layer/time-grid-layer';
 import { PlanEditorDataService } from '../plan-editor-data-service';
 import { ResourceLanesLayer } from './resource-lanes-layer/resource-lanes-layer';
-import { Plan } from '@util/data-types/index';
 import { PlanEnd } from './plan-end/plan-end';
+import { TfxResizeEvent, TfxResizeObserver } from '@ui/tfx-resize-observer/index';
 
 @Component({
   selector: 'ck-activities-grid',
@@ -26,6 +26,7 @@ import { PlanEnd } from './plan-end/plan-end';
     TimeGridLayer,
     ResourceLanesLayer,
     PlanEnd,
+    TfxResizeObserver,
   ],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,16 +41,23 @@ export class ActivitiesGrid {
   });
 
   protected onScroll(ev: any) {
-    const sX = this.planEditorData.scrollX();
+    const sX = this.planEditorData.activitiesGridScrollX();
     const scrollX = -ev.target.scrollLeft;
+    // const scrollWindowHeight = ev.target.clientHeight;
+    // console.log('scrollWindowHeight', scrollWindowHeight);
     if (scrollX !== sX) {
       this.planEditorData.setScrollX(scrollX);
     }
-    const sY = this.planEditorData.scrollY();
+    const sY = this.planEditorData.activitiesGridScrollY();
     const scrollY = -ev.target.scrollTop;
     // const scrollY = `0 ${-ev.target.scrollTop}px`;
     if (scrollY !== sY) {
       this.planEditorData.setScrollY(scrollY);
     }
+  }
+
+  onResize(event: TfxResizeEvent) {
+    this.planEditorData.setActivitiesGridRect(event.newRect);
+    this.planEditorData.setActivitiesGridBoundingRect(event.boundingRect);
   }
 }

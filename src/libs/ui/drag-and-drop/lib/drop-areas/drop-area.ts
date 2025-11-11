@@ -3,6 +3,11 @@ import { Type } from '@angular/core';
 import { PreviewComponentBase } from './preview-component-base';
 import { PointerData } from '../types/pointer-data';
 
+/**
+ * id: A unique identifier for the drop area.
+ * hostElement: The HTML element containing the CkDrop directive
+ * acceptedDragOperations: A map of accepted drag operations for this drop area.
+ */
 export interface DropAreaData {
   id: string;
   hostElement?: HTMLElement;
@@ -12,6 +17,11 @@ export interface DropAreaData {
 export interface DropAreaDragProps {
   dragId: string;
   pointerPos: PointerData;
+}
+
+export interface DropAreaCheckResult {
+  previewComponent: Type<PreviewComponentBase> | null;
+  clipArea?: DOMRect;
 }
 
 export abstract class DropArea implements DropAreaData {
@@ -25,5 +35,5 @@ export abstract class DropArea implements DropAreaData {
     this.acceptedDragOperations = configData.acceptedDragOperations;
   }
 
-  abstract drag(props: DropAreaDragProps): Type<PreviewComponentBase> | null;
+  abstract check(props: DropAreaDragProps): DropAreaCheckResult;
 }

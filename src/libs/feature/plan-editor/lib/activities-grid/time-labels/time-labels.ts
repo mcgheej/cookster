@@ -17,7 +17,7 @@ export class TimeLabels {
   protected readonly pixelsPerHour = this.editorData.activitiesGridPixelsPerHour;
 
   protected readonly scrollY = computed(() => {
-    const sY = this.editorData.scrollY();
+    const sY = this.editorData.activitiesGridScrollY();
     return `0 ${sY}px`;
   });
 }

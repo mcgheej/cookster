@@ -1,4 +1,4 @@
-import { differenceInMinutes, isSameMinute, set, startOfDay } from 'date-fns';
+import { addMinutes, differenceInMinutes, isSameMinute, set, startOfDay } from 'date-fns';
 
 export function getDateToLastHour(date: Date): Date {
   return set(date, { minutes: 0, seconds: 0, milliseconds: 0 });
@@ -10,4 +10,9 @@ export function isDifferentMinute(date1: Date, date2: Date): boolean {
 
 export function getMinutesSinceMidnight(date: Date): number {
   return differenceInMinutes(date, startOfDay(date));
+}
+
+export function getDateFromMinutesSinceMidnight(minutesSinceMidnight: number): Date {
+  const date = startOfDay(new Date());
+  return addMinutes(date, minutesSinceMidnight);
 }

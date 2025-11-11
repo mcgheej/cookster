@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
@@ -6,11 +6,12 @@ import { ResourceActionIcon } from './resource-action-icon/resource-action-icon'
 import { ResourceLane } from '@util/data-types/index';
 import { LaneHeaderTitle } from './lane-header-title/lane-header-title';
 import { LaneHeaderMenu } from './lane-header-menu/lane-header-menu';
+import { PlanEditorDataService } from '../../../plan-editor-data-service';
 import {
   AcceptedDragOperation,
   CkDrop,
   DropAreaResourceLaneHeader,
-  PreviewNewActionInResourceHeader,
+  PreviewNewActionInResourceLaneHeader,
 } from '@ui/drag-and-drop/index';
 
 @Component({
@@ -20,6 +21,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LaneHeader {
+  private readonly planEditorData = inject(PlanEditorDataService);
+
   readonly resourceLane = input.required<ResourceLane>();
 
   protected dropArea = computed(() => {
@@ -29,8 +32,10 @@ export class LaneHeader {
     return new DropAreaResourceLaneHeader({
       id: dropId,
       acceptedDragOperations: new Map<string, AcceptedDragOperation>([
-        [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNewActionInResourceHeader)],
+        [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNewActionInResourceLaneHeader)],
       ]),
+      scrollX: this.planEditorData.activitiesGridScrollX,
+      activitiesGridBoundingRect: this.planEditorData.activitiesGridBoundingRect,
     });
   });
 
