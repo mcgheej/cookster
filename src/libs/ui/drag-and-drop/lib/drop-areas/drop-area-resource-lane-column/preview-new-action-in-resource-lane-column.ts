@@ -3,9 +3,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentProps } from '../preview-component-base';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { laneWidthPx, Point } from '@util/data-types/index';
-import { format } from 'date-fns';
-import { getDateFromMinutesSinceMidnight } from '@util/date-utilities/index';
-import { PointerData } from '../../types/pointer-data';
 import { rectIntersection } from '@util/misc-utilities/index';
 
 @Component({

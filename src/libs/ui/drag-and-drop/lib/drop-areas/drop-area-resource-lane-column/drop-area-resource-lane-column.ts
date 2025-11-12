@@ -1,6 +1,6 @@
 import { Signal } from '@angular/core';
 import { DropArea, DropAreaCheckResult, DropAreaData, DropAreaDragProps } from '../drop-area';
-import { Point, pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
+import { Plan, Point, pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
 import { rectIntersection } from '@util/misc-utilities/index';
 import { format } from 'date-fns';
 import { getDateFromMinutesSinceMidnight } from '@util/date-utilities/index';
@@ -58,7 +58,7 @@ export class DropAreaResourceLaneColumn extends DropArea implements DropAreaReso
     return '00:00';
   }
 
-  getTimeFromPositionAsDate(pos: Point, shiftKey: boolean): Date | undefined {
+  getTimeFromPositionAsDate(pos: Point, shiftKey: boolean, timeDate: Date = new Date()): Date | undefined {
     if (this.hostElement) {
       const laneRect = this.hostElement.getBoundingClientRect();
       const minsSinceMidnight =
@@ -66,7 +66,7 @@ export class DropAreaResourceLaneColumn extends DropArea implements DropAreaReso
       const roundedMinutes = shiftKey
         ? Math.round(minsSinceMidnight / this.timeSnapMins()) * this.timeSnapMins()
         : minsSinceMidnight;
-      return getDateFromMinutesSinceMidnight(roundedMinutes);
+      return getDateFromMinutesSinceMidnight(roundedMinutes, timeDate); // TODO: target date should be plan data
     }
     return undefined;
   }

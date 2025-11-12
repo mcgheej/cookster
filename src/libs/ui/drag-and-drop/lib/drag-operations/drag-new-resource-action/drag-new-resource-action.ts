@@ -6,14 +6,18 @@ import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
 import { PreviewNewActionInResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
 import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
+import { Plan } from '@util/data-types/index';
 
-export interface DragNewResourceActionData extends DragData {}
+export interface DragNewResourceActionData extends DragData {
+  plan: Plan | null;
+}
 
 export interface DragNewResourceActionResult extends DragResult {
   time: Date;
 }
 
 export class DragNewResourceAction extends DragOperation implements DragNewResourceActionData {
+  plan: Plan | null;
   /**
    * The drop areas associated with this drag operation. Initialised on drag start and cleared on drag end.
    */
@@ -38,6 +42,7 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
 
   constructor(configData: DragNewResourceActionData) {
     super(configData as DragData);
+    this.plan = configData.plan;
   }
 
   start(props: DragStartProps): void {
@@ -66,10 +71,11 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
   end(props: DragEndProps): DragNewResourceActionResult | undefined {
     this.setupDropArea(props.pointerPos);
     let time: Date | undefined = undefined;
-    if (this.previewComponent === PreviewNewActionInResourceLaneColumn && this.lastDropArea) {
+    if (this.previewComponent === PreviewNewActionInResourceLaneColumn && this.lastDropArea && this.plan) {
       time = (this.lastDropArea as DropAreaResourceLaneColumn).getTimeFromPositionAsDate(
         props.pointerPos.dragPosition,
-        props.pointerPos.shiftKey
+        props.pointerPos.shiftKey,
+        this.plan.properties.endTime
       );
     }
 

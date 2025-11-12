@@ -12,7 +12,7 @@ export function getMinutesSinceMidnight(date: Date): number {
   return differenceInMinutes(date, startOfDay(date));
 }
 
-export function getDateFromMinutesSinceMidnight(minutesSinceMidnight: number): Date {
-  const date = startOfDay(new Date());
+export function getDateFromMinutesSinceMidnight(minutesSinceMidnight: number, targetDate?: Date): Date {
+  const date = startOfDay(targetDate ? targetDate : new Date());
   return addMinutes(date, minutesSinceMidnight);
 }

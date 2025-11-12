@@ -13,17 +13,22 @@ import {
   DropAreaResourceLaneHeader,
   PreviewNewActionInResourceLaneHeader,
 } from '@ui/drag-and-drop/index';
+import { LaneHeaderService } from './lane-header-service';
 
 @Component({
   selector: 'ck-lane-header',
   imports: [MatIconModule, MatTooltipModule, ResourceActionIcon, LaneHeaderTitle, LaneHeaderMenu, CkDrop],
   templateUrl: './lane-header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [LaneHeaderService],
 })
 export class LaneHeader {
   private readonly planEditorData = inject(PlanEditorDataService);
+  private readonly laneHeaderService = inject(LaneHeaderService);
 
   readonly resourceLane = input.required<ResourceLane>();
+
+  protected readonly plan = computed(() => this.planEditorData.currentPlan());
 
   protected dropArea = computed(() => {
     const index = this.resourceLane().kitchenResource.index;
@@ -40,4 +45,13 @@ export class LaneHeader {
   });
 
   protected readonly defaultTooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
+
+  onNewResourceActionTime(time: Date): void {
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    this.laneHeaderService.createNewResourceAction(plan, this.resourceLane(), time);
+    // use service to add new resource action at specified time for this.resourceLane()
+  }
 }
