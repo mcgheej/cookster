@@ -1,3 +1,5 @@
+import { Plan } from './plan';
+
 export interface ResourceAction {
   name: string;
   timeOffset: number;

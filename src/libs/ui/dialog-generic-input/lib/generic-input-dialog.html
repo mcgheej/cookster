@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<form [formGroup]="form" (ngSubmit)="onClose()">
+  <div class="px-[24px]">
+    <div class="mb-4">{{ data.description }}</div>
+    <tfx-field-input-string
+      [inputLabel]="data.inputLabel"
+      [inputPlaceholder]="data.inputPlaceholder"
+      [inputValue]="data.inputValue"></tfx-field-input-string>
+  </div>
+  <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+    <button mat-button [mat-dialog-close]="undefined" color="accent">Cancel</button>
+    <button mat-button color="accent" type="submit">Save</button>
+  </mat-dialog-actions>
+</form>
