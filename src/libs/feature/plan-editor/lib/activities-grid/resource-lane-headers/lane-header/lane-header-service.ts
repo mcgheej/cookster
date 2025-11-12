@@ -16,7 +16,7 @@ export class LaneHeaderService {
 
   createNewResourceAction(plan: Plan, resourceLane: ResourceLane, actionTime: Date): void {
     if (compareAsc(actionTime, plan.properties.endTime) > 0) {
-      this.snackBar.open('Cannont create action beyond the end of the plan.', undefined, {
+      this.snackBar.open('Can not create action beyond the end of the plan.', 'Close', {
         duration: DEFAULT_SNACKBAR_DURATION,
       });
       return;
