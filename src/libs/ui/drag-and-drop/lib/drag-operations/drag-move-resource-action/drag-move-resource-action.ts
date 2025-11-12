@@ -1,4 +1,4 @@
-import { DragEndProps, DragMoveProps, DragOperation, DragStartProps } from '../drag-operation';
+import { DragEndProps, DragMoveProps, DragOperation, DragResult, DragStartProps } from '../drag-operation';
 
 export class DragMoveResourceAction extends DragOperation {
   // Implementation for moving  a resource action in a resource lane
@@ -7,5 +7,7 @@ export class DragMoveResourceAction extends DragOperation {
 
   move(props: DragMoveProps): void {}
 
-  end(props: DragEndProps): void {}
+  end(props: DragEndProps): DragResult | undefined {
+    return undefined;
+  }
 }

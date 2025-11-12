@@ -1,10 +1,17 @@
 import { signal, Type } from '@angular/core';
 import { DropArea } from '../../drop-areas/drop-area';
-import { DragData, DragEndProps, DragMoveProps, DragOperation, DragStartProps } from '../drag-operation';
+import { DragData, DragEndProps, DragMoveProps, DragOperation, DragResult, DragStartProps } from '../drag-operation';
 import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/preview-component-base';
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
+import { PointerData } from '../../types/pointer-data';
+import { PreviewNewActionInResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
+import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 
 export interface DragNewResourceActionData extends DragData {}
+
+export interface DragNewResourceActionResult extends DragResult {
+  time: Date;
+}
 
 export class DragNewResourceAction extends DragOperation implements DragNewResourceActionData {
   /**
@@ -34,38 +41,54 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
   }
 
   start(props: DragStartProps): void {
-    const { pointerPos, associatedDropAreas, overlayService, dragOperation, renderer } = props;
+    const { pointerPos, associatedDropAreas, overlayService, renderer } = props;
     this.associatedDropAreas = associatedDropAreas;
 
-    for (let i = 0; i < this.associatedDropAreas.length; i++) {
-      const { previewComponent: preview, clipArea } = this.associatedDropAreas[i].check({
-        dragId: dragOperation.id,
-        pointerPos,
-      });
-      if (preview) {
-        this.lastDropArea = this.associatedDropAreas[i];
-        this.previewComponent = preview;
-        this.clipArea = clipArea;
-        break;
-      }
-    }
+    this.setupDropArea(pointerPos);
 
     this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
     overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
   }
 
   move(props: DragMoveProps): void {
-    const { pointerPos, overlayService, dragOperation, renderer } = props;
+    const { pointerPos, overlayService, renderer } = props;
 
+    const setupResult = this.setupDropArea(pointerPos);
+    if (setupResult === 'changed') {
+      overlayService.detachComponent(renderer);
+      this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
+      overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
+    } else {
+      this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
+    }
+  }
+
+  end(props: DragEndProps): DragNewResourceActionResult | undefined {
+    this.setupDropArea(props.pointerPos);
+    let time: Date | undefined = undefined;
+    if (this.previewComponent === PreviewNewActionInResourceLaneColumn && this.lastDropArea) {
+      time = (this.lastDropArea as DropAreaResourceLaneColumn).getTimeFromPositionAsDate(
+        props.pointerPos.dragPosition,
+        props.pointerPos.shiftKey
+      );
+    }
+
+    props.overlayService.detachComponent(props.renderer);
+    this.associatedDropAreas = [];
+    this.lastDropArea = null;
+    this.previewComponent = PreviewNoDrop;
+    return time ? { time } : undefined;
+  }
+
+  private setupDropArea(pointerPos: PointerData): 'same' | 'changed' {
+    // If the last mouse position was over a drop area, check if we are still over it
     if (this.lastDropArea) {
-      const { previewComponent: preview } = this.lastDropArea.check({ dragId: dragOperation.id, pointerPos });
+      const { previewComponent: preview, clipArea } = this.lastDropArea.check({ dragId: this.id, pointerPos });
       if (preview) {
-        this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
-        return;
+        return 'same';
       }
     }
 
-    overlayService.detachComponent(renderer);
     const lastDropAreaId = this.lastDropArea ? this.lastDropArea.id : '';
     this.lastDropArea = null as DropArea | null;
     this.previewComponent = PreviewNoDrop;
@@ -75,7 +98,7 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
         continue;
       }
       const { previewComponent: preview, clipArea } = this.associatedDropAreas[i].check({
-        dragId: dragOperation.id,
+        dragId: this.id,
         pointerPos,
       });
       if (preview) {
@@ -85,15 +108,7 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
         break;
       }
     }
-
-    this.previewProps.set({ pointerPos, dropArea: this.lastDropArea, dragOp: this, clipArea: this.clipArea });
-    overlayService.attachComponent(this.previewComponent, renderer, this.previewProps);
-  }
-
-  end(props: DragEndProps): void {
-    props.overlayService.detachComponent(props.renderer);
-    this.associatedDropAreas = [];
-    this.lastDropArea = null;
-    this.previewComponent = PreviewNoDrop;
+    const newDropAreaId = this.lastDropArea ? this.lastDropArea.id : '';
+    return newDropAreaId !== lastDropAreaId ? 'changed' : 'same';
   }
 }

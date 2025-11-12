@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CkDrag, DragNewResourceAction, DragNewResourceActionData } from '@ui/drag-and-drop/index';
+import { DragResult } from '@ui/drag-and-drop/lib/drag-operations/drag-operation';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { ResourceLane } from '@util/data-types/index';
 
@@ -21,4 +22,8 @@ export class ResourceActionIcon {
   });
 
   protected readonly defaultTooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
+
+  onDragEnd(dragResult: DragResult | undefined): void {
+    console.log(dragResult);
+  }
 }

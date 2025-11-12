@@ -50,7 +50,10 @@ export class PreviewNewActionInResourceLaneColumn {
       if (dropEl) {
         const adjustedPosition = this.getAdjustedPosition(dropEl, pointerPos.dragPosition);
         const laneWidth = laneWidthPx[(dropArea as DropAreaResourceLaneColumn).resourceLane().laneWidth];
-        const time = this.getTime(pointerPos, dropEl, dropArea as DropAreaResourceLaneColumn);
+        const time = (dropArea as DropAreaResourceLaneColumn).getTimeFromPosition(
+          pointerPos.dragPosition,
+          pointerPos.shiftKey
+        );
         const clipPath = this.getClipPath(
           clipArea,
           DOMRect.fromRect({ x: adjustedPosition.x, y: adjustedPosition.y, width: laneWidth, height: 32 })
@@ -85,17 +88,5 @@ export class PreviewNewActionInResourceLaneColumn {
     const y = dragPosition.y - 16;
     const x = laneRect.left;
     return { x, y };
-  }
-
-  private getTime(pointerPos: PointerData, dropEl: HTMLElement, dropArea: DropAreaResourceLaneColumn): string {
-    const { pixelsPerHour, timeWindow, timeSnapMins } = dropArea as DropAreaResourceLaneColumn;
-    const { dragPosition: pos, shiftKey } = pointerPos;
-    const laneRect = dropEl.getBoundingClientRect();
-    const minsSinceMidnight =
-      Math.round(((pos.y - laneRect.top) / pixelsPerHour()) * 60) + timeWindow().startHours * 60;
-    const roundedMinutes = shiftKey
-      ? Math.round(minsSinceMidnight / timeSnapMins()) * timeSnapMins()
-      : minsSinceMidnight;
-    return format(getDateFromMinutesSinceMidnight(roundedMinutes), 'HH:mm');
   }
 }

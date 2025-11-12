@@ -1,4 +1,4 @@
-import { DragEndProps, DragMoveProps, DragOperation, DragStartProps } from '../drag-operation';
+import { DragEndProps, DragMoveProps, DragOperation, DragResult, DragStartProps } from '../drag-operation';
 
 export class DragChangeActivityDuration extends DragOperation {
   // Implementation for changing the duration of an activity by dragging handle on
@@ -8,5 +8,7 @@ export class DragChangeActivityDuration extends DragOperation {
 
   move(props: DragMoveProps): void {}
 
-  end(props: DragEndProps): void {}
+  end(props: DragEndProps): DragResult | undefined {
+    return undefined;
+  }
 }

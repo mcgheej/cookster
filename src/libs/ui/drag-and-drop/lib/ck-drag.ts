@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, inject, input, output, Renderer2 } from '@angular/core';
-import { DragOperation } from './drag-operations/drag-operation';
+import { DragOperation, DragResult } from './drag-operations/drag-operation';
 import { DragAndDropOverlay } from './drag-and-drop-overlay';
 import { Point } from '@util/data-types/index';
 import { DropAreasManager } from './drop-area-manager';
@@ -32,7 +32,7 @@ export class CkDrag implements AfterViewInit {
   ckDrag = input.required<DragOperation>();
 
   ckDragStarted = output<void>();
-  ckDragEnded = output<void>();
+  ckDragEnded = output<DragResult | undefined>();
 
   // Properties
   // ----------
@@ -87,7 +87,6 @@ export class CkDrag implements AfterViewInit {
       pointerPos: this.getPointerPos(ev, startDragging),
       associatedDropAreas,
       overlayService: this.overlay,
-      dragOperation: this.ckDrag(),
       renderer: this.renderer,
     });
   }
@@ -98,9 +97,13 @@ export class CkDrag implements AfterViewInit {
    */
   protected onMouseup(ev: MouseEvent): void {
     ev.stopPropagation();
-    this.ckDrag().end({ pointerPos: this.getPointerPos(ev), overlayService: this.overlay, renderer: this.renderer });
+    const result = this.ckDrag().end({
+      pointerPos: this.getPointerPos(ev),
+      overlayService: this.overlay,
+      renderer: this.renderer,
+    });
     this.overlay.dispose(this.renderer);
-    this.ckDragEnded.emit();
+    this.ckDragEnded.emit(result);
   }
 
   // Private Methods
@@ -115,7 +118,6 @@ export class CkDrag implements AfterViewInit {
     this.ckDrag().move({
       pointerPos: this.getPointerPos(ev),
       overlayService: this.overlay,
-      dragOperation: this.ckDrag(),
       renderer: this.renderer,
     });
   }

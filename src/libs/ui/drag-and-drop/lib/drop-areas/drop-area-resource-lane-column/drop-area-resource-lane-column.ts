@@ -1,7 +1,9 @@
 import { Signal } from '@angular/core';
 import { DropArea, DropAreaCheckResult, DropAreaData, DropAreaDragProps } from '../drop-area';
-import { pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
+import { Point, pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
 import { rectIntersection } from '@util/misc-utilities/index';
+import { format } from 'date-fns';
+import { getDateFromMinutesSinceMidnight } from '@util/date-utilities/index';
 
 export interface DropAreaResourceLaneColumnData extends DropAreaData {
   scrollX: Signal<number>;
@@ -46,6 +48,27 @@ export class DropAreaResourceLaneColumn extends DropArea implements DropAreaReso
     return acceptedOperation
       ? { previewComponent: acceptedOperation.previewComponent, clipArea }
       : { previewComponent: null };
+  }
+
+  getTimeFromPosition(pos: Point, shiftKey: boolean): string {
+    const time = this.getTimeFromPositionAsDate(pos, shiftKey);
+    if (time) {
+      return format(time, 'HH:mm');
+    }
+    return '00:00';
+  }
+
+  getTimeFromPositionAsDate(pos: Point, shiftKey: boolean): Date | undefined {
+    if (this.hostElement) {
+      const laneRect = this.hostElement.getBoundingClientRect();
+      const minsSinceMidnight =
+        Math.round(((pos.y - laneRect.top) / this.pixelsPerHour()) * 60) + this.timeWindow().startHours * 60;
+      const roundedMinutes = shiftKey
+        ? Math.round(minsSinceMidnight / this.timeSnapMins()) * this.timeSnapMins()
+        : minsSinceMidnight;
+      return getDateFromMinutesSinceMidnight(roundedMinutes);
+    }
+    return undefined;
   }
 
   private outsideDropArea(props: DropAreaDragProps): boolean {

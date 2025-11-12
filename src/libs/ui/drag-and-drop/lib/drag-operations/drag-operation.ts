@@ -13,14 +13,12 @@ export interface DragStartProps {
   pointerPos: PointerData;
   associatedDropAreas: DropArea[];
   overlayService: DragAndDropOverlay;
-  dragOperation: DragOperation;
   renderer: Renderer2;
 }
 
 export interface DragMoveProps {
   pointerPos: PointerData;
   overlayService: DragAndDropOverlay;
-  dragOperation: DragOperation;
   renderer: Renderer2;
 }
 
@@ -29,6 +27,8 @@ export interface DragEndProps {
   overlayService: DragAndDropOverlay;
   renderer: Renderer2;
 }
+
+export interface DragResult {}
 
 export abstract class DragOperation implements DragData {
   id: string;
@@ -41,5 +41,5 @@ export abstract class DragOperation implements DragData {
 
   abstract start(props: DragStartProps): void;
   abstract move(props: DragMoveProps): void;
-  abstract end(props: DragEndProps): void;
+  abstract end(props: DragEndProps): DragResult | undefined;
 }
