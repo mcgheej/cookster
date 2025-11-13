@@ -5,4 +5,5 @@ export * from './lib/ck-drag';
 export * from './lib/ck-drop';
 export * from './lib/drop-areas/accepted-drag-operation';
 export * from './lib/drop-areas/preview-no-drop';
+export * from './lib/drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
 export * from './lib/drop-areas/drop-area-resource-lane-header/preview-new-action-in-resource-lane-header';

@@ -22,7 +22,8 @@
       [style.height.px]="16"
       [style.width.px]="16"
       [matTooltip]="tile().time + ' - ' + tile().resourceAction.name"
-      matTooltipShowDelay="500">
+      matTooltipShowDelay="500"
+      (click)="onClick($event)">
       electric_bolt
     </mat-icon>
   </div>

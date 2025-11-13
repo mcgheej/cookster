@@ -14,4 +14,10 @@ export class ResourceActionTile {
   tile = input.required<ActionDisplayTile>();
 
   protected readonly componentHeight = RESOURCE_ACTION_COMPONENT_HEIGHT.toString() + 'px';
+
+  onClick(ev: Event): void {
+    ev.stopPropagation();
+    ev.preventDefault();
+    console.log('Resource Action Tile clicked:', this.tile());
+  }
 }
