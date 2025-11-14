@@ -6,6 +6,9 @@ import {
   activityDBsEqual,
   DisplayTile,
   laneWidthPx,
+  modifyResourceActionInPlan,
+  Plan,
+  removeResourceActionFromPlan,
   ResourceAction,
   ResourceLane,
   resourceLanesEqual,
@@ -13,16 +16,27 @@ import {
 import {
   AcceptedDragOperation,
   DropAreaResourceLaneColumn,
+  PreviewMoveActionInResourceLaneColumn,
   PreviewNewActionInResourceLaneColumn,
 } from '@ui/drag-and-drop/index';
 import { format, isSameMinute, subMinutes } from 'date-fns';
 import { Tiler } from '@util/tiler/index';
-import { DEFAULT_COLOR_OPACITY, googleColors, RESOURCE_ACTION_COMPONENT_HEIGHT } from '@util/app-config/index';
+import {
+  DEFAULT_COLOR_OPACITY,
+  DEFAULT_SNACKBAR_DURATION,
+  googleColors,
+  RESOURCE_ACTION_COMPONENT_HEIGHT,
+} from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackConfirmDelete } from './snack-confirm-delete';
+import { PlansDataService } from '@data-access/plans/index';
 
 @Injectable()
 export class LaneColumnService {
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly db = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
   private readonly tiler = inject(Tiler);
 
@@ -41,12 +55,20 @@ export class LaneColumnService {
   computedDropArea(resourceLane: InputSignal<ResourceLane>) {
     return computed(() => {
       const index = resourceLane().kitchenResource.index;
-      const dragId = `drag-new-resource-action-lane-${index}`;
+      const dragNewResourceActionId = `drag-new-resource-action-lane-${index}`;
+      const dragMoveResourceActionId = `drag-move-resource-action-lane-${index}`;
       const dropId = `drop-area-resource-lane-column-${index}`;
       return new DropAreaResourceLaneColumn({
         id: dropId,
         acceptedDragOperations: new Map<string, AcceptedDragOperation>([
-          [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNewActionInResourceLaneColumn)],
+          [
+            dragNewResourceActionId,
+            new AcceptedDragOperation(dragNewResourceActionId, dropId, PreviewNewActionInResourceLaneColumn),
+          ],
+          [
+            dragMoveResourceActionId,
+            new AcceptedDragOperation(dragMoveResourceActionId, dropId, PreviewMoveActionInResourceLaneColumn),
+          ],
         ]),
         scrollX: this.planEditorData.activitiesGridScrollX,
         scrollY: this.planEditorData.activitiesGridScrollY,
@@ -156,8 +178,57 @@ export class LaneColumnService {
     });
   }
 
+  // Public methods
+  // --------------
+
+  modifyResourceAction(
+    plan: Plan,
+    resourceLane: ResourceLane,
+    actionIndex: number,
+    modifiedAction: ResourceAction
+  ): void {
+    const newPlan = modifyResourceActionInPlan(plan, resourceLane, actionIndex, modifiedAction);
+    this.db
+      .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
+      .subscribe({
+        error: (error) => {
+          this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+          console.error('Error moving resource action', error);
+        },
+      });
+  }
+
+  deleteResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number): void {
+    this.snackBar
+      .openFromComponent(SnackConfirmDelete, {
+        duration: 0,
+        verticalPosition: 'bottom',
+      })
+      .onAction()
+      .subscribe({
+        next: () => this.doDeleteResourceAction(plan, resourceLane, actionIndex),
+      });
+  }
+
   // Private Methods
   // ---------------
+
+  private doDeleteResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number): void {
+    const newPlan = removeResourceActionFromPlan(plan, resourceLane, actionIndex);
+    this.db
+      .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Resource action deleted.', 'Close', {
+            duration: DEFAULT_SNACKBAR_DURATION,
+          });
+        },
+        error: (error) => {
+          this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+          console.error('Error deleting resource action', error);
+        },
+      });
+  }
 
   private getStyles(item: DisplayTile, selectedActivityId: string): Record<string, string> {
     const color = googleColors[item.activity.color].color;

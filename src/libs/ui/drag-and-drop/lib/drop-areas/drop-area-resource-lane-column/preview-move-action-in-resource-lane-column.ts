@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
-import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { laneWidthPx, Point } from '@util/data-types/index';
+import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
+import { DragMoveResourceAction } from '../../drag-operations/drag-move-resource-action/drag-move-resource-action';
 
 @Component({
-  selector: 'ck-preview-new-action-in-resource-lane-column',
+  selector: 'ck-preview-move-action-in-lane-column',
   imports: [MatIconModule],
   template: `
     <div
@@ -18,7 +19,7 @@ import { laneWidthPx, Point } from '@util/data-types/index';
         <div class="h-[16px] pl-1 justify-self-start self-start text-gray-700 text-xs select-none">
           {{ vm().time }}
         </div>
-        <div class="h-[16px] justify-self-end self-start text-gray-700 text-xs select-none">New Action</div>
+        <div class="h-[16px] justify-self-end self-start text-gray-700 text-xs select-none">{{ vm().name }}</div>
         <div></div>
       </div>
       <div class="row-start-1 row-end-2 col-start-1 col-end-1 grid grid-cols-[1fr_16px] grid-rows-[32px]">
@@ -36,11 +37,11 @@ import { laneWidthPx, Point } from '@util/data-types/index';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
+export class PreviewMoveActionInResourceLaneColumn extends PreviewComponentBase {
   previewProps = input.required<PreviewComponentProps>();
 
   protected readonly vm = computed(() => {
-    const { pointerPos, dropArea, clipArea } = this.previewProps();
+    const { pointerPos, dragOp, dropArea, clipArea } = this.previewProps();
     if (dropArea) {
       const { hostElement: dropEl } = dropArea as DropAreaResourceLaneColumn;
       if (dropEl) {
@@ -54,7 +55,8 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
           clipArea,
           DOMRect.fromRect({ x: adjustedPosition.x, y: adjustedPosition.y, width: laneWidth, height: 32 })
         );
-        return { adjustedPosition, laneWidth, time, clipPath };
+        const name = (dragOp as DragMoveResourceAction).resourceAction.name;
+        return { adjustedPosition, laneWidth, time, clipPath, name };
       }
     }
     return {
@@ -62,6 +64,7 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
       laneWidth: 0,
       time: '00:00',
       clipPath: 'none',
+      name: '',
     };
   });
 

@@ -1,7 +1,11 @@
 <div [ckDrop]="dropArea()" class="h-full border-r-2 divider-dark relative" (click)="createNewActivity($event)">
   @for (actionTile of actionDisplayTiles(); track $index) {
-    <ck-resource-action-tile [tile]="actionTile"></ck-resource-action-tile>
-    <!-- <div>{{ 'Action: ' + actionTile.resourceAction.name }}</div> -->
+    <ck-resource-action-tile
+      [resourceLane]="distinctResourceLane()"
+      [plan]="plan()"
+      [tile]="actionTile"
+      (deleteResourceAction)="deleteResourceAction(actionTile)"
+      (updateResourceActionTime)="updateResourceActionTime(actionTile, $event)"></ck-resource-action-tile>
   }
   @for (tile of activityTiles(); track $index) {
     <ck-activity-tile [tile]="tile"></ck-activity-tile>

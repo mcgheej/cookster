@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { MatIconModule } from '@angular/material/icon';
-import { rectIntersection } from '@util/misc-utilities/index';
 
 @Component({
   selector: 'ck-preview-new-action-in-resource-header',
@@ -36,18 +35,4 @@ export class PreviewNewActionInResourceLaneHeader extends PreviewComponentBase {
       clipPath,
     };
   });
-
-  private getClipPath(clipArea: DOMRect | undefined, actionIconRect: DOMRect): string {
-    if (clipArea) {
-      const clippedRect = rectIntersection(clipArea, actionIconRect);
-      if (clippedRect) {
-        const top = Math.abs(clippedRect.top - actionIconRect.top);
-        const right = Math.abs(clippedRect.right - actionIconRect.right);
-        const bottom = Math.abs(clippedRect.bottom - actionIconRect.bottom);
-        const left = Math.abs(clippedRect.left - actionIconRect.left);
-        return `inset(${top}px ${right}px ${bottom}px ${left}px)`;
-      }
-    }
-    return 'none';
-  }
 }

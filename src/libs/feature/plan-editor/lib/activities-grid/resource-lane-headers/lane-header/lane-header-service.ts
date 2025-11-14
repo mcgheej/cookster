@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/index';
 import { GenericInputDialog, GenericInputDialogData } from '@ui/dialog-generic-input/index';
 import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
-import { Plan, ResourceAction, ResourceLane } from '@util/data-types/index';
+import { addResourceActionToPlan, Plan, ResourceAction, ResourceLane } from '@util/data-types/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { compareAsc, format } from 'date-fns';
 
@@ -34,21 +34,14 @@ export class LaneHeaderService {
       .afterClosed()
       .subscribe((result) => {
         if (result) {
-          console.log(`Create new resource action ${result} at`, format(actionTime, 'HH:mm'));
           const timeOffset = Math.max(
             0,
             getMinutesSinceMidnight(plan.properties.endTime) - getMinutesSinceMidnight(actionTime)
           );
           const newAction: ResourceAction = { name: result, timeOffset };
-          const resourceActions = [...resourceLane.kitchenResource.actions, newAction];
-          const updatedkitchenResources = plan.properties.kitchenResources.map((kr) => {
-            if (kr.index === resourceLane.kitchenResource.index) {
-              return { ...kr, actions: resourceActions };
-            }
-            return kr;
-          });
+          const newPlan = addResourceActionToPlan(plan, resourceLane, newAction);
           this.plansData
-            .updatePlanProperties(plan.properties.id, { kitchenResources: updatedkitchenResources })
+            .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
             .subscribe({
               next: () => {
                 this.snackBar.open(`Resource action "${result}" created.`, 'Close', {

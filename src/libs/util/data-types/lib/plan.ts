@@ -2,6 +2,8 @@ import { subMinutes } from 'date-fns';
 import { ActivityDB } from './activity-db';
 import { PlanProperties } from './plan-properties';
 import { PlanSummary } from './plan-summary';
+import { ResourceLane } from './resource-lane';
+import { ResourceAction } from './resource-action';
 
 export interface Plan {
   properties: PlanProperties;
@@ -41,6 +43,65 @@ export function dummyPlan(): Plan {
     } as PlanProperties,
     activities: [],
   };
+}
+
+export function addResourceActionToPlan(plan: Plan, resourceLane: ResourceLane, action: ResourceAction): Plan {
+  return {
+    ...plan,
+    properties: {
+      ...plan.properties,
+      kitchenResources: plan.properties.kitchenResources.map((kr, index) => {
+        if (index === resourceLane.kitchenResource.index) {
+          return {
+            ...kr,
+            actions: [...kr.actions, action],
+          };
+        }
+        return kr;
+      }),
+    },
+  } as Plan;
+}
+
+export function modifyResourceActionInPlan(
+  plan: Plan,
+  resourceLane: ResourceLane,
+  actionIndex: number,
+  action: ResourceAction
+): Plan {
+  return {
+    ...plan,
+    properties: {
+      ...plan.properties,
+      kitchenResources: plan.properties.kitchenResources.map((kr, index) => {
+        if (index === resourceLane.kitchenResource.index) {
+          return {
+            ...kr,
+            actions: kr.actions.map((a, i) => (i === actionIndex ? action : a)),
+          };
+        }
+        return kr;
+      }),
+    },
+  } as Plan;
+}
+
+export function removeResourceActionFromPlan(plan: Plan, resourceLane: ResourceLane, actionIndex: number): Plan {
+  return {
+    ...plan,
+    properties: {
+      ...plan.properties,
+      kitchenResources: plan.properties.kitchenResources.map((kr, index) => {
+        if (index === resourceLane.kitchenResource.index) {
+          return {
+            ...kr,
+            actions: kr.actions.filter((_, i) => i !== actionIndex),
+          };
+        }
+        return kr;
+      }),
+    },
+  } as Plan;
 }
 
 /**

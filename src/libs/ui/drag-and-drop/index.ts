@@ -1,4 +1,5 @@
 export * from './lib/drag-operations/drag-new-resource-action/drag-new-resource-action';
+export * from './lib/drag-operations/drag-move-resource-action/drag-move-resource-action';
 export * from './lib/drop-areas/drop-area-resource-lane-header/drop-area-resource-lane-header';
 export * from './lib/drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 export * from './lib/ck-drag';
@@ -6,4 +7,7 @@ export * from './lib/ck-drop';
 export * from './lib/drop-areas/accepted-drag-operation';
 export * from './lib/drop-areas/preview-no-drop';
 export * from './lib/drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
+export * from './lib/drop-areas/drop-area-resource-lane-column/preview-move-action-in-resource-lane-column';
 export * from './lib/drop-areas/drop-area-resource-lane-header/preview-new-action-in-resource-lane-header';
+export * from './lib/drop-areas/drop-area-resource-lane-header/preview-move-action-in-resource-lane-header';
+export * from './lib/drag-operations/drag-operation';

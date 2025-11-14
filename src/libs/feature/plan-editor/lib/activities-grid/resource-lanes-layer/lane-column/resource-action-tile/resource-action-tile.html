@@ -14,7 +14,11 @@
   <div
     class="row-start-1 row-end-2 col-start-1 col-end-1 grid grid-cols-[1fr_16px]"
     [style.gridTemplateRows]="componentHeight">
-    <div class="wave w-full h-1 bg-gray-500 self-center"></div>
+    <div
+      [ckDrag]="dragOperation()"
+      (ckDragStarted)="onDragStarted()"
+      (ckDragEnded)="onDragEnded($event)"
+      class="cursor-grab wave w-full h-1 bg-gray-500 self-center"></div>
     <mat-icon
       class="self-center cursor-pointer"
       [style.color]="'#6a7282'"

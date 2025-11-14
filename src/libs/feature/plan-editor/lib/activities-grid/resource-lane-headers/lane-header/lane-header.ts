@@ -11,7 +11,9 @@ import {
   AcceptedDragOperation,
   CkDrop,
   DropAreaResourceLaneHeader,
+  PreviewMoveActionInResourceLaneHeader,
   PreviewNewActionInResourceLaneHeader,
+  PreviewNoDrop,
 } from '@ui/drag-and-drop/index';
 import { LaneHeaderService } from './lane-header-service';
 
@@ -32,12 +34,20 @@ export class LaneHeader {
 
   protected dropArea = computed(() => {
     const index = this.resourceLane().kitchenResource.index;
-    const dragId = `drag-new-resource-action-lane-${index}`;
+    const dragNewResourceActionId = `drag-new-resource-action-lane-${index}`;
+    const dragMoveResourceActionId = `drag-move-resource-action-lane-${index}`;
     const dropId = `drop-area-resource-lane-header-${index}`;
     return new DropAreaResourceLaneHeader({
       id: dropId,
       acceptedDragOperations: new Map<string, AcceptedDragOperation>([
-        [dragId, new AcceptedDragOperation(dragId, dropId, PreviewNewActionInResourceLaneHeader)],
+        [
+          dragNewResourceActionId,
+          new AcceptedDragOperation(dragNewResourceActionId, dropId, PreviewNewActionInResourceLaneHeader),
+        ],
+        [
+          dragMoveResourceActionId,
+          new AcceptedDragOperation(dragMoveResourceActionId, dropId, PreviewMoveActionInResourceLaneHeader),
+        ],
       ]),
       scrollX: this.planEditorData.activitiesGridScrollX,
       activitiesGridBoundingRect: this.planEditorData.activitiesGridBoundingRect,

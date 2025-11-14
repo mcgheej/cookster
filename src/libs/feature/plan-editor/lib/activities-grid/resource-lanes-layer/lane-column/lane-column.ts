@@ -6,10 +6,10 @@ import {
   DEFAULT_SNACKBAR_DURATION,
   INITIAL_ACTIVITY_DURATION_MINS,
 } from '@util/app-config/index';
-import { ActivityDB, Plan } from '@util/data-types/index';
+import { ActionDisplayTile, ActivityDB, Plan } from '@util/data-types/index';
 import { ResourceLane } from '@util/data-types/lib/resource-lane';
 import { exceedsMaxParallelActivities, Tiler } from '@util/tiler/index';
-import { getHours, getMinutes } from 'date-fns';
+import { format, getHours, getMinutes } from 'date-fns';
 import { ActivityTile } from './activity-tile/activity-tile';
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { PlansDataService } from '@data-access/plans/lib/plans-data';
 import { openActivityDialog } from '@ui/activity-dialog/index';
 import { CkDrop } from '@ui/drag-and-drop/index';
 import { LaneColumnService } from './lane-column-service';
+import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 
 @Component({
   selector: 'ck-lane-column',
@@ -50,7 +51,7 @@ export class LaneColumn {
     this.planEndTime
   );
 
-  private readonly plan = this.planEditorData.currentPlan;
+  protected readonly plan = this.planEditorData.currentPlan;
   private readonly timeWindow = this.planEditorData.activitiesGridTimeWindow;
   private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
 
@@ -65,6 +66,23 @@ export class LaneColumn {
     }
     const minsSinceMidnight = Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.timeWindow().startHours * 60;
     this.createActivity(minsSinceMidnight, this.resourceLane(), plan);
+  }
+
+  deleteResourceAction(tile: ActionDisplayTile): void {
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    this.service.deleteResourceAction(plan, this.resourceLane(), tile.index);
+  }
+
+  updateResourceActionTime(tile: ActionDisplayTile, newTime: Date): void {
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    const timeOffset = Math.max(0, getMinutesSinceMidnight(plan.properties.endTime) - getMinutesSinceMidnight(newTime));
+    this.service.modifyResourceAction(plan, this.resourceLane(), tile.index, { ...tile.resourceAction, timeOffset });
   }
 
   // Private Methods

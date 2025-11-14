@@ -66,7 +66,7 @@ export class DropAreaResourceLaneColumn extends DropArea implements DropAreaReso
       const roundedMinutes = shiftKey
         ? Math.round(minsSinceMidnight / this.timeSnapMins()) * this.timeSnapMins()
         : minsSinceMidnight;
-      return getDateFromMinutesSinceMidnight(roundedMinutes, timeDate); // TODO: target date should be plan data
+      return getDateFromMinutesSinceMidnight(roundedMinutes, timeDate);
     }
     return undefined;
   }
