@@ -181,12 +181,18 @@ export class LaneColumnService {
   // Public methods
   // --------------
 
-  modifyResourceAction(
-    plan: Plan,
-    resourceLane: ResourceLane,
-    actionIndex: number,
-    modifiedAction: ResourceAction
-  ): void {
+  modifyResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number, newTime: Date): void {
+    const timeOffset = Math.max(0, getMinutesSinceMidnight(plan.properties.endTime) - getMinutesSinceMidnight(newTime));
+    const modifiedAction: ResourceAction = { ...resourceLane.kitchenResource.actions[actionIndex], timeOffset };
+    if (modifiedAction.timeOffset === resourceLane.kitchenResource.actions[actionIndex].timeOffset) {
+      return;
+    }
+    if (modifiedAction.timeOffset < 0) {
+      this.snackBar.open('Can not create action beyond the end of the plan.', 'Close', {
+        duration: DEFAULT_SNACKBAR_DURATION,
+      });
+      return;
+    }
     const newPlan = modifyResourceActionInPlan(plan, resourceLane, actionIndex, modifiedAction);
     this.db
       .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })

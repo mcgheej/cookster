@@ -82,7 +82,7 @@ export class LaneColumn {
       return;
     }
     const timeOffset = Math.max(0, getMinutesSinceMidnight(plan.properties.endTime) - getMinutesSinceMidnight(newTime));
-    this.service.modifyResourceAction(plan, this.resourceLane(), tile.index, { ...tile.resourceAction, timeOffset });
+    this.service.modifyResourceAction(plan, this.resourceLane(), tile.index, newTime);
   }
 
   // Private Methods
