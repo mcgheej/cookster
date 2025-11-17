@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { subPoints } from '@util/data-types/index';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { DragTetheredPlanEnd } from '../../drag-operations/drag-tethered-plan-end/drag-tethered-plan-end';
@@ -31,13 +30,8 @@ import { rectIntersection } from '@util/misc-utilities/index';
 export class PreviewTetheredPlanEnd extends PreviewComponentBase {
   previewProps = input.required<PreviewComponentProps>();
 
-  adjustedPosition = computed(() => {
-    const { dragPosition } = this.previewProps().pointerPos;
-    return subPoints(dragPosition, { x: 20, y: 20 });
-  });
-
   protected readonly vm = computed(() => {
-    const { pointerPos, dropArea: baseDropArea, dragOp, clipArea } = this.previewProps();
+    const { pointerPos, dropArea: baseDropArea, dragOp } = this.previewProps();
     const plan = (dragOp as DragTetheredPlanEnd).plan;
     if (baseDropArea && plan) {
       const dropArea = baseDropArea as DropAreaResourceLaneColumn;

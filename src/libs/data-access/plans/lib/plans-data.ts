@@ -83,6 +83,17 @@ export class PlansDataService {
     return this.activitiesData.deleteActivity(id);
   }
 
+  updateUntetheredPlanEnd(plan: Plan): Observable<void> {
+    return this.afPlansDB.updateUntetheredPlanEnd(
+      plan.properties.id,
+      createPlanDbUpdates({
+        endTime: plan.properties.endTime,
+        kitchenResources: plan.properties.kitchenResources,
+      }),
+      plan.activities
+    );
+  }
+
   private getCurrentPlan$(): Observable<Plan | null> {
     return combineLatest([
       this.currentPlanId$.pipe(distinctUntilChanged()),

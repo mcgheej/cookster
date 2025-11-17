@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, Unsubscribe } from '@angular/fire/auth';
-import { addDoc, collection, Firestore, onSnapshot, updateDoc } from '@angular/fire/firestore';
-import { PlanDB } from '@util/data-types/index';
+import { addDoc, collection, Firestore, onSnapshot, updateDoc, writeBatch } from '@angular/fire/firestore';
+import { ActivityDB, PlanDB } from '@util/data-types/index';
 import { doc } from 'firebase/firestore';
 import { BehaviorSubject, from, map, Observable } from 'rxjs';
 
@@ -43,6 +43,21 @@ export class AfPlansService {
   updatePlanProperties(id: string, updates: Partial<Omit<PlanDB, 'id'>>): Observable<void> {
     const docRef = doc(this.firestore, `plans/${id}`);
     return from(updateDoc(docRef, updates));
+  }
+
+  updateUntetheredPlanEnd(
+    id: string,
+    planProps: Partial<Omit<PlanDB, 'id'>>,
+    activities: ActivityDB[]
+  ): Observable<void> {
+    const batch = writeBatch(this.firestore);
+    const planDocRef = doc(this.firestore, `plans/${id}`);
+    batch.update(planDocRef, planProps);
+    activities.forEach((activity) => {
+      const activityDocRef = doc(this.firestore, `activities/${activity.id}`);
+      batch.update(activityDocRef, { startTimeOffset: activity.startTimeOffset });
+    });
+    return from(batch.commit());
   }
 
   private setupSnapshotListener(): Unsubscribe {

@@ -42,6 +42,8 @@ export class PlanEnd {
   onDragEnded(ev: DragResult | undefined): void {
     if (this.planEndTethered()) {
       this.planEndService.dragTetheredPlanEndEnded(ev);
+    } else {
+      this.planEndService.dragUntetheredPlanEndEnded(ev);
     }
     this.showElement.set('visible');
   }
