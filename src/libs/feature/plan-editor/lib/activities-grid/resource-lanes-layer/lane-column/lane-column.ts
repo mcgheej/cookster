@@ -9,7 +9,7 @@ import {
 import { ActionDisplayTile, ActivityDB, Plan } from '@util/data-types/index';
 import { ResourceLane } from '@util/data-types/lib/resource-lane';
 import { exceedsMaxParallelActivities, Tiler } from '@util/tiler/index';
-import { format, getHours, getMinutes } from 'date-fns';
+import { getHours, getMinutes } from 'date-fns';
 import { ActivityTile } from './activity-tile/activity-tile';
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +18,6 @@ import { PlansDataService } from '@data-access/plans/lib/plans-data';
 import { openActivityDialog } from '@ui/activity-dialog/index';
 import { CkDrop } from '@ui/drag-and-drop/index';
 import { LaneColumnService } from './lane-column-service';
-import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 
 @Component({
   selector: 'ck-lane-column',

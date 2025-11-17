@@ -1,6 +1,6 @@
 import { Signal } from '@angular/core';
 import { DropArea, DropAreaCheckResult, DropAreaData, DropAreaDragProps } from '../drop-area';
-import { Plan, Point, pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
+import { Point, pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
 import { rectIntersection } from '@util/misc-utilities/index';
 import { format } from 'date-fns';
 import { getDateFromMinutesSinceMidnight } from '@util/date-utilities/index';

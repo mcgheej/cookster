@@ -1,11 +1,16 @@
-@if (pxPlanEndY(); as pxPlanEndY) {
-  <div class="absolute left-0" [style.top.px]="pxPlanEndY">
+@if (planEndY(); as planEndY) {
+  <div
+    [ckDrag]="dragOperation()"
+    (ckDragStarted)="onDragStarted()"
+    (ckDragEnded)="onDragEnded($event)"
+    class="absolute left-0"
+    [style.top.px]="planEndY">
     <div [style.height.px]="planEndBarHeight" [style.width.px]="activitiesGridWidth()">
       <div class="size-full bg-[var(--mat-sys-primary)]"></div>
     </div>
   </div>
   @if (planEndTethered()) {
-    <div class="absolute left-1 cursor-pointer" [style.top.px]="pxPlanEndY" (click)="setPlanEndTethered(false)">
+    <div class="absolute left-1 cursor-pointer" [style.top.px]="planEndY" (click)="setPlanEndTethered(false)">
       <mat-icon
         [matTooltipShowDelay]="1000"
         matTooltip="Plan end tethered"
@@ -20,7 +25,7 @@
   @if (!planEndTethered()) {
     <div
       class="absolute left-1 cursor-pointer"
-      [style.top.px]="pxPlanEndY"
+      [style.top.px]="planEndY"
       [matTooltipShowDelay]="1000"
       matTooltipPosition="above"
       matTooltip="Plan end untethered"

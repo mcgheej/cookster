@@ -18,6 +18,7 @@ import {
   DropAreaResourceLaneColumn,
   PreviewMoveActionInResourceLaneColumn,
   PreviewNewActionInResourceLaneColumn,
+  PreviewTetheredPlanEnd,
 } from '@ui/drag-and-drop/index';
 import { format, isSameMinute, subMinutes } from 'date-fns';
 import { Tiler } from '@util/tiler/index';
@@ -68,6 +69,10 @@ export class LaneColumnService {
           [
             dragMoveResourceActionId,
             new AcceptedDragOperation(dragMoveResourceActionId, dropId, PreviewMoveActionInResourceLaneColumn),
+          ],
+          [
+            'drag-tethered-plan-end',
+            new AcceptedDragOperation('drag-tethered-plan-end', dropId, PreviewTetheredPlanEnd),
           ],
         ]),
         scrollX: this.planEditorData.activitiesGridScrollX,

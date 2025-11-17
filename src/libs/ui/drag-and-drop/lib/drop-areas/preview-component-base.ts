@@ -11,6 +11,12 @@ export interface PreviewComponentProps {
 }
 
 export abstract class PreviewComponentBase {
+  /**
+   *
+   * @param clipArea Rectangle of the preview component that should be visible
+   * @param elementArea Rectangle of the entire preview element being clipped
+   * @returns
+   */
   protected getClipPath(clipArea: DOMRect | undefined, elementArea: DOMRect): string {
     if (clipArea) {
       const clippedRect = rectIntersection(clipArea, elementArea);
