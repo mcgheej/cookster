@@ -44,7 +44,7 @@ export class ActivityActionFormService {
           : 'after';
 
     f.controls.name.setValue(action.name);
-    f.controls.offset.setValue(action.timeOffset);
+    f.controls.offset.setValue(Math.abs(action.timeOffset));
     f.controls.direction.setValue(direction);
     f.controls.referencePoint.setValue(action.referencePoint);
   }
