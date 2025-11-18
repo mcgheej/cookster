@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { PLAN_END_BAR_HEIGHT } from '@util/app-config/index';
-import { DragTetheredPlanEnd } from '../../drag-operations/drag-tethered-plan-end/drag-tethered-plan-end';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
+import { DragUntetheredPlanEnd } from '../../drag-operations/drag-untethered-plan-end/drag-untethered-plan-end';
 
 @Component({
   selector: 'ck-preview-untethered-plan-end',
@@ -25,7 +25,7 @@ export class PreviewUntetheredPlanEnd extends PreviewComponentBase {
 
   protected readonly vm = computed(() => {
     const { pointerPos, dropArea: baseDropArea, dragOp } = this.previewProps();
-    const plan = (dragOp as DragTetheredPlanEnd).plan; // TODO: Change this to untethered drag op when implemented
+    const plan = (dragOp as DragUntetheredPlanEnd).plan;
     if (baseDropArea && plan) {
       const dropArea = baseDropArea as DropAreaResourceLaneColumn;
       const { timeWindow, pixelsPerHour, scrollY, activitiesGridRect, activitiesGridBoundingRect } = dropArea;
