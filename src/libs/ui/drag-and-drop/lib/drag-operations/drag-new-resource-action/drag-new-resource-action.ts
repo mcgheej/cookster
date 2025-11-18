@@ -7,6 +7,7 @@ import { PointerData } from '../../types/pointer-data';
 import { PreviewNewActionInResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
 import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 import { Plan } from '@util/data-types/index';
+import { isAfter } from 'date-fns';
 
 export interface DragNewResourceActionData extends DragData {
   plan: Plan | null;
@@ -77,6 +78,9 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
         props.pointerPos.shiftKey,
         this.plan.properties.endTime
       );
+      if (time && isAfter(time, this.plan.properties.endTime)) {
+        time = this.plan.properties.endTime;
+      }
     }
 
     props.overlayService.detachComponent(props.renderer);

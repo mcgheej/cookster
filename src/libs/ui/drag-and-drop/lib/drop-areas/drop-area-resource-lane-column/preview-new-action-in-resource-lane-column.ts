@@ -3,6 +3,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { laneWidthPx, Point } from '@util/data-types/index';
+import { DragNewResourceAction } from '../../drag-operations/drag-new-resource-action/drag-new-resource-action';
+import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 
 @Component({
   selector: 'ck-preview-new-action-in-resource-lane-column',
@@ -40,16 +42,25 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
   previewProps = input.required<PreviewComponentProps>();
 
   protected readonly vm = computed(() => {
-    const { pointerPos, dropArea, clipArea } = this.previewProps();
-    if (dropArea) {
-      const { hostElement: dropEl } = dropArea as DropAreaResourceLaneColumn;
+    const { pointerPos, dropArea: baseDropArea, dragOp, clipArea } = this.previewProps();
+    const plan = (dragOp as DragNewResourceAction).plan;
+    if (baseDropArea && plan) {
+      const dropArea = baseDropArea as DropAreaResourceLaneColumn;
+      const dropEl = dropArea.hostElement;
       if (dropEl) {
-        const adjustedPosition = this.getAdjustedPosition(dropEl, pointerPos.dragPosition);
-        const laneWidth = laneWidthPx[(dropArea as DropAreaResourceLaneColumn).resourceLane().laneWidth];
-        const time = (dropArea as DropAreaResourceLaneColumn).getTimeFromPosition(
-          pointerPos.dragPosition,
-          pointerPos.shiftKey
-        );
+        const { resourceLane, timeWindow, pixelsPerHour, scrollY } = dropArea;
+        const laneRect = dropEl.getBoundingClientRect();
+        const M = getMinutesSinceMidnight(plan.properties.endTime);
+        const P = pixelsPerHour();
+        const T = laneRect.top;
+        const S = timeWindow().startHours;
+        const planEndPx = (P * (M - 60 * S)) / 60 + T;
+        const pos = { ...pointerPos.dragPosition, y: Math.min(pointerPos.dragPosition.y, planEndPx) };
+        console.log('pointerPos.dragPosition.y, planEndPx, pos.y);', pointerPos.dragPosition.y, planEndPx, pos.y);
+        const adjustedPosition = this.getAdjustedPosition(dropEl, pos);
+
+        const laneWidth = laneWidthPx[resourceLane().laneWidth];
+        const time = dropArea.getTimeFromPosition(pos, pointerPos.shiftKey);
         const clipPath = this.getClipPath(
           clipArea,
           DOMRect.fromRect({ x: adjustedPosition.x, y: adjustedPosition.y, width: laneWidth, height: 32 })
