@@ -10,7 +10,7 @@ import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/index';
 import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
-import { ActivityDB, PlanKitchenResource } from '@util/data-types/index';
+import { ActivityDB, FULL_TIME_WINDOW, PlanKitchenResource } from '@util/data-types/index';
 
 @Injectable()
 export class PlanEndService {
@@ -42,8 +42,9 @@ export class PlanEndService {
   computedPlanEndY() {
     return computed(() => {
       const planEnd = this.planEditorData.currentPlan()?.properties.endTime || undefined;
+      const planTimeWindow = this.planEditorData.currentPlan()?.properties.timeWindow || FULL_TIME_WINDOW;
       const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
-      const { startHours } = this.planEditorData.activitiesGridTimeWindow();
+      const { startHours } = planTimeWindow;
       if (!planEnd) {
         return undefined;
       }
@@ -60,7 +61,7 @@ export class PlanEndService {
       }
       if (
         getMinutesSinceMidnight(newTime) - plan.properties.durationMins <
-        this.planEditorData.activitiesGridTimeWindow().startHours * 60
+        plan.properties.timeWindow.startHours * 60
       ) {
         this.snackBar.open('Plan cannot start before time window.', 'Close', {
           duration: DEFAULT_SNACKBAR_DURATION,

@@ -26,5 +26,8 @@ export function createPlanDbUpdates(planProperties: Partial<PlanProperties>): Pa
   if (planProperties.endTime) {
     updates.date = Timestamp.fromDate(planProperties.endTime);
   }
+  if (planProperties.timeWindow) {
+    updates.timeWindow = planProperties.timeWindow;
+  }
   return updates;
 }

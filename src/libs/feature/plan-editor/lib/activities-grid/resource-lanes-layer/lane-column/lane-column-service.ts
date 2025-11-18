@@ -5,6 +5,7 @@ import {
   ActivityDB,
   activityDBsEqual,
   DisplayTile,
+  FULL_TIME_WINDOW,
   laneWidthPx,
   modifyResourceActionInPlan,
   Plan,
@@ -12,6 +13,7 @@ import {
   ResourceAction,
   ResourceLane,
   resourceLanesEqual,
+  TimeWindow,
 } from '@util/data-types/index';
 import {
   AcceptedDragOperation,
@@ -54,7 +56,7 @@ export class LaneColumnService {
   /**
    * compute drop area object from this resoiurce lane
    */
-  computedDropArea(resourceLane: InputSignal<ResourceLane>) {
+  computedDropArea(resourceLane: InputSignal<ResourceLane>, planTimeWindow: Signal<TimeWindow>) {
     return computed(() => {
       const index = resourceLane().kitchenResource.index;
       const dragNewResourceActionId = `drag-new-resource-action-lane-${index}`;
@@ -84,7 +86,7 @@ export class LaneColumnService {
         scrollY: this.planEditorData.activitiesGridScrollY,
         resourceLane: resourceLane,
         pixelsPerHour: this.planEditorData.activitiesGridPixelsPerHour,
-        timeWindow: this.planEditorData.activitiesGridTimeWindow,
+        timeWindow: planTimeWindow,
         timeSnapMins: this.planEditorData.timeSnapMins,
         activitiesGridRect: this.planEditorData.activitiesGridRect,
         activitiesGridBoundingRect: this.planEditorData.activitiesGridBoundingRect,
@@ -130,6 +132,18 @@ export class LaneColumnService {
   }
 
   /**
+   * compute plan time window
+   */
+  computedPlanTimeWindow() {
+    return computed(
+      () => {
+        return this.planEditorData.currentPlan()?.properties.timeWindow || FULL_TIME_WINDOW;
+      },
+      { equal: (a, b) => a.startHours === b.startHours && a.endHours === b.endHours }
+    );
+  }
+
+  /**
    * compute the actions for this resource lane
    */
   computedResourceActions(resourceLane: InputSignal<ResourceLane>) {
@@ -142,7 +156,8 @@ export class LaneColumnService {
   computedActivityTiles(
     distinctResourceLane: Signal<ResourceLane>,
     resourceActivities: Signal<ActivityDB[]>,
-    planEndTime: Signal<Date>
+    planEndTime: Signal<Date>,
+    planTimeWindow: Signal<TimeWindow>
   ) {
     return computed(() => {
       const planEnd = planEndTime();
@@ -150,7 +165,7 @@ export class LaneColumnService {
       const activities = resourceActivities();
       const selectedActivityId = this.planEditorData.selectedActivityId();
       const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
-      const timeWindow = this.planEditorData.activitiesGridTimeWindow();
+      const timeWindow = planTimeWindow();
       if (isSameMinute(planEnd, new Date(0))) {
         return [];
       }
@@ -169,12 +184,16 @@ export class LaneColumnService {
   /**
    * compute the resource action display tiles for this resoirce lane
    */
-  computedActionDisplayTiles(resourceActions: Signal<ResourceAction[]>, planEndTime: Signal<Date>) {
+  computedActionDisplayTiles(
+    resourceActions: Signal<ResourceAction[]>,
+    planEndTime: Signal<Date>,
+    planTimeWindow: Signal<TimeWindow>
+  ) {
     return computed(() => {
       const actions = resourceActions();
       const planEnd = planEndTime();
       const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
-      const { startHours } = this.planEditorData.activitiesGridTimeWindow();
+      const { startHours } = planTimeWindow();
       return actions.map((a, index) => {
         const time = subMinutes(planEnd, a.timeOffset);
         return {

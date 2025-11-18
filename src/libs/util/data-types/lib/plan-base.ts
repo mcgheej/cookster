@@ -1,4 +1,5 @@
 import { PlanKitchenResource } from './plan-kitchen-resource';
+import { TimeWindow } from './time-window';
 
 export interface PlanBase {
   id: string;
@@ -7,4 +8,5 @@ export interface PlanBase {
   color: string;
   kitchenName: string;
   kitchenResources: PlanKitchenResource[];
+  timeWindow: TimeWindow;
 }

@@ -116,6 +116,7 @@ export class PlansDataService {
 
         // this.lastEmittedPlan = new Plan(currentPlanSummary, currentPlanActivities);
         this.lastEmittedPlan = createPlanFactory(currentPlanSummary, currentPlanActivities);
+        console.log('Emitting new current plan', this.lastEmittedPlan);
         return this.lastEmittedPlan;
       })
     );

@@ -12,6 +12,7 @@ import { PlanEditorDataService } from '../plan-editor-data-service';
 import { ResourceLanesLayer } from './resource-lanes-layer/resource-lanes-layer';
 import { PlanEnd } from './plan-end/plan-end';
 import { TfxResizeEvent, TfxResizeObserver } from '@ui/tfx-resize-observer/index';
+import { FULL_TIME_WINDOW } from '@util/data-types/index';
 
 @Component({
   selector: 'ck-activities-grid',
@@ -36,21 +37,18 @@ export class ActivitiesGrid {
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected readonly hoursInGrid = computed(() => {
-    const { startHours, endHours } = this.planEditorData.activitiesGridTimeWindow();
+    const { startHours, endHours } = this.planEditorData.currentPlan()?.properties.timeWindow || FULL_TIME_WINDOW;
     return TIMESLOTS.filter((_, i) => i >= startHours && i < endHours);
   });
 
   protected onScroll(ev: any) {
     const sX = this.planEditorData.activitiesGridScrollX();
     const scrollX = -ev.target.scrollLeft;
-    // const scrollWindowHeight = ev.target.clientHeight;
-    // console.log('scrollWindowHeight', scrollWindowHeight);
     if (scrollX !== sX) {
       this.planEditorData.setScrollX(scrollX);
     }
     const sY = this.planEditorData.activitiesGridScrollY();
     const scrollY = -ev.target.scrollTop;
-    // const scrollY = `0 ${-ev.target.scrollTop}px`;
     if (scrollY !== sY) {
       this.planEditorData.setScrollY(scrollY);
     }

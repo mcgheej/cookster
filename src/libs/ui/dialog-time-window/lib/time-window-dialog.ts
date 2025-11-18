@@ -4,13 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TIMESLOTS } from '@util/app-config/index';
 import { Plan, TimeWindow } from '@util/data-types/index';
-import { addMinutes, getHours, getMinutes, subMinutes } from 'date-fns';
+import { getHours, getMinutes, subMinutes } from 'date-fns';
 
 const hourslotWidthPx = 40;
 const windowBarWidthPx = hourslotWidthPx * 24;
 
 export interface TimeWindowDialogData {
-  timeWindow: TimeWindow;
   plan: Plan;
 }
 
@@ -32,7 +31,7 @@ export class TimeWindowDialog implements OnInit {
   protected timeWindowRegion = signal<WindowBarRegion>({ leftPx: 0, widthPx: 0 });
   protected planWindowRegion = signal<WindowBarRegion>({ leftPx: 0, widthPx: 0 });
 
-  private timeWindow = this.data.timeWindow;
+  private timeWindow = this.data.plan.properties.timeWindow;
   private plan = this.data.plan;
 
   private maxStartHours = 0;

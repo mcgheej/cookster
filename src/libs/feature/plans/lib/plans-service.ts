@@ -5,7 +5,12 @@ import { Router } from '@angular/router';
 import { PlansDataService } from '@data-access/plans/index';
 import { PlanPropertiesDialog } from '@ui/dialog-plan-properties/lib/plan-properties-dialog';
 import { ConfirmSnack } from '@ui/snack-bars/index';
-import { DEFAULT_PLAN_COLOR, DEFAULT_SNACKBAR_DURATION, INITIAL_PLAN_DURATION_MINS } from '@util/app-config/index';
+import {
+  DEFAULT_PLAN_COLOR,
+  DEFAULT_SNACKBAR_DURATION,
+  DEFAULT_TIME_WINDOW,
+  INITIAL_PLAN_DURATION_MINS,
+} from '@util/app-config/index';
 import { PlanProperties, PlanSummary } from '@util/data-types/index';
 import { getDateToLastHour } from '@util/date-utilities/index';
 import { subMinutes } from 'date-fns';
@@ -35,6 +40,7 @@ export class PlansService {
           endTime,
           contentEnd: endTime,
           durationMins: INITIAL_PLAN_DURATION_MINS,
+          timeWindow: DEFAULT_TIME_WINDOW,
         } as PlanProperties,
         width: '600px',
         maxWidth: '800px',

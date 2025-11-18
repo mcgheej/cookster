@@ -40,6 +40,7 @@ export function dummyPlan(): Plan {
       endTime: now,
       contentEnd: now,
       durationMins: 0,
+      timeWindow: { startHours: 0, endHours: 24 },
     } as PlanProperties,
     activities: [],
   };

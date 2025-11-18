@@ -4,15 +4,20 @@ import { LaneWidth, TimeWindow } from '@util/data-types/index';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimeWindowDialog, TimeWindowDialogData } from '@ui/dialog-time-window/index';
 import { TimeSnapDialog } from '@ui/dialog-time-snap/index';
+import { PlansDataService } from '@data-access/plans/index';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
 
 @Injectable()
 export class ActivitiesGridMenuService {
   private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
   private readonly editorData = inject(PlanEditorDataService);
+  private readonly db = inject(PlansDataService);
 
   private readonly planEndTethered = this.editorData.activitiesGridPlanEndTethered;
   private readonly laneController = this.editorData.laneController;
-  private readonly timeWindow = this.editorData.activitiesGridTimeWindow;
+  // private readonly timeWindow = this.editorData.activitiesGridTimeWindow;
 
   setPixelsPerHour(pixelsPerHour: number) {
     if (pixelsPerHour !== this.editorData.activitiesGridPixelsPerHour()) {
@@ -46,11 +51,18 @@ export class ActivitiesGridMenuService {
       width: '1008px',
       maxWidth: '1008px',
       height: '200px',
-      data: { timeWindow: this.timeWindow(), plan } as TimeWindowDialogData,
+      data: { plan } as TimeWindowDialogData,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.editorData.setActivitiesGridTimeWindow(result);
+        // this.editorData.setActivitiesGridTimeWindow(result);
+        this.db.updatePlanProperties(plan.properties.id, { timeWindow: result }).subscribe({
+          error: (err) => {
+            this.snackBar.open(`Error updating plan time window - ${err}`, 'Close', {
+              duration: DEFAULT_SNACKBAR_DURATION,
+            });
+          },
+        });
       }
     });
   }

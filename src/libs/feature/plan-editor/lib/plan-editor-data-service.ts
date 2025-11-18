@@ -6,10 +6,9 @@ import {
   DEFAULT_PIXELS_PER_HOUR,
   DEFAULT_PLAN_COLOR,
   DEFAULT_TIME_SNAP_MINS,
-  DEFAULT_TIME_WINDOW,
   googleColors,
 } from '@util/app-config/index';
-import { ActivityDB, laneWidthPx, planKitchenResourcesEqual, ResourceLane, TimeWindow } from '@util/data-types/index';
+import { ActivityDB, laneWidthPx, planKitchenResourcesEqual, ResourceLane } from '@util/data-types/index';
 import { LaneController, laneControllersEqual } from './types-constants/lane-control';
 import { ActivitiesDataService } from '@data-access/plans/lib/activities-data';
 
@@ -181,13 +180,6 @@ export class PlanEditorDataService {
   readonly activitiesGridPlanEndTethered = computed(() => this.planEndTethered());
 
   /**
-   * activitiesGridTimeWindow
-   * ------------------------
-   */
-  private readonly timeWindow = signal<TimeWindow>(DEFAULT_TIME_WINDOW);
-  readonly activitiesGridTimeWindow = computed(() => this.timeWindow());
-
-  /**
    * Activities Grid scrollX and scrollY
    * -----------------------------------
    */
@@ -232,14 +224,6 @@ export class PlanEditorDataService {
    */
   setActivitiesGridPlanEndTethered(value: boolean) {
     this.planEndTethered.set(value);
-  }
-
-  /**
-   *
-   * @param newTimeWindow
-   */
-  setActivitiesGridTimeWindow(newTimeWindow: TimeWindow) {
-    this.timeWindow.set(newTimeWindow);
   }
 
   /**

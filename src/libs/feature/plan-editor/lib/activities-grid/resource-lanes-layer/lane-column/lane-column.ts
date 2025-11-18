@@ -36,22 +36,25 @@ export class LaneColumn {
   readonly resourceLane = input.required<ResourceLane>();
 
   protected readonly distinctResourceLane = this.service.computedDistinctResourceLane(this.resourceLane);
-  protected readonly dropArea = this.service.computedDropArea(this.resourceLane);
   protected readonly resourceActivities = this.service.computedResourceActivities(this.resourceLane);
   protected readonly planEndTime = this.service.computedPlanEndTime();
+  protected readonly planTimeWindow = this.service.computedPlanTimeWindow();
+  protected readonly dropArea = this.service.computedDropArea(this.resourceLane, this.planTimeWindow);
   protected readonly resourceActions = this.service.computedResourceActions(this.resourceLane);
   protected readonly activityTiles = this.service.computedActivityTiles(
     this.resourceLane,
     this.resourceActivities,
-    this.planEndTime
+    this.planEndTime,
+    this.planTimeWindow
   );
   protected readonly actionDisplayTiles = this.service.computedActionDisplayTiles(
     this.resourceActions,
-    this.planEndTime
+    this.planEndTime,
+    this.planTimeWindow
   );
 
   protected readonly plan = this.planEditorData.currentPlan;
-  private readonly timeWindow = this.planEditorData.activitiesGridTimeWindow;
+  // private readonly timeWindow = this.planEditorData.activitiesGridTimeWindow;
   private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
 
   // Methods
@@ -63,7 +66,8 @@ export class LaneColumn {
     if (!plan) {
       return;
     }
-    const minsSinceMidnight = Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.timeWindow().startHours * 60;
+    const minsSinceMidnight =
+      Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.planTimeWindow().startHours * 60;
     this.createActivity(minsSinceMidnight, this.resourceLane(), plan);
   }
 
