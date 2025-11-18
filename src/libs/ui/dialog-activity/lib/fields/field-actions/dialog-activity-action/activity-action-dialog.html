@@ -15,6 +15,6 @@
     @if (data.actionIndex >= 0) {
       <button matButton (click)="deleteAction($event)">Delete</button>
     }
-    <button matButton type="submit">Save</button>
+    <button matButton type="submit" [disabled]="form.invalid">Save</button>
   </mat-dialog-actions>
 </form>

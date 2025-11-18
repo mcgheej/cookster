@@ -1,17 +1,21 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivityFormService } from './activity-form-service';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ActivityDB } from '@util/data-types/index';
-import { ActivityDialogData } from './types/activities-dialog-data';
+import { ActivityDB, Plan } from '@util/data-types/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldName } from './field-name/field-name';
-import { FieldTimeDuration } from './field-time-duration/field-time-duration';
-import { FieldColor } from './field-color/field-color';
-import { FieldResource } from './field-resource/field-resource';
-import { FieldDescription } from './field-description/field-description';
-import { FieldStartEndMessages } from './field-start-end-messages/field-start-end-messages';
-import { FieldActions } from './field-actions/field-actions';
+import { FieldName } from './fields/field-name';
+import { FieldTimeDuration } from './fields/field-time-duration';
+import { FieldColor } from './fields/field-color';
+import { FieldResource } from './fields/field-resource';
+import { FieldDescription } from './fields/field-description';
+import { FieldStartEndMessages } from './fields/field-start-end-messages';
+import { FieldActions } from './fields/field-actions/field-actions';
+
+export interface ActivityDialogData {
+  plan: Plan;
+  activity: ActivityDB;
+}
 
 @Component({
   selector: 'ck-activity-dialog',

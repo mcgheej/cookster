@@ -1,6 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { NonNullableFormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ActivityAction, activityActionAfterPlanEnd, ActivityDB, Plan, ReferencePoint } from '@util/data-types/index';
+import {
+  ActivityAction,
+  activityActionOutsideValidTimePeriod,
+  ActivityDB,
+  Plan,
+  ReferencePoint,
+} from '@util/data-types/index';
 import { isEmptyObject } from '@util/misc-utilities/index';
 
 export type BeforeAfter = 'before' | 'after';
@@ -14,15 +20,13 @@ export class ActivityActionFormService {
       direction: ['after' as BeforeAfter, [Validators.required]],
       referencePoint: ['start' as ReferencePoint, [Validators.required]],
     },
-    { validators: [this.validateActionBeforePlanEnd()] }
+    { validators: [this.validateActionWithinValidTimePeriod()] }
   );
 
-  private action: ActivityAction | null = null;
   private plan: Plan | null = null;
   private activity: ActivityDB | null = null;
 
   initialise(action: ActivityAction, activity: ActivityDB, plan: Plan): void {
-    this.action = action;
     this.plan = plan;
     this.activity = activity;
     this.loadFormData(action);
@@ -74,29 +78,34 @@ export class ActivityActionFormService {
     };
   }
 
-  private validateActionBeforePlanEnd(): ValidatorFn {
+  /**
+   * Action must be within the plan's valid time window - this must not be after plan end but also within time window
+   */
+  private validateActionWithinValidTimePeriod(): ValidatorFn {
     return (): ValidationErrors | null => {
       if (!this.form || !this.plan || !this.activity) {
         return null;
       }
+      const planEnd = this.plan.properties.endTime;
       const action = this.unloadFormData();
-      const isAfterPlanEnd = activityActionAfterPlanEnd(
+      const isInvalid = activityActionOutsideValidTimePeriod(
         action,
         this.activity.startTimeOffset,
         this.activity.duration,
-        this.plan.properties.endTime
+        planEnd,
+        this.plan.properties.timeWindow
       );
       if (this.form.controls.name.errors) {
-        if (isAfterPlanEnd) {
-          this.form.controls.name.setErrors({ outsidePlan: true });
+        if (isInvalid) {
+          this.form.controls.name.setErrors({ invalidActionTime: true });
         } else {
-          delete this.form.controls.name.errors['outsidePlan'];
+          delete this.form.controls.name.errors['invalidActionTime'];
           if (isEmptyObject(this.form.controls.name.errors)) {
             this.form.controls.name.setErrors(null);
           }
         }
       } else {
-        this.form.controls.name.setErrors(isAfterPlanEnd ? { outsidePlan: true } : null);
+        this.form.controls.name.setErrors(isInvalid ? { invalidActionTime: true } : null);
       }
       return null;
     };

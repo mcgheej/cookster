@@ -60,10 +60,10 @@ export class ActivityActionDialog implements OnInit {
     this.dialogRef.close({ operation: 'save', action: this.formService.getActivityActionFromForm() });
   }
 
-  getErrorMessage(): string {
-    if (this.form.controls.name.errors?.['outsidePlan']) {
-      return 'Action outside plan period';
-    }
-    return '';
-  }
+  // getErrorMessage(): string {
+  //   if (this.form.controls.name.errors?.['invalidActionTime']) {
+  //     return 'Action before time window or after plan end';
+  //   }
+  //   return '';
+  // }
 }

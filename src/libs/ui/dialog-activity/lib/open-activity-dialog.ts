@@ -1,7 +1,6 @@
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivityDB } from '@util/data-types/index';
-import { ActivityDialogData } from './types/activities-dialog-data';
-import { ActivityDialog } from './activity-dialog';
+import { ActivityDialog, ActivityDialogData } from './activity-dialog';
 
 export function openActivityDialog(
   data: ActivityDialogData,

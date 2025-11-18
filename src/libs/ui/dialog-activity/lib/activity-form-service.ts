@@ -1,14 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  NonNullableFormBuilder,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { NonNullableFormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION, defaultGoogleColor, INITIAL_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
@@ -24,7 +16,7 @@ import {
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { isEmptyObject } from '@util/misc-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
-import { addMinutes, isAfter, isValid, subMinutes } from 'date-fns';
+import { addHours, addMinutes, isAfter, isBefore, isValid, startOfDay, subMinutes } from 'date-fns';
 
 // export const F_NAME = 'name';
 // export const F_START_TIME = 'startTime';
@@ -62,7 +54,7 @@ export class ActivityFormService {
       startMessage: [''],
       endMessage: [''],
     },
-    { validators: [this.validateActivityBeforePlanEnd()] }
+    { validators: [this.validateActivityWithinValidTimePeriod()] }
   );
 
   private readonly formChanges = toSignal(this.form.valueChanges, { initialValue: undefined });
@@ -163,30 +155,30 @@ export class ActivityFormService {
     } as ActivityDB;
   }
 
-  private validateActivityBeforePlanEnd(): ValidatorFn {
+  private validateActivityWithinValidTimePeriod(): ValidatorFn {
     return (): ValidationErrors | null => {
       if (!this.form || !this.plan) {
         return null;
       }
       const plan = this.plan();
-      const startTime = this.form.controls.startTime.value;
+      const activityStartTime = this.form.controls.startTime.value;
       const duration = this.form.controls.duration.value;
-      if (isValid(startTime) && isValid(duration) && plan) {
-        const isAfterPlanEnd = isAfter(
-          addMinutes(startTime, getMinutesSinceMidnight(duration)),
-          plan.properties.endTime
-        );
+      if (isValid(activityStartTime) && isValid(duration) && plan) {
+        const activityEndTime = addMinutes(activityStartTime, getMinutesSinceMidnight(duration));
+        const timeWindowStart = addHours(startOfDay(activityStartTime), plan.properties.timeWindow.startHours);
+        const isInvalid =
+          isBefore(activityStartTime, timeWindowStart) || isAfter(activityEndTime, plan.properties.endTime);
         if (this.form.controls.startTime.errors) {
-          if (isAfterPlanEnd) {
-            this.form.controls.startTime.setErrors({ outsidePlan: true });
+          if (isInvalid) {
+            this.form.controls.startTime.setErrors({ outsideValidPeriod: true });
           } else {
-            delete this.form.controls.startTime.errors['outsidePlan'];
+            delete this.form.controls.startTime.errors['outsideValidPeriod'];
             if (isEmptyObject(this.form.controls.startTime.errors)) {
               this.form.controls.startTime.setErrors(null);
             }
           }
         } else {
-          this.form.controls.startTime.setErrors(isAfterPlanEnd ? { outsidePlan: true } : null);
+          this.form.controls.startTime.setErrors(isInvalid ? { outsideValidPeriod: true } : null);
         }
       }
       return null;

@@ -23,6 +23,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 import {
   ActivityAction,
   activityActionAfterPlanEnd,
+  activityActionOutsideValidTimePeriod,
   activityActionText,
   activityActionTime,
   ActivityDB,
@@ -71,16 +72,17 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
     const plan = this.plan();
     return actions.map((a) => {
       const actionTime = activityActionTime(a, activity.startTimeOffset, activity.duration, plan.properties.endTime);
-      const afterPlan = activityActionAfterPlanEnd(
+      const isInvalid = activityActionOutsideValidTimePeriod(
         a,
         activity.startTimeOffset,
         activity.duration,
-        plan.properties.endTime
+        plan.properties.endTime,
+        plan.properties.timeWindow
       );
       return {
         text: '[' + format(actionTime, 'HH:mm') + '] ' + activityActionText(a),
-        color: afterPlan ? 'var(--mat-sys-error)' : 'var(--mat-sys-on-surface-variant)',
-        invalid: afterPlan,
+        color: isInvalid ? 'var(--mat-sys-error)' : 'var(--mat-sys-on-surface-variant)',
+        invalid: isInvalid,
       };
     });
   });
@@ -89,7 +91,7 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
     const invalid = actionSummaries.reduce((acc, curr, idx) => {
       return acc || curr.invalid;
     }, false);
-    return invalid ? 'One or more actions are scheduled after the plan end time' : '';
+    return invalid ? 'One or more actions are scheduled outside valid time period' : '';
   });
 
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;

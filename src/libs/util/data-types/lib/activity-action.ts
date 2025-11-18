@@ -1,6 +1,7 @@
 import { ReferencePoint } from './reference-point';
 import { ResourceAction } from './resource-action';
-import { addMinutes, format, isAfter, subMinutes } from 'date-fns';
+import { addHours, addMinutes, format, getHours, isAfter, isBefore, startOfDay, subMinutes } from 'date-fns';
+import { TimeWindow } from './time-window';
 
 export interface ActivityAction extends ResourceAction {
   referencePoint: ReferencePoint;
@@ -18,6 +19,29 @@ export function activityActionAfterPlanEnd(
 ): boolean {
   const actionTime = activityActionTime(action, activityStartTimeOffset, activityDuration, planEnd);
   return isAfter(actionTime, planEnd);
+}
+
+export function activityActionOutsideTimeWindow(
+  action: ActivityAction,
+  activityStartTimeOffset: number,
+  activityDuration: number,
+  planEnd: Date,
+  planTimeWindow: TimeWindow
+): boolean {
+  const actionTimeHours = getHours(activityActionTime(action, activityStartTimeOffset, activityDuration, planEnd));
+  return actionTimeHours < planTimeWindow.startHours || actionTimeHours > planTimeWindow.endHours;
+}
+
+export function activityActionOutsideValidTimePeriod(
+  action: ActivityAction,
+  activityStartTimeOffset: number,
+  activityDuration: number,
+  planEnd: Date,
+  planTimeWindow: TimeWindow
+): boolean {
+  const actionTime = activityActionTime(action, activityStartTimeOffset, activityDuration, planEnd);
+  const startTimeWindow = addHours(startOfDay(planEnd), planTimeWindow.startHours);
+  return isAfter(actionTime, planEnd) || isBefore(actionTime, startTimeWindow);
 }
 
 export function activityActionTime(
