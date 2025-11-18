@@ -48,7 +48,7 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
       const dropArea = baseDropArea as DropAreaResourceLaneColumn;
       const dropEl = dropArea.hostElement;
       if (dropEl) {
-        const { resourceLane, timeWindow, pixelsPerHour, scrollY } = dropArea;
+        const { resourceLane, timeWindow, pixelsPerHour } = dropArea;
         const laneRect = dropEl.getBoundingClientRect();
         const M = getMinutesSinceMidnight(plan.properties.endTime);
         const P = pixelsPerHour();

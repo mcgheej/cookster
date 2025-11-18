@@ -8,6 +8,7 @@ import { PointerData } from '../../types/pointer-data';
 import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 import { PreviewMoveActionInResourceLaneHeader } from '../../drop-areas/drop-area-resource-lane-header/preview-move-action-in-resource-lane-header';
 import { PreviewMoveActionInResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/preview-move-action-in-resource-lane-column';
+import { isAfter } from 'date-fns';
 
 export interface DragMoveResourceActionData extends DragData {
   plan: Plan | null;
@@ -90,6 +91,9 @@ export class DragMoveResourceAction extends DragOperation implements DragMoveRes
           props.pointerPos.shiftKey,
           this.plan.properties.endTime
         );
+        if (time && isAfter(time, this.plan.properties.endTime)) {
+          time = this.plan.properties.endTime;
+        }
         operation = 'update';
       }
     }
