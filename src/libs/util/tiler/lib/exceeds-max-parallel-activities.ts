@@ -7,7 +7,7 @@ export function exceedsMaxParallelActivities(
   plan: Plan
 ): boolean {
   const resource = plan.properties.kitchenResources[newActivity.resourceIndex];
-  const tileActivities = [...activitiesInLane, ...[newActivity]];
+  const tileActivities = [...activitiesInLane.filter((a) => a.id !== newActivity.id), ...[newActivity]];
   if (getMaxConurbationDepth(tileActivities, plan.properties.endTime) > resource.maxParallelActivities) {
     return true;
   }
