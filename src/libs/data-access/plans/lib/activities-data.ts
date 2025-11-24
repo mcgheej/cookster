@@ -45,8 +45,8 @@ export class ActivitiesDataService {
     return this.db.createActivity(a);
   }
 
-  updateActivity(a: ActivityDB): Observable<void> {
-    return this.db.updateActivity(a);
+  updateActivity(id: string, a: Partial<Omit<ActivityDB, 'id'>>): Observable<void> {
+    return this.db.updateActivity(id, a);
   }
 
   deleteActivity(id: string): Observable<void> {

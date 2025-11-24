@@ -75,8 +75,12 @@ export class PlansDataService {
     return this.activitiesData.createActivity(a);
   }
 
-  updateActivity(a: ActivityDB): Observable<void> {
-    return this.activitiesData.updateActivity(a);
+  // updateActivity(a: ActivityDB): Observable<void> {
+  //   return this.activitiesData.updateActivity(a);
+  // }
+
+  updateActivity(id: string, a: Partial<Omit<ActivityDB, 'id'>>): Observable<void> {
+    return this.activitiesData.updateActivity(id, a);
   }
 
   deleteActivity(id: string): Observable<void> {

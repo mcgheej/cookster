@@ -99,7 +99,8 @@ export class SelectedActivityPanelService {
             duration: DEFAULT_SNACKBAR_DURATION,
           });
         } else {
-          this.plansData.updateActivity(newActivity).subscribe({
+          const { id, ...activityUpdates } = newActivity;
+          this.plansData.updateActivity(id, activityUpdates).subscribe({
             next: () => {
               this.snackBar.open('Activity updated', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
             },

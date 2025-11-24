@@ -1,9 +1,14 @@
 import { NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
-import { CkDrag, DragChangeActivityDuration, DragResult } from '@ui/drag-and-drop/index';
+import {
+  CkDrag,
+  DragChangeActivityDuration,
+  DragChangeActivityDurationResult,
+  DragResult,
+} from '@ui/drag-and-drop/index';
 import { googleColors } from '@util/app-config/index';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { DisplayTile } from '@util/data-types/index';
@@ -21,6 +26,7 @@ export class ActivityTile {
   private planEditorData = inject(PlanEditorDataService);
 
   tile = input.required<DisplayTile>();
+  durationChanged = output<number>();
 
   protected readonly selectedActivityId = this.planEditorData.selectedActivityId;
 
@@ -57,8 +63,10 @@ export class ActivityTile {
   }
 
   protected onDragDurationEnd(ev: DragResult | undefined) {
-    console.log('ActivityTile.onDragDurationEnd ev:', ev);
     this.showElement.set('visible');
+    if (ev && (ev as DragChangeActivityDurationResult).durationMins !== this.tile().activity.duration) {
+      this.durationChanged.emit((ev as DragChangeActivityDurationResult).durationMins);
+    }
   }
 
   protected getResizeHandleStyles() {

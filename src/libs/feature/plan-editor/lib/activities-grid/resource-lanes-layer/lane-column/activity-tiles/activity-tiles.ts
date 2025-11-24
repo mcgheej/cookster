@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { ResourceLane } from '@util/data-types/index';
+import { DisplayTile, ResourceLane } from '@util/data-types/index';
 import { ActivityTilesService } from './activity-tiles-service';
 import { ActivityTile } from './activity-tile/activity-tile';
 
@@ -8,7 +8,7 @@ import { ActivityTile } from './activity-tile/activity-tile';
   imports: [ActivityTile],
   template: `
     @for (tile of activityTiles(); track $index) {
-      <ck-activity-tile [tile]="tile" />
+      <ck-activity-tile [tile]="tile" (durationChanged)="durationChanged(tile, $event)" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,4 +20,11 @@ export class ActivityTiles {
 
   protected readonly resourceActivties = this.service.computedResourceActivities(this.resourceLane);
   protected readonly activityTiles = this.service.computedActivityTiles(this.resourceLane, this.resourceActivties);
+
+  // User Interactions
+  // -----------------
+
+  durationChanged(tile: DisplayTile, newDurationMins: number) {
+    this.service.updateActivityDuration(tile.activity.id, newDurationMins);
+  }
 }

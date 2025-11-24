@@ -96,10 +96,15 @@ export class AfActivitiesService {
     );
   }
 
-  updateActivity(a: ActivityDB): Observable<void> {
-    const { id, ...activity } = a;
-    const docRef = doc(this.firestore, `activities/${a.id}`);
-    return from(updateDoc(docRef, activity));
+  // updateActivity(a: ActivityDB): Observable<void> {
+  //   const { id, ...activity } = a;
+  //   const docRef = doc(this.firestore, `activities/${a.id}`);
+  //   return from(updateDoc(docRef, activity));
+  // }
+
+  updateActivity(id: string, a: Partial<Omit<ActivityDB, 'id'>>): Observable<void> {
+    const docRef = doc(this.firestore, `activities/${id}`);
+    return from(updateDoc(docRef, a));
   }
 
   private setupSnapshotListener(planId: string): Unsubscribe {

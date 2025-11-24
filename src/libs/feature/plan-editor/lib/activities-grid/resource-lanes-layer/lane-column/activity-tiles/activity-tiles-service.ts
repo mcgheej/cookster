@@ -2,7 +2,7 @@ import { computed, inject, Injectable, InputSignal, Signal } from '@angular/core
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/index';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
-import { DEFAULT_COLOR_OPACITY, googleColors } from '@util/app-config/index';
+import { DEFAULT_COLOR_OPACITY, DEFAULT_SNACKBAR_DURATION, googleColors } from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
 import { ActivityDB, activityDBsEqual, DisplayTile, laneWidthPx, ResourceLane } from '@util/data-types/index';
 import { Tiler } from '@util/tiler/index';
@@ -66,6 +66,18 @@ export class ActivityTilesService {
         gapPx: 4,
       });
       return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item, selectedActivityId) }));
+    });
+  }
+
+  // Public Methods
+  // --------------
+
+  updateActivityDuration(activityId: string, newDurationMins: number): void {
+    this.db.updateActivity(activityId, { duration: newDurationMins }).subscribe({
+      error: (err) => {
+        console.error('Error updating activity duration', err);
+        this.snackBar.open('Error updating activity duration', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+      },
     });
   }
 
