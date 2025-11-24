@@ -1,16 +1,9 @@
-import { Injectable, computed, InputSignal, inject, Signal } from '@angular/core';
+import { computed, inject, Injectable, InputSignal, Signal } from '@angular/core';
 import { PlanEditorDataService } from '../../../plan-editor-data-service';
 import {
-  ActionDisplayTile,
   ActivityDB,
-  activityDBsEqual,
-  DisplayTile,
   FULL_TIME_WINDOW,
-  laneWidthPx,
-  modifyResourceActionInPlan,
   Plan,
-  removeResourceActionFromPlan,
-  ResourceAction,
   ResourceLane,
   resourceLanesEqual,
   TimeWindow,
@@ -24,39 +17,31 @@ import {
   PreviewTetheredPlanEnd,
   PreviewUntetheredPlanEnd,
 } from '@ui/drag-and-drop/index';
-import { format, isSameMinute, subMinutes } from 'date-fns';
-import { Tiler } from '@util/tiler/index';
-import {
-  DEFAULT_COLOR_OPACITY,
-  DEFAULT_SNACKBAR_DURATION,
-  googleColors,
-  RESOURCE_ACTION_COMPONENT_HEIGHT,
-} from '@util/app-config/index';
-import { opaqueColor } from '@util/color-utilities/index';
-import { getMinutesSinceMidnight } from '@util/date-utilities/index';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackConfirmDelete } from './snack-confirm-delete';
 import { PlansDataService } from '@data-access/plans/index';
+import { openActivityDialog } from '@ui/activity-dialog/index';
+import { exceedsMaxParallelActivities } from '@util/tiler/index';
+import {
+  DEFAULT_ACTIVITY_COLOR,
+  DEFAULT_SNACKBAR_DURATION,
+  INITIAL_ACTIVITY_DURATION_MINS,
+} from '@util/app-config/index';
+import { getHours, getMinutes } from 'date-fns';
 
 @Injectable()
 export class LaneColumnService {
+  private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly db = inject(PlansDataService);
+  private readonly plansData = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
-  private readonly tiler = inject(Tiler);
 
-  /**
-   * current plan
-   */
-  plan = this.planEditorData.currentPlan;
+  private readonly plan = this.planEditorData.currentPlan;
+  private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
+  private readonly planTimeWindow = this.planEditorData.planTimeWindow;
 
-  /**
-   * pixels per hour for activities grid
-   */
-  pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
-
-  // Computed Signals
-  // ----------------
+  // Computed Signal Factories
+  // -------------------------
 
   /**
    * compute resource lane that is truly distinct
@@ -70,7 +55,7 @@ export class LaneColumnService {
   /**
    * compute drop area object from this resoiurce lane
    */
-  computedDropArea(resourceLane: InputSignal<ResourceLane>, planTimeWindow: Signal<TimeWindow>) {
+  computedDropArea(resourceLane: Signal<ResourceLane>) {
     return computed(() => {
       const index = resourceLane().kitchenResource.index;
       const dragNewResourceActionId = `drag-new-resource-action-lane-${index}`;
@@ -104,7 +89,7 @@ export class LaneColumnService {
         scrollY: this.planEditorData.activitiesGridScrollY,
         resourceLane: resourceLane,
         pixelsPerHour: this.planEditorData.activitiesGridPixelsPerHour,
-        timeWindow: planTimeWindow,
+        timeWindow: this.planEditorData.planTimeWindow,
         timeSnapMins: this.planEditorData.timeSnapMins,
         activitiesGridRect: this.planEditorData.activitiesGridRect,
         activitiesGridBoundingRect: this.planEditorData.activitiesGridBoundingRect,
@@ -112,201 +97,66 @@ export class LaneColumnService {
     });
   }
 
-  /**
-   * compute the activities for this resource lane
-   */
-  computedResourceActivities(resourceLane: InputSignal<ResourceLane>) {
-    return computed(
-      () => {
-        const lane = resourceLane();
-        return this.planEditorData.activities().filter((a) => a.resourceIndex === lane.kitchenResource.index);
-      },
-      {
-        equal: (a, b) => {
-          if (a.length !== b.length) {
-            return false;
-          }
-          for (let i = 0; i < a.length; i++) {
-            if (!activityDBsEqual(a[i], b[i])) {
-              return false;
-            }
-          }
-          return true;
-        },
-      }
-    );
-  }
-
-  /**
-   * compute plan end time
-   */
-  computedPlanEndTime() {
-    return computed(
-      () => {
-        return this.planEditorData.currentPlan()?.properties.endTime || new Date(0);
-      },
-      { equal: (a, b) => isSameMinute(a, b) }
-    );
-  }
-
-  /**
-   * compute plan time window
-   */
-  computedPlanTimeWindow() {
-    return computed(
-      () => {
-        return this.planEditorData.currentPlan()?.properties.timeWindow || FULL_TIME_WINDOW;
-      },
-      { equal: (a, b) => a.startHours === b.startHours && a.endHours === b.endHours }
-    );
-  }
-
-  /**
-   * compute the actions for this resource lane
-   */
-  computedResourceActions(resourceLane: InputSignal<ResourceLane>) {
-    return computed(() => resourceLane().kitchenResource.actions);
-  }
-
-  /**
-   * compute the activity tiles for this resource lane
-   */
-  computedActivityTiles(
-    distinctResourceLane: Signal<ResourceLane>,
-    resourceActivities: Signal<ActivityDB[]>,
-    planEndTime: Signal<Date>,
-    planTimeWindow: Signal<TimeWindow>
-  ) {
-    return computed(() => {
-      const planEnd = planEndTime();
-      const lane = distinctResourceLane();
-      const activities = resourceActivities();
-      const selectedActivityId = this.planEditorData.selectedActivityId();
-      const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
-      const timeWindow = planTimeWindow();
-      if (isSameMinute(planEnd, new Date(0))) {
-        return [];
-      }
-      const displayTiles = this.tiler.generateDisplayTiles(activities, planEnd, {
-        pixelsPerHour,
-        timeWindow,
-        laneWidthPx: laneWidthPx[lane.laneWidth],
-        leftMarginPx: 4,
-        rightMarginPx: 16,
-        gapPx: 4,
-      });
-      return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item, selectedActivityId) }));
-    });
-  }
-
-  /**
-   * compute the resource action display tiles for this resoirce lane
-   */
-  computedActionDisplayTiles(
-    resourceActions: Signal<ResourceAction[]>,
-    planEndTime: Signal<Date>,
-    planTimeWindow: Signal<TimeWindow>
-  ) {
-    return computed(() => {
-      const actions = resourceActions();
-      const planEnd = planEndTime();
-      const pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour();
-      const { startHours } = planTimeWindow();
-      return actions.map((a, index) => {
-        const time = subMinutes(planEnd, a.timeOffset);
-        return {
-          index,
-          resourceAction: a,
-          xPx: 0,
-          yPx: (getMinutesSinceMidnight(time) / 60 - startHours) * pixelsPerHour - RESOURCE_ACTION_COMPONENT_HEIGHT / 2,
-          time: format(time, 'HH:mm'),
-        } as ActionDisplayTile;
-      });
-    });
-  }
-
-  // Public methods
+  // Public Methods
   // --------------
 
-  modifyResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number, newTime: Date): void {
-    const timeOffset = Math.max(0, getMinutesSinceMidnight(plan.properties.endTime) - getMinutesSinceMidnight(newTime));
-    const modifiedAction: ResourceAction = { ...resourceLane.kitchenResource.actions[actionIndex], timeOffset };
-    if (modifiedAction.timeOffset === resourceLane.kitchenResource.actions[actionIndex].timeOffset) {
+  createNewActivity(ev: MouseEvent, resourceLane: ResourceLane): void {
+    const plan = this.plan();
+    if (!plan) {
       return;
     }
-    if (modifiedAction.timeOffset < 0) {
-      this.snackBar.open('Can not create action beyond the end of the plan.', 'Close', {
-        duration: DEFAULT_SNACKBAR_DURATION,
-      });
-      return;
-    }
-    const newPlan = modifyResourceActionInPlan(plan, resourceLane, actionIndex, modifiedAction);
-    this.db
-      .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
-      .subscribe({
-        error: (error) => {
-          this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
-          console.error('Error moving resource action', error);
-        },
-      });
+
+    const minsSinceMidnight =
+      Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.planTimeWindow().startHours * 60;
+    this.createActivity(minsSinceMidnight, resourceLane, plan);
   }
 
-  deleteResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number): void {
-    this.snackBar
-      .openFromComponent(SnackConfirmDelete, {
-        duration: 0,
-        verticalPosition: 'bottom',
-      })
-      .onAction()
-      .subscribe({
-        next: () => this.doDeleteResourceAction(plan, resourceLane, actionIndex),
-      });
-  }
+  // private Methods
+  // ----------------
 
-  // Private Methods
-  // ---------------
-
-  private doDeleteResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number): void {
-    const newPlan = removeResourceActionFromPlan(plan, resourceLane, actionIndex);
-    this.db
-      .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Resource action deleted.', 'Close', {
+  private createActivity(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): void {
+    const newActivity = this.createActivityInstance(minutesSinceMidnight, resourceLane, plan);
+    const dialogRef = openActivityDialog({ activity: newActivity, plan: plan }, this.dialog);
+    dialogRef.afterClosed().subscribe((newActivity) => {
+      if (newActivity) {
+        // check if new activity location exceeds max parallel activities for the resource lane in question
+        const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
+        if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
+          this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
             duration: DEFAULT_SNACKBAR_DURATION,
           });
-        },
-        error: (error) => {
-          this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
-          console.error('Error deleting resource action', error);
-        },
-      });
+        } else {
+          this.plansData.createActivity(newActivity).subscribe({
+            next: () => {
+              this.snackBar.open('Activity created', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+            },
+            error: (err) => {
+              console.error('Error creating activity', err);
+              this.snackBar.open('Error creating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+            },
+          });
+        }
+      }
+    });
   }
 
-  private getStyles(item: DisplayTile, selectedActivityId: string): Record<string, string> {
-    const color = googleColors[item.activity.color].color;
-    let borderColor = color;
-    let borderWidth = '2px';
-    if (item.activity.id === selectedActivityId) {
-      borderColor = googleColors[item.activity.color].contrastColor;
-      borderWidth = '4px';
-    }
-    const backgroundColor = opaqueColor(color, DEFAULT_COLOR_OPACITY);
-    const border = `2px solid ${borderColor}`;
-    const borderLeftWidth = `${borderWidth}`;
-    const borderRightWidth = `${borderWidth}`;
+  private createActivityInstance(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): ActivityDB {
     return {
-      boxSizing: 'border-box',
-      border,
-      borderLeftWidth,
-      borderRightWidth,
-      position: 'absolute',
-      top: `${item.topPx}px`,
-      left: `${item.leftPx}px`,
-      width: `${item.widthPx}px`,
-      height: `${item.heightPx}px`,
-      backgroundColor,
-      borderRadius: '6px',
-    };
+      id: '',
+      name: 'New Activity',
+      description: '',
+      duration: INITIAL_ACTIVITY_DURATION_MINS,
+      actions: [],
+      color: DEFAULT_ACTIVITY_COLOR,
+      startMessage: '',
+      endMessage: '',
+      startTimeOffset: calcStartTimeOffsetToQuarterHour(plan.properties.endTime, minutesSinceMidnight),
+      planId: plan.properties.id,
+      resourceIndex: resourceLane.kitchenResource.index,
+    } as ActivityDB;
   }
+}
+
+function calcStartTimeOffsetToQuarterHour(endDate: Date, minutesFromDayStart: number): number {
+  return getHours(endDate) * 60 + getMinutes(endDate) - Math.round(minutesFromDayStart / 15) * 15;
 }

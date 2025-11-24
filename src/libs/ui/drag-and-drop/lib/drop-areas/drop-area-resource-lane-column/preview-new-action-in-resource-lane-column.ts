@@ -50,7 +50,6 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
       if (dropEl) {
         const planEndPx = dropArea.getVerticalPositionFromTime(plan.properties.endTime);
         const pos = { ...pointerPos.dragPosition, y: Math.min(pointerPos.dragPosition.y, planEndPx) };
-        console.log('pointerPos.dragPosition.y, planEndPx, pos.y);', pointerPos.dragPosition.y, planEndPx, pos.y);
         const adjustedPosition = this.getAdjustedPosition(dropEl, pos);
 
         const laneWidth = laneWidthPx[dropArea.resourceLane().laneWidth];

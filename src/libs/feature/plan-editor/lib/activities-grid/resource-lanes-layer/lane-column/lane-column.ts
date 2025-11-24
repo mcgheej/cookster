@@ -1,135 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import {
-  DEFAULT_ACTIVITY_COLOR,
-  DEFAULT_SNACKBAR_DURATION,
-  INITIAL_ACTIVITY_DURATION_MINS,
-} from '@util/app-config/index';
-import { ActionDisplayTile, ActivityDB, Plan } from '@util/data-types/index';
-import { ResourceLane } from '@util/data-types/lib/resource-lane';
-import { exceedsMaxParallelActivities, Tiler } from '@util/tiler/index';
-import { getHours, getMinutes } from 'date-fns';
-import { ActivityTile } from './activity-tile/activity-tile';
-import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PlansDataService } from '@data-access/plans/lib/plans-data';
-import { openActivityDialog } from '@ui/activity-dialog/index';
 import { CkDrop } from '@ui/drag-and-drop/index';
 import { LaneColumnService } from './lane-column-service';
+import { Tiler } from '@util/tiler/index';
+import { ResourceLane } from '@util/data-types/index';
+import { ActivityTiles } from './activity-tiles/activity-tiles';
+import { ResourceActionTiles } from './resource-action-tiles/resource-action-tiles';
 
 @Component({
   selector: 'ck-lane-column',
-  imports: [CommonModule, ActivityTile, ResourceActionTile, CkDrop],
+  imports: [CommonModule, ActivityTiles, ResourceActionTiles, CkDrop],
   templateUrl: './lane-column.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Tiler, LaneColumnService],
 })
 export class LaneColumn {
-  private readonly dialog = inject(MatDialog);
-  private readonly snackBar = inject(MatSnackBar);
-  private readonly plansData = inject(PlansDataService);
   private readonly service = inject(LaneColumnService);
 
   readonly resourceLane = input.required<ResourceLane>();
 
   protected readonly distinctResourceLane = this.service.computedDistinctResourceLane(this.resourceLane);
-  protected readonly resourceActivities = this.service.computedResourceActivities(this.resourceLane);
-  protected readonly planEndTime = this.service.computedPlanEndTime();
-  protected readonly planTimeWindow = this.service.computedPlanTimeWindow();
-  protected readonly dropArea = this.service.computedDropArea(this.resourceLane, this.planTimeWindow);
-  protected readonly resourceActions = this.service.computedResourceActions(this.resourceLane);
-  protected readonly activityTiles = this.service.computedActivityTiles(
-    this.resourceLane,
-    this.resourceActivities,
-    this.planEndTime,
-    this.planTimeWindow
-  );
-  protected readonly actionDisplayTiles = this.service.computedActionDisplayTiles(
-    this.resourceActions,
-    this.planEndTime,
-    this.planTimeWindow
-  );
+  protected readonly dropArea = this.service.computedDropArea(this.distinctResourceLane);
 
-  protected readonly plan = this.service.plan;
-  private readonly pixelsPerHour = this.service.pixelsPerHour;
-
-  // Methods
-  // -------
+  // User Interactions
+  // -----------------
 
   createNewActivity(ev: MouseEvent): void {
     ev.stopPropagation();
-    const plan = this.plan();
-    if (!plan) {
-      return;
-    }
-    const minsSinceMidnight =
-      Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.planTimeWindow().startHours * 60;
-    this.createActivity(minsSinceMidnight, this.resourceLane(), plan);
+    this.service.createNewActivity(ev, this.distinctResourceLane());
   }
-
-  deleteResourceAction(tile: ActionDisplayTile): void {
-    const plan = this.plan();
-    if (!plan) {
-      return;
-    }
-    this.service.deleteResourceAction(plan, this.resourceLane(), tile.index);
-  }
-
-  updateResourceActionTime(tile: ActionDisplayTile, newTime: Date): void {
-    const plan = this.plan();
-    if (!plan) {
-      return;
-    }
-    this.service.modifyResourceAction(plan, this.resourceLane(), tile.index, newTime);
-  }
-
-  // Private Methods
-  // ---------------
-
-  private createActivity(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): void {
-    const newActivity = this.createActivityInstance(minutesSinceMidnight, resourceLane, plan);
-    const dialogRef = openActivityDialog({ activity: newActivity, plan: plan }, this.dialog);
-    dialogRef.afterClosed().subscribe((newActivity) => {
-      if (newActivity) {
-        // check if new activity location exceeds max parallel activities for the resource lane in question
-        const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
-        if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
-          this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
-            duration: DEFAULT_SNACKBAR_DURATION,
-          });
-        } else {
-          this.plansData.createActivity(newActivity).subscribe({
-            next: () => {
-              this.snackBar.open('Activity created', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-            },
-            error: (err) => {
-              console.error('Error creating activity', err);
-              this.snackBar.open('Error creating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-            },
-          });
-        }
-      }
-    });
-  }
-
-  private createActivityInstance(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): ActivityDB {
-    return {
-      id: '',
-      name: 'New Activity',
-      description: '',
-      duration: INITIAL_ACTIVITY_DURATION_MINS,
-      actions: [],
-      color: DEFAULT_ACTIVITY_COLOR,
-      startMessage: '',
-      endMessage: '',
-      startTimeOffset: calcStartTimeOffsetToQuarterHour(plan.properties.endTime, minutesSinceMidnight),
-      planId: plan.properties.id,
-      resourceIndex: resourceLane.kitchenResource.index,
-    } as ActivityDB;
-  }
-}
-
-function calcStartTimeOffsetToQuarterHour(endDate: Date, minutesFromDayStart: number): number {
-  return getHours(endDate) * 60 + getMinutes(endDate) - Math.round(minutesFromDayStart / 15) * 15;
 }

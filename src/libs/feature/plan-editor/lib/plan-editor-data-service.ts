@@ -8,9 +8,16 @@ import {
   DEFAULT_TIME_SNAP_MINS,
   googleColors,
 } from '@util/app-config/index';
-import { ActivityDB, laneWidthPx, planKitchenResourcesEqual, ResourceLane } from '@util/data-types/index';
+import {
+  ActivityDB,
+  FULL_TIME_WINDOW,
+  laneWidthPx,
+  planKitchenResourcesEqual,
+  ResourceLane,
+} from '@util/data-types/index';
 import { LaneController, laneControllersEqual } from './types-constants/lane-control';
 import { ActivitiesDataService } from '@data-access/plans/lib/activities-data';
+import { isSameMinute } from 'date-fns';
 
 @Injectable()
 export class PlanEditorDataService {
@@ -68,6 +75,18 @@ export class PlanEditorDataService {
     const plan = this.currentPlan();
     return plan ? googleColors[plan.properties.color].color : googleColors[DEFAULT_PLAN_COLOR].color;
   });
+  readonly planEndTime = computed(
+    () => {
+      return this.currentPlan()?.properties.endTime || new Date(0);
+    },
+    { equal: (a, b) => isSameMinute(a, b) }
+  );
+  readonly planTimeWindow = computed(
+    () => {
+      return this.currentPlan()?.properties.timeWindow || FULL_TIME_WINDOW;
+    },
+    { equal: (a, b) => a.startHours === b.startHours && a.endHours === b.endHours }
+  );
 
   /**
    * laneController

@@ -1,0 +1,7 @@
+@for (actionTile of actionDisplayTiles(); track $index) {
+  <ck-resource-action-tile
+    [resourceLane]="resourceLane()"
+    [plan]="plan()"
+    [tile]="actionTile"
+    (deleteResourceAction)="deleteResourceAction(actionTile)" />
+}
