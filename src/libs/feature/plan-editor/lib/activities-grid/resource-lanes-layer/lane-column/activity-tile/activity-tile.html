@@ -22,5 +22,10 @@
   </div>
 </div>
 @if (tile().activity.id === selectedActivityId()) {
-  <div class="absolute h-[6px] w-[24px] z-20" [ngStyle]="getResizeHandleStyles()"></div>
+  <div
+    [ckDrag]="dragOperation()"
+    class="absolute h-[6px] w-[24px] z-20"
+    [ngStyle]="getResizeHandleStyles()"
+    (ckDragStarted)="onDragDurationStart()"
+    (ckDragEnded)="onDragDurationEnd($event)"></div>
 }

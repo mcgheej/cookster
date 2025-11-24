@@ -4,7 +4,6 @@ import { PreviewComponentBase, PreviewComponentProps } from '../preview-componen
 import { laneWidthPx, Point } from '@util/data-types/index';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { DragMoveResourceAction } from '../../drag-operations/drag-move-resource-action/drag-move-resource-action';
-import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 
 @Component({
   selector: 'ck-preview-move-action-in-lane-column',
@@ -45,34 +44,14 @@ export class PreviewMoveActionInResourceLaneColumn extends PreviewComponentBase 
     const { pointerPos, dragOp, dropArea: baseDropArea, clipArea } = this.previewProps();
     const plan = (dragOp as DragMoveResourceAction).plan;
     if (baseDropArea && plan) {
-      // const dropArea = baseDropArea as DropAreaResourceLaneColumn;
-      // const dropEl = dropArea.hostElement;
-      // if (dropEl) {
-      //   const adjustedPosition = this.getAdjustedPosition(dropEl, pointerPos.dragPosition);
-      //   const laneWidth = laneWidthPx[(dropArea as DropAreaResourceLaneColumn).resourceLane().laneWidth];
-      //   const time = (dropArea as DropAreaResourceLaneColumn).getTimeFromPosition(
-      //     pointerPos.dragPosition,
-      //     pointerPos.shiftKey
-      //   );
-      //   const clipPath = this.getClipPath(
-      //     clipArea,
-      //     DOMRect.fromRect({ x: adjustedPosition.x, y: adjustedPosition.y, width: laneWidth, height: 32 })
-      //   );
       const dropArea = baseDropArea as DropAreaResourceLaneColumn;
       const dropEl = dropArea.hostElement;
       if (dropEl) {
-        const { resourceLane, timeWindow, pixelsPerHour } = dropArea;
-        const laneRect = dropEl.getBoundingClientRect();
-        const M = getMinutesSinceMidnight(plan.properties.endTime);
-        const P = pixelsPerHour();
-        const T = laneRect.top;
-        const S = timeWindow().startHours;
-        const planEndPx = (P * (M - 60 * S)) / 60 + T;
+        const planEndPx = dropArea.getVerticalPositionFromTime(plan.properties.endTime);
         const pos = { ...pointerPos.dragPosition, y: Math.min(pointerPos.dragPosition.y, planEndPx) };
-        console.log('pointerPos.dragPosition.y, planEndPx, pos.y);', pointerPos.dragPosition.y, planEndPx, pos.y);
         const adjustedPosition = this.getAdjustedPosition(dropEl, pos);
 
-        const laneWidth = laneWidthPx[resourceLane().laneWidth];
+        const laneWidth = laneWidthPx[dropArea.resourceLane().laneWidth];
         const time = dropArea.getTimeFromPosition(pos, pointerPos.shiftKey);
         const clipPath = this.getClipPath(
           clipArea,

@@ -16,8 +16,8 @@
     [style.gridTemplateRows]="componentHeight">
     <div
       [ckDrag]="dragOperation()"
-      (ckDragStarted)="onDragStarted()"
-      (ckDragEnded)="onDragEnded($event)"
+      (ckDragStarted)="onDragStart()"
+      (ckDragEnded)="onDragEnd($event)"
       class="cursor-grab wave w-full h-1 bg-gray-500 self-center"></div>
     <mat-icon
       class="self-center cursor-pointer"

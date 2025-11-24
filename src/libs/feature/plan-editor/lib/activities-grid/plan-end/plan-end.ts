@@ -35,11 +35,11 @@ export class PlanEnd {
     this.planEditorData.setActivitiesGridPlanEndTethered(tethered);
   }
 
-  onDragStarted(): void {
+  onDragStart(): void {
     this.showElement.set('hidden');
   }
 
-  onDragEnded(ev: DragResult | undefined): void {
+  onDragEnd(ev: DragResult | undefined): void {
     if (this.planEndTethered()) {
       this.planEndService.dragTetheredPlanEndEnded(ev);
     } else {

@@ -1,15 +1,19 @@
 import { NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
+import { CkDrag, DragChangeActivityDuration, DragResult } from '@ui/drag-and-drop/index';
 import { googleColors } from '@util/app-config/index';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { DisplayTile } from '@util/data-types/index';
 
 @Component({
   selector: 'ck-activity-tile',
-  imports: [NgStyle, MatIconModule, MatTooltipModule],
+  host: {
+    '[style.visibility]': 'showElement()',
+  },
+  imports: [NgStyle, MatIconModule, MatTooltipModule, CkDrag],
   templateUrl: './activity-tile.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -20,11 +24,22 @@ export class ActivityTile {
 
   protected readonly selectedActivityId = this.planEditorData.selectedActivityId;
 
+  protected readonly dragOperation = computed(() => {
+    return new DragChangeActivityDuration({
+      id: 'drag-change-activity-duration',
+      lockAxis: 'y',
+      plan: this.planEditorData.currentPlan(),
+      displayTile: this.tile(),
+    });
+  });
+
   protected startEndTimes = computed(() => {
     const startTime = this.timeFromMidnightToString(this.tile().startMinsFromMidnight);
     const endTime = this.timeFromMidnightToString(this.tile().endMinsFromMidnight);
     return this.tile().activity.name + ': ' + startTime + ' - ' + endTime;
   });
+
+  protected showElement = signal<'visible' | 'hidden'>('visible');
 
   protected readonly showDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
@@ -35,6 +50,15 @@ export class ActivityTile {
     } else {
       this.planEditorData.setSelectedActivityId(this.tile().activity.id);
     }
+  }
+
+  protected onDragDurationStart() {
+    this.showElement.set('hidden');
+  }
+
+  protected onDragDurationEnd(ev: DragResult | undefined) {
+    console.log('ActivityTile.onDragDurationEnd ev:', ev);
+    this.showElement.set('visible');
   }
 
   protected getResizeHandleStyles() {

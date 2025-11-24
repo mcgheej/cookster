@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
 import {
   DEFAULT_ACTIVITY_COLOR,
   DEFAULT_SNACKBAR_DURATION,
@@ -29,7 +28,6 @@ import { LaneColumnService } from './lane-column-service';
 export class LaneColumn {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly planEditorData = inject(PlanEditorDataService);
   private readonly plansData = inject(PlansDataService);
   private readonly service = inject(LaneColumnService);
 
@@ -53,9 +51,8 @@ export class LaneColumn {
     this.planTimeWindow
   );
 
-  protected readonly plan = this.planEditorData.currentPlan;
-  // private readonly timeWindow = this.planEditorData.activitiesGridTimeWindow;
-  private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
+  protected readonly plan = this.service.plan;
+  private readonly pixelsPerHour = this.service.pixelsPerHour;
 
   // Methods
   // -------

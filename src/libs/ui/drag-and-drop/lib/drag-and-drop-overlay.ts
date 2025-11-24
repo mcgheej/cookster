@@ -49,7 +49,10 @@ export class DragAndDropOverlay {
    * The component reference currently attached to the overlay. The component will
    * be derived from PreviewComponentBase.
    */
-  private attachedComponentRef: ComponentRef<PreviewComponentBase> | null = null;
+  private _attachedComponentRef: ComponentRef<PreviewComponentBase> | null = null;
+  get attachedComponentRef(): ComponentRef<PreviewComponentBase> | null {
+    return this._attachedComponentRef;
+  }
 
   mouseMove$: Subject<MouseEvent> | null = null;
   mouseUp$: Subject<MouseEvent> | null = null;
@@ -116,7 +119,7 @@ export class DragAndDropOverlay {
       this.mouseUpSubscription.unsubscribe();
       this.mouseUpSubscription = null;
     }
-    if (this.attachedComponentRef) {
+    if (this._attachedComponentRef) {
       this.detachComponent(r);
     }
     if (this.overlayElement) {
@@ -130,15 +133,15 @@ export class DragAndDropOverlay {
     r: Renderer2,
     previewProps: WritableSignal<PreviewComponentProps>
   ): void {
-    if (this.attachedComponentRef) {
+    if (this._attachedComponentRef) {
       this.detachComponent(r);
     }
-    this.attachedComponentRef = createComponent(component, {
+    this._attachedComponentRef = createComponent(component, {
       environmentInjector: this.injector,
       bindings: [inputBinding('previewProps', previewProps)],
     });
-    r.appendChild(this.overlayElement, this.attachedComponentRef.location.nativeElement);
-    this.appRef.attachView(this.attachedComponentRef.hostView);
+    r.appendChild(this.overlayElement, this._attachedComponentRef.location.nativeElement);
+    this.appRef.attachView(this._attachedComponentRef.hostView);
   }
 
   /**
@@ -147,11 +150,11 @@ export class DragAndDropOverlay {
    * @param r - renderer provided by the CkDrag directive (Renderer2 cannot be injected directly)
    */
   detachComponent(r: Renderer2): void {
-    if (this.attachedComponentRef) {
-      r.removeChild(this.overlayElement, this.attachedComponentRef.location.nativeElement);
-      this.appRef.detachView(this.attachedComponentRef.hostView);
-      this.attachedComponentRef.destroy();
-      this.attachedComponentRef = null;
+    if (this._attachedComponentRef) {
+      r.removeChild(this.overlayElement, this._attachedComponentRef.location.nativeElement);
+      this.appRef.detachView(this._attachedComponentRef.hostView);
+      this._attachedComponentRef.destroy();
+      this._attachedComponentRef = null;
     }
   }
 }

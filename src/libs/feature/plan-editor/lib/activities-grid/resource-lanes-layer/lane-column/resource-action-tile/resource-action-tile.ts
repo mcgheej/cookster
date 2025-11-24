@@ -43,11 +43,11 @@ export class ResourceActionTile {
     console.log('Resource Action Tile clicked:', this.tile());
   }
 
-  onDragStarted(): void {
+  onDragStart(): void {
     this.showElement.set('hidden');
   }
 
-  onDragEnded(ev: DragResult | undefined): void {
+  onDragEnd(ev: DragResult | undefined): void {
     if (ev) {
       const result = ev as DragMoveResourceActionResult;
       if (result.operation === 'delete') {

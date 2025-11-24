@@ -1,8 +1,8 @@
 @if (planEndY(); as planEndY) {
   <div
     [ckDrag]="dragOperation()"
-    (ckDragStarted)="onDragStarted()"
-    (ckDragEnded)="onDragEnded($event)"
+    (ckDragStarted)="onDragStart()"
+    (ckDragEnded)="onDragEnd($event)"
     class="absolute left-0"
     [style.top.px]="planEndY">
     <div [style.height.px]="planEndBarHeight" [style.width.px]="activitiesGridWidth()">

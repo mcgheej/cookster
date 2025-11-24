@@ -48,18 +48,12 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
       const dropArea = baseDropArea as DropAreaResourceLaneColumn;
       const dropEl = dropArea.hostElement;
       if (dropEl) {
-        const { resourceLane, timeWindow, pixelsPerHour } = dropArea;
-        const laneRect = dropEl.getBoundingClientRect();
-        const M = getMinutesSinceMidnight(plan.properties.endTime);
-        const P = pixelsPerHour();
-        const T = laneRect.top;
-        const S = timeWindow().startHours;
-        const planEndPx = (P * (M - 60 * S)) / 60 + T;
+        const planEndPx = dropArea.getVerticalPositionFromTime(plan.properties.endTime);
         const pos = { ...pointerPos.dragPosition, y: Math.min(pointerPos.dragPosition.y, planEndPx) };
         console.log('pointerPos.dragPosition.y, planEndPx, pos.y);', pointerPos.dragPosition.y, planEndPx, pos.y);
         const adjustedPosition = this.getAdjustedPosition(dropEl, pos);
 
-        const laneWidth = laneWidthPx[resourceLane().laneWidth];
+        const laneWidth = laneWidthPx[dropArea.resourceLane().laneWidth];
         const time = dropArea.getTimeFromPosition(pos, pointerPos.shiftKey);
         const clipPath = this.getClipPath(
           clipArea,

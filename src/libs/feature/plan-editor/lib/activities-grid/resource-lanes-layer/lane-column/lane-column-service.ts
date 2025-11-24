@@ -18,6 +18,7 @@ import {
 import {
   AcceptedDragOperation,
   DropAreaResourceLaneColumn,
+  PreviewChangeActivityDuration,
   PreviewMoveActionInResourceLaneColumn,
   PreviewNewActionInResourceLaneColumn,
   PreviewTetheredPlanEnd,
@@ -43,6 +44,19 @@ export class LaneColumnService {
   private readonly db = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
   private readonly tiler = inject(Tiler);
+
+  /**
+   * current plan
+   */
+  plan = this.planEditorData.currentPlan;
+
+  /**
+   * pixels per hour for activities grid
+   */
+  pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
+
+  // Computed Signals
+  // ----------------
 
   /**
    * compute resource lane that is truly distinct
@@ -80,6 +94,10 @@ export class LaneColumnService {
           [
             'drag-untethered-plan-end',
             new AcceptedDragOperation('drag-untethered-plan-end', dropId, PreviewUntetheredPlanEnd),
+          ],
+          [
+            'drag-change-activity-duration',
+            new AcceptedDragOperation('drag-change-activity-duration', dropId, PreviewChangeActivityDuration),
           ],
         ]),
         scrollX: this.planEditorData.activitiesGridScrollX,

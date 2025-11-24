@@ -3,7 +3,7 @@ import { DropArea, DropAreaCheckResult, DropAreaData, DropAreaDragProps } from '
 import { Point, pointInRect, ResourceLane, TimeWindow } from '@util/data-types/index';
 import { rectIntersection } from '@util/misc-utilities/index';
 import { format } from 'date-fns';
-import { getDateFromMinutesSinceMidnight } from '@util/date-utilities/index';
+import { getDateFromMinutesSinceMidnight, getMinutesSinceMidnight } from '@util/date-utilities/index';
 
 export interface DropAreaResourceLaneColumnData extends DropAreaData {
   scrollX: Signal<number>;
@@ -48,6 +48,18 @@ export class DropAreaResourceLaneColumn extends DropArea implements DropAreaReso
     return acceptedOperation
       ? { previewComponent: acceptedOperation.previewComponent, clipArea }
       : { previewComponent: null };
+  }
+
+  getVerticalPositionFromTime(time: Date): number {
+    if (!this.hostElement) {
+      return 0;
+    }
+    const laneRect = this.hostElement.getBoundingClientRect();
+    const M = getMinutesSinceMidnight(time);
+    const P = this.pixelsPerHour();
+    const T = laneRect.top;
+    const S = this.timeWindow().startHours;
+    return Math.round((P * (M - 60 * S)) / 60 + T);
   }
 
   getTimeFromPosition(pos: Point, shiftKey: boolean): string {
