@@ -6,7 +6,11 @@ import { ActivityTile } from './activity-tile/activity-tile';
 @Component({
   selector: 'ck-activity-tiles',
   imports: [ActivityTile],
-  templateUrl: './activity-tiles.html',
+  template: `
+    @for (tile of activityTiles(); track $index) {
+      <ck-activity-tile [tile]="tile" />
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ActivityTilesService],
 })

@@ -7,7 +7,16 @@ import { ResourceActionTile } from './resource-action-tile/resource-action-tile'
 @Component({
   selector: 'ck-resource-action-tiles',
   imports: [CommonModule, ResourceActionTile],
-  templateUrl: './resource-action-tiles.html',
+  template: `
+    @for (actionTile of actionDisplayTiles(); track $index) {
+      <ck-resource-action-tile
+        [resourceLane]="resourceLane()"
+        [plan]="plan()"
+        [tile]="actionTile"
+        (deleteResourceAction)="deleteResourceAction(actionTile)"
+        (updateResourceActionTime)="updateResourceActionTime(actionTile, $event)" />
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ResourceActionTilesService],
 })
