@@ -1,8 +1,22 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  linkedSignal,
+  signal,
+  untracked,
+  WritableSignal,
+} from '@angular/core';
 import { PanelSelector } from './panel-selector/panel-selector';
 import { SelectorButton } from './selector-button';
 import { PanelContent } from './panel-content/panel-content';
 import { COLLAPSED_PANEL_CONTENT_WIDTH, EXPANDED_PANEL_CONTENT_WIDTH } from '@util/app-config/index';
+
+interface SelectedButton {
+  name: string;
+  panelComponent: any | undefined;
+  panelWidth: number;
+}
 
 @Component({
   selector: 'ck-multi-panel',
@@ -14,28 +28,46 @@ export class MultiPanel {
   // private readonly speechService = inject(SpeechService);
 
   readonly selectorButtons = input.required<SelectorButton[]>();
+  readonly openPanel = input<string>('');
 
-  protected panelWidth = signal(+COLLAPSED_PANEL_CONTENT_WIDTH);
-  protected selectedButtonName = signal('');
-  protected selectedButtonPanelComponent = signal<any | undefined>(undefined);
+  protected selectedButton = linkedSignal<string, SelectedButton>({
+    source: this.openPanel,
+    equal: (a, b) => a.name === b.name && a.panelWidth === b.panelWidth && a.panelComponent === b.panelComponent,
+    computation: (openPanel, previous) => {
+      if (previous) {
+        if (openPanel === '' || openPanel === previous.value.name) {
+          return previous.value;
+        }
+        const foundButton = untracked(this.selectorButtons).find((btn) => btn.name === openPanel);
+        if (foundButton) {
+          return {
+            name: foundButton.name,
+            panelComponent: foundButton.panelComponent,
+            panelWidth: +EXPANDED_PANEL_CONTENT_WIDTH,
+          };
+        }
+      }
+      return {
+        name: '',
+        panelComponent: undefined,
+        panelWidth: +COLLAPSED_PANEL_CONTENT_WIDTH,
+      };
+    },
+  });
 
   protected toggleButton(buttonIndex: number) {
-    if (this.selectedButtonName() === this.selectorButtons()[buttonIndex].name) {
-      // this.speechService.speak(`Closing panel ${this.selectorButtons()[buttonIndex].name}`);
-      this.selectedButtonName.set('');
-      this.selectedButtonPanelComponent.set(undefined);
-      this.panelWidth.set(+COLLAPSED_PANEL_CONTENT_WIDTH);
+    if (this.selectedButton().name === this.selectorButtons()[buttonIndex].name) {
+      this.selectedButton.set({
+        name: '',
+        panelComponent: undefined,
+        panelWidth: +COLLAPSED_PANEL_CONTENT_WIDTH,
+      });
     } else {
-      // if (this.selectedButtonName() !== '') {
-      //   this.speechService.speak(
-      //     `Closing panel ${this.selectedButtonName()} and opening panel ${this.selectorButtons()[buttonIndex].name}`
-      //   );
-      // } else {
-      //   this.speechService.speak(`Opening panel ${this.selectorButtons()[buttonIndex].name}`);
-      // }
-      this.selectedButtonName.set(this.selectorButtons()[buttonIndex].name);
-      this.selectedButtonPanelComponent.set(this.selectorButtons()[buttonIndex].panelComponent);
-      this.panelWidth.set(+EXPANDED_PANEL_CONTENT_WIDTH);
+      this.selectedButton.set({
+        name: this.selectorButtons()[buttonIndex].name,
+        panelComponent: this.selectorButtons()[buttonIndex].panelComponent,
+        panelWidth: +EXPANDED_PANEL_CONTENT_WIDTH,
+      });
     }
   }
 }

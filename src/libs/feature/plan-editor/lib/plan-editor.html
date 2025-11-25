@@ -1,7 +1,7 @@
 @if (currentPlan()) {
   <div class="size-full grid grid-rows-[minmax(0,_1fr)_auto] grid-cols-[minmax(0,_1fr)]">
     <div class="size-full grid grid-cols-[auto_minmax(0,_1fr)] grid-rows-1">
-      <ck-multi-panel [selectorButtons]="selectorButtons"></ck-multi-panel>
+      <ck-multi-panel [selectorButtons]="selectorButtons" [openPanel]="openPanel()"></ck-multi-panel>
       <div class="grid grid-rows-1 grid-cols-1">
         <ck-activities-grid></ck-activities-grid>
       </div>
