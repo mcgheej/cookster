@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
-import { DragChangeActivityDuration } from '../../drag-operations/drag-change-activity-duration/drag-change-activity-duration';
+import { DragChangeActivityDuration } from '../../drag-operations/operations/drag-change-activity-duration';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { NgStyle } from '@angular/common';
 import { opaqueColor } from '@util/color-utilities/index';

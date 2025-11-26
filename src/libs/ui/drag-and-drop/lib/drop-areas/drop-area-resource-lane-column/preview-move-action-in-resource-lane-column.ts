@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { laneWidthPx, Point } from '@util/data-types/index';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
-import { DragMoveResourceAction } from '../../drag-operations/drag-move-resource-action/drag-move-resource-action';
+import { DragMoveResourceAction } from '../../drag-operations/operations/drag-move-resource-action';
 
 @Component({
   selector: 'ck-preview-move-action-in-lane-column',

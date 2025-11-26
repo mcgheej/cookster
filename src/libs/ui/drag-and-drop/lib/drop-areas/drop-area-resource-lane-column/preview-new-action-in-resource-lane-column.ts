@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { laneWidthPx, Point } from '@util/data-types/index';
-import { DragNewResourceAction } from '../../drag-operations/drag-new-resource-action/drag-new-resource-action';
+import { DragNewResourceAction } from '../../drag-operations/operations/drag-new-resource-action';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 
 @Component({

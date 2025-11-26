@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
-import { DragMoveResourceAction } from '../../drag-operations/drag-move-resource-action/drag-move-resource-action';
+import { DragMoveResourceAction } from '../../drag-operations/operations/drag-move-resource-action';
 
 @Component({
   selector: 'ck-preview-move-action-in-resource-header',

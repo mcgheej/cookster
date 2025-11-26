@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
-import { DragTetheredPlanEnd } from '../../drag-operations/drag-tethered-plan-end/drag-tethered-plan-end';
+import { DragTetheredPlanEnd } from '../../drag-operations/operations/drag-tethered-plan-end';
 import { PLAN_END_BAR_HEIGHT } from '@util/app-config/index';
 import { rectIntersection } from '@util/misc-utilities/index';
 

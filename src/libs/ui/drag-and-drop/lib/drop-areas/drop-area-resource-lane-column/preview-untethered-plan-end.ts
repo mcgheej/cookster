@@ -3,7 +3,7 @@ import { PreviewComponentBase, PreviewComponentProps } from '../preview-componen
 import { PLAN_END_BAR_HEIGHT } from '@util/app-config/index';
 import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
-import { DragUntetheredPlanEnd } from '../../drag-operations/drag-untethered-plan-end/drag-untethered-plan-end';
+import { DragUntetheredPlanEnd } from '../../drag-operations/operations/drag-untethered-plan-end';
 
 @Component({
   selector: 'ck-preview-untethered-plan-end',
