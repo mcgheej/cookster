@@ -131,6 +131,10 @@ export class SelectedActivityPanelService {
       });
   }
 
+  deselectActivity() {
+    this.planEditorData.setSelectedActivityId('');
+  }
+
   getRGBColor(activityColor: string) {
     const rgbColor = googleColors[activityColor]?.color;
     return rgbColor

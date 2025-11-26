@@ -22,3 +22,11 @@
   (click)="delete.emit()">
   <mat-icon>delete</mat-icon>
 </button>
+<button
+  class="float-right mr-1"
+  matIconButton
+  matTooltip="deselect activity"
+  [matTooltipShowDelay]="tooltipShowDelay"
+  (click)="deselect.emit()">
+  <mat-icon>deselect</mat-icon>
+</button>

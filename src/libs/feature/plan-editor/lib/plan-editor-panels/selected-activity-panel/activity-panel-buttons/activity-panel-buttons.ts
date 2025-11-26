@@ -14,6 +14,7 @@ export class ActivityPanelButtons {
   protected readonly edit = output<void>();
   protected readonly createTemplate = output<void>();
   protected readonly delete = output<void>();
+  protected readonly deselect = output<void>();
 
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 }
