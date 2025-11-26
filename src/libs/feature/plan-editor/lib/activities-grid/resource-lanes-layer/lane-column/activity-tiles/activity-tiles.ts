@@ -2,13 +2,17 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { DisplayTile, ResourceLane } from '@util/data-types/index';
 import { ActivityTilesService } from './activity-tiles-service';
 import { ActivityTile } from './activity-tile/activity-tile';
+import { DragActivityResult } from '@ui/drag-and-drop/index';
 
 @Component({
   selector: 'ck-activity-tiles',
   imports: [ActivityTile],
   template: `
     @for (tile of activityTiles(); track $index) {
-      <ck-activity-tile [tile]="tile" (durationChanged)="durationChanged(tile, $event)" />
+      <ck-activity-tile
+        [tile]="tile"
+        (durationChanged)="durationChanged(tile, $event)"
+        (activityMoved)="activityMoved(tile, $event)" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,5 +30,9 @@ export class ActivityTiles {
 
   durationChanged(tile: DisplayTile, newDurationMins: number) {
     this.service.updateActivityDuration(tile.activity.id, newDurationMins);
+  }
+
+  activityMoved(tile: DisplayTile, result: DragActivityResult) {
+    this.service.updateActivityPosition(tile.activity.id, result.timeOffset, result.resourceLane.kitchenResource.index);
   }
 }

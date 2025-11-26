@@ -2,7 +2,14 @@ import { computed, inject, Injectable, InputSignal, Signal } from '@angular/core
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/index';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
-import { DEFAULT_COLOR_OPACITY, DEFAULT_SNACKBAR_DURATION, googleColors } from '@util/app-config/index';
+import {
+  ACTIVITY_TILES_GAP_PX,
+  ACTIVITY_TILES_LEFT_MARGIN_PX,
+  ACTIVITY_TILES_RIGHT_MARGIN_PX,
+  DEFAULT_COLOR_OPACITY,
+  DEFAULT_SNACKBAR_DURATION,
+  googleColors,
+} from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
 import { ActivityDB, activityDBsEqual, DisplayTile, laneWidthPx, ResourceLane } from '@util/data-types/index';
 import { Tiler } from '@util/tiler/index';
@@ -61,9 +68,9 @@ export class ActivityTilesService {
         pixelsPerHour,
         timeWindow,
         laneWidthPx: laneWidthPx[lane.laneWidth],
-        leftMarginPx: 4,
-        rightMarginPx: 16,
-        gapPx: 4,
+        leftMarginPx: ACTIVITY_TILES_LEFT_MARGIN_PX,
+        rightMarginPx: ACTIVITY_TILES_RIGHT_MARGIN_PX,
+        gapPx: ACTIVITY_TILES_GAP_PX,
       });
       return displayTiles.map((item) => ({ ...item, styles: this.getStyles(item, selectedActivityId) }));
     });
@@ -79,6 +86,20 @@ export class ActivityTilesService {
         this.snackBar.open('Error updating activity duration', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
       },
     });
+  }
+
+  updateActivityPosition(activityId: string, newStartTimeOffset: number, newResourceIndex: number): void {
+    this.db
+      .updateActivity(activityId, {
+        startTimeOffset: newStartTimeOffset,
+        resourceIndex: newResourceIndex,
+      })
+      .subscribe({
+        error: (err) => {
+          console.error('Error updating activity position', err);
+          this.snackBar.open('Error updating activity position', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+        },
+      });
   }
 
   // Private Methods

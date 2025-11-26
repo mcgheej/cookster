@@ -5,12 +5,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
 import {
   CkDrag,
+  DragActivity,
+  DragActivityResult,
   DragChangeActivityDuration,
   DragChangeActivityDurationResult,
   DragResult,
 } from '@ui/drag-and-drop/index';
 import { googleColors } from '@util/app-config/index';
-import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
+import { DEFAULT_COLOR_OPACITY, DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
+import { opaqueColor } from '@util/color-utilities/index';
 import { DisplayTile } from '@util/data-types/index';
 
 @Component({
@@ -27,13 +30,22 @@ export class ActivityTile {
 
   tile = input.required<DisplayTile>();
   durationChanged = output<number>();
+  activityMoved = output<DragActivityResult>();
 
   protected readonly selectedActivityId = this.planEditorData.selectedActivityId;
 
-  protected readonly dragOperation = computed(() => {
+  protected readonly dragDurationOperation = computed(() => {
     return new DragChangeActivityDuration({
       id: 'drag-change-activity-duration',
       lockAxis: 'y',
+      plan: this.planEditorData.currentPlan(),
+      displayTile: this.tile(),
+    });
+  });
+
+  protected readonly dragActivityOperation = computed(() => {
+    return new DragActivity({
+      id: 'drag-activity',
       plan: this.planEditorData.currentPlan(),
       displayTile: this.tile(),
     });
@@ -69,12 +81,38 @@ export class ActivityTile {
     }
   }
 
+  protected onDragActivityStart() {
+    this.showElement.set('hidden');
+  }
+
+  protected onDragActivityEnd(ev: DragResult | undefined) {
+    this.showElement.set('visible');
+    if (ev) {
+      const result = ev as DragActivityResult;
+      if (
+        result.timeOffset !== this.tile().activity.startTimeOffset ||
+        result.resourceLane.kitchenResource.index !== this.tile().activity.resourceIndex
+      ) {
+        this.activityMoved.emit(result);
+      }
+    }
+  }
+
   protected getResizeHandleStyles() {
     const tile = this.tile();
     return {
       top: `${tile.topPx + tile.heightPx - 4}px`,
       left: `${tile.leftPx + tile.widthPx / 2 - 13}px`,
       backgroundColor: googleColors[tile.activity.color].contrastColor,
+    };
+  }
+
+  protected getMoveHandleStyles() {
+    const tile = this.tile();
+    return {
+      top: `${tile.topPx + 2}px`,
+      left: `${tile.leftPx + tile.widthPx - 22}px`,
+      backgroundColor: opaqueColor(googleColors[tile.activity.color].color, DEFAULT_COLOR_OPACITY),
     };
   }
 

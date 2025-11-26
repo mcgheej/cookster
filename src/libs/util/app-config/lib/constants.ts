@@ -22,6 +22,10 @@ export const STATUS_BAR_HEIGHT = '32';
 export const RESOURCE_ACTION_COMPONENT_HEIGHT = 32; // px
 export const PLAN_END_BAR_HEIGHT = 3; // px
 
+export const ACTIVITY_TILES_LEFT_MARGIN_PX = 4;
+export const ACTIVITY_TILES_RIGHT_MARGIN_PX = 16;
+export const ACTIVITY_TILES_GAP_PX = 4;
+
 export const DEFAULT_PLAN_COLOR = 'basil';
 export const DEFAULT_ACTIVITY_COLOR = 'tomato';
 export const DEFAULT_COLOR_OPACITY = 0.4;

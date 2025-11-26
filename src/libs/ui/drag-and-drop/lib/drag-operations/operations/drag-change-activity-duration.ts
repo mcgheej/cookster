@@ -5,7 +5,7 @@ import { signal, Type } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/preview-component-base';
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
-import { PreviewChangeActivityDuration } from '../../drop-areas/drop-area-resource-lane-column/preview-change-activity-duration';
+import { PreviewChangeActivityDuration } from '../../drop-areas/drop-area-resource-lane-column/preview-change-activity-duration/preview-change-activity-duration';
 
 export interface DragChangeActivityDurationData extends DragData {
   plan: Plan | null;
@@ -71,7 +71,7 @@ export class DragChangeActivityDuration extends DragOperation implements DragCha
     }
   }
 
-  end(props: DragEndProps): DragResult | undefined {
+  end(props: DragEndProps): DragChangeActivityDurationResult | undefined {
     this.setupDropArea(props.pointerPos);
 
     let durationMins: number | undefined = undefined;
@@ -87,10 +87,7 @@ export class DragChangeActivityDuration extends DragOperation implements DragCha
     this.lastDropArea = null;
     this.previewComponent = PreviewNoDrop;
 
-    if (durationMins !== undefined) {
-      return { durationMins };
-    }
-    return undefined;
+    return durationMins ? { durationMins } : undefined;
   }
 
   private setupDropArea(pointerPos: PointerData): 'same' | 'changed' {

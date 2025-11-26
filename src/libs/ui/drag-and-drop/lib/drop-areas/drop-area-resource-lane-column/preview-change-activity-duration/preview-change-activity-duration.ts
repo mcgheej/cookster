@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { PreviewComponentBase, PreviewComponentProps } from '../preview-component-base';
-import { DragChangeActivityDuration } from '../../drag-operations/operations/drag-change-activity-duration';
-import { DropAreaResourceLaneColumn } from './drop-area-resource-lane-column';
+import { PreviewComponentBase, PreviewComponentProps } from '../../preview-component-base';
+import { DragChangeActivityDuration } from '../../../drag-operations/operations/drag-change-activity-duration';
+import { DropAreaResourceLaneColumn } from '../drop-area-resource-lane-column';
 import { NgStyle } from '@angular/common';
 import { opaqueColor } from '@util/color-utilities/index';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivityDB, DisplayTile, getActivityEnvelope } from '@util/data-types/index';
+import { getActivityEnvelope } from '@util/data-types/index';
 import { getDateFromMinutesSinceMidnight } from '@util/date-utilities/index';
 import { MIN_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
 
 @Component({
   selector: 'ck-preview-change-activity-duration',
   imports: [NgStyle, MatIconModule],
-  templateUrl: './temp.html',
+  templateUrl: './preview-change-activity-duration.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PreviewChangeActivityDuration extends PreviewComponentBase {
