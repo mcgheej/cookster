@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
+import { DEFAULT_COLOR_OPACITY, DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 import { format } from 'date-fns';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { PlanPanelService } from './plan-panel-service';
+import { opaqueColor } from '@util/color-utilities/index';
 
 @Component({
   selector: 'ck-plan-panel',
@@ -47,7 +48,9 @@ export class PlanPanel {
   protected readonly service = inject(PlanPanelService);
 
   protected readonly currentPlan = this.planEditorData.currentPlan;
-  protected readonly planColor = this.planEditorData.planColor;
+  protected readonly planColor = computed(() => {
+    return opaqueColor(this.planEditorData.planColor(), DEFAULT_COLOR_OPACITY);
+  });
 
   protected format = format;
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;

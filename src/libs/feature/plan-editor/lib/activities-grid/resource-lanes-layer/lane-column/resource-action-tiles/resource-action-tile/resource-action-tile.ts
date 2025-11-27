@@ -40,7 +40,6 @@ export class ResourceActionTile {
   onClick(ev: Event): void {
     ev.stopPropagation();
     ev.preventDefault();
-    console.log('Resource Action Tile clicked:', this.tile());
   }
 
   onDragStart(): void {

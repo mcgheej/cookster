@@ -8,7 +8,7 @@ import { set } from 'date-fns';
 export const FIELD_NAME = 'name';
 export const FIELD_DATE = 'planDate';
 export const FIELD_TIME = 'planTime';
-export const FIELD_COLOR = 'planColor';
+export const FIELD_PLAN_COLOR = 'planColor';
 export const FIELD_KITCHEN = 'planKitchen';
 export const FIELD_DESCRIPTION = 'planDescription';
 
@@ -22,7 +22,7 @@ export class PlanPropertiesFormService {
     [FIELD_NAME]: ['', Validators.required],
     [FIELD_DATE]: [getDateToLastHour(this.now), [Validators.required]],
     [FIELD_TIME]: [getDateToLastHour(this.now), [Validators.required]],
-    [FIELD_COLOR]: [DEFAULT_PLAN_COLOR, [Validators.required]],
+    [FIELD_PLAN_COLOR]: [DEFAULT_PLAN_COLOR, [Validators.required]],
     [FIELD_KITCHEN]: [null, [Validators.required]],
     [FIELD_DESCRIPTION]: [''],
   });
@@ -43,7 +43,7 @@ export class PlanPropertiesFormService {
     form.get(FIELD_NAME)?.setValue(planProperties.name);
     form.get(FIELD_DATE)?.setValue(planProperties.endTime);
     form.get(FIELD_TIME)?.setValue(planProperties.endTime);
-    form.get(FIELD_COLOR)?.setValue(planProperties.color);
+    form.get(FIELD_PLAN_COLOR)?.setValue(planProperties.color);
     form.get(FIELD_DESCRIPTION)?.setValue(planProperties.description);
     if (planProperties.id) {
       form.get(FIELD_KITCHEN)?.setValue(planProperties.kitchenName);
@@ -53,7 +53,7 @@ export class PlanPropertiesFormService {
   private getNewPlanPropertiesFromForm(form: FormGroup): Partial<PlanProperties> {
     const name = form.get(FIELD_NAME)?.value || 'unknown';
     const description = form.get(FIELD_DESCRIPTION)?.value || '';
-    const color = form.get(FIELD_COLOR)?.value || DEFAULT_PLAN_COLOR;
+    const color = form.get(FIELD_PLAN_COLOR)?.value || DEFAULT_PLAN_COLOR;
     const day = form.get(FIELD_DATE)?.value || set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const time = form.get(FIELD_TIME)?.value || set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const endTime = set(day, { hours: time.getHours(), minutes: time.getMinutes(), seconds: 0, milliseconds: 0 });
@@ -75,7 +75,7 @@ export class PlanPropertiesFormService {
   ): Partial<PlanProperties> {
     const name = form.get(FIELD_NAME)?.value || 'unknown';
     const description = form.get(FIELD_DESCRIPTION)?.value || '';
-    const color = form.get(FIELD_COLOR)?.value || DEFAULT_PLAN_COLOR;
+    const color = form.get(FIELD_PLAN_COLOR)?.value || DEFAULT_PLAN_COLOR;
     const day = form.get(FIELD_DATE)?.value || set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const time = form.get(FIELD_TIME)?.value || set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
     const endTime = set(day, { hours: time.getHours(), minutes: time.getMinutes(), seconds: 0, milliseconds: 0 });

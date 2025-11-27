@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FIELD_KITCHEN, PlanPropertiesFormService } from './plan-properties-form-service.ts';
+import { FIELD_KITCHEN, PlanPropertiesFormService } from './plan-properties-form-service';
 import { map } from 'rxjs';
-import { AfKitchensService } from '@data-access/kitchens/index.js';
-import { Kitchen } from '@util/data-types/lib/kitchen.js';
+import { AfKitchensService } from '@data-access/kitchens/index';
+import { Kitchen } from '@util/data-types/lib/kitchen';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';

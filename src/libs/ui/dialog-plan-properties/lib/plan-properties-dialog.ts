@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { PlanProperties } from '@util/data-types/index';
-import { PlanPropertiesFormService } from './plan-properties-form-service.ts';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldName } from './field-name.js';
+import { FieldName } from './field-name';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldDate } from './field-date.js';
-import { FieldColor } from './field-color.js';
-import { FieldKitchen } from './field-kitchen.js';
-import { FieldDescription } from './field-description.js';
+import { FieldDate } from './field-date';
+import { FieldKitchen } from './field-kitchen';
+import { FieldDescription } from './field-description';
+import { FieldPlanColor } from './field-plan-color';
+import { PlanPropertiesFormService } from './plan-properties-form-service';
 
 @Component({
   selector: 'ck-plan-properties-dialog',
@@ -20,7 +20,7 @@ import { FieldDescription } from './field-description.js';
     ReactiveFormsModule,
     FieldName,
     FieldDate,
-    FieldColor,
+    FieldPlanColor,
     FieldKitchen,
     FieldDescription,
   ],
@@ -31,7 +31,7 @@ import { FieldDescription } from './field-description.js';
         <ck-field-name></ck-field-name>
         <div class="grid grid-cols-[10fr_6fr] gap-4">
           <ck-field-date></ck-field-date>
-          <ck-field-color></ck-field-color>
+          <ck-plan-field-color></ck-plan-field-color>
         </div>
         @if (planProperties.id) {
           <ck-field-description></ck-field-description>

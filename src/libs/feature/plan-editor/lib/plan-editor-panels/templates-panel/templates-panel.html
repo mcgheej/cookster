@@ -1,0 +1,11 @@
+<div class="ml-1">
+  <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
+  <div class="inline-block pl-1 pt-2 font-bold text-sm select-none">Activity Templates:</div>
+</div>
+<div class="ml-[18px]">
+  <div class="mt-3 w-full grid grid-cols-2 auto-rows-[100px]">
+    @for (template of activityTemplates(); track template.id) {
+      <ck-activity-template [template]="template"></ck-activity-template>
+    }
+  </div>
+</div>

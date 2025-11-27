@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnChanges, OnDestroy } from '@angular/core';
 import { MultiPanel } from '@ui/multi-panel/index';
 import { MatDividerModule } from '@angular/material/divider';
 import { SpeechService } from '@ui/text-speech/index';
@@ -15,7 +15,7 @@ import { SELECTED_ACTIVITY_PANEL_NAME, selectorButtons } from './types-constants
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PlanEditorService, PlanEditorDataService],
 })
-export class PlanEditor implements OnChanges {
+export class PlanEditor implements OnChanges, OnDestroy {
   private readonly planEditorDataService = inject(PlanEditorDataService);
   private readonly planEditorService = inject(PlanEditorService);
   private readonly textSpeech = inject(SpeechService);
@@ -32,5 +32,9 @@ export class PlanEditor implements OnChanges {
 
   ngOnChanges() {
     this.planEditorService.setPlanId(this.planId());
+  }
+
+  ngOnDestroy() {
+    this.planEditorService.setPlanId('');
   }
 }

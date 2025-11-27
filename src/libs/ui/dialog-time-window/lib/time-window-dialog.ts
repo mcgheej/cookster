@@ -76,9 +76,6 @@ export class TimeWindowDialog implements OnInit {
       this.timeWindow = { ...this.timeWindow, endHours: hours };
     }
     this.setWindowBarRegions();
-    // const clickX = ev.clientX - ev.currentTarget.getBoundingClientRect().left;
-    // const clickedSlotIndex = Math.floor(clickX / hourslotWidthPx);
-    // console.log('Clicked slot index:', clickedSlotIndex);
   }
 
   clickOnTimeWindowBackground(ev: MouseEvent) {

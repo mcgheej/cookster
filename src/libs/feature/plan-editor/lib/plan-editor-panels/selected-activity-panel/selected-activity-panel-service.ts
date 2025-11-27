@@ -15,12 +15,14 @@ import {
 import { opaqueColor } from '@util/color-utilities/index';
 import { DeleteActivitySnack } from './delete-activity-snack/delete-activity-snack';
 import { openActivityDialog } from '@ui/activity-dialog/index';
+import { TemplatesDataService } from 'libs/data-access/templates';
 
 @Injectable()
 export class SelectedActivityPanelService {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly plansData = inject(PlansDataService);
+  private readonly templatesData = inject(TemplatesDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
 
   // Signals and Computed Signals
@@ -114,8 +116,8 @@ export class SelectedActivityPanelService {
     });
   }
 
-  createTemplateFromActivity() {
-    console.log('create template from activity');
+  createTemplateFromActivity(activity: ActivityDB) {
+    this.doCreateTemplateFromActivity(activity);
   }
 
   deleteActivity(selectedActivity: ActivityDB) {
@@ -150,6 +152,20 @@ export class SelectedActivityPanelService {
       },
       error: (error) => {
         this.snackBar.open(`Error deleting activity: ${error}`, undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+    });
+  }
+
+  private doCreateTemplateFromActivity(activity: ActivityDB) {
+    const { startTimeOffset, planId, resourceIndex, ...activityTemplate } = { ...activity, id: '' };
+    this.templatesData.createActivityTemplate(activityTemplate).subscribe({
+      next: (createdTemplate) => {
+        this.snackBar.open('Activity template created', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (error) => {
+        this.snackBar.open(`Error creating activity template: ${error}`, undefined, {
+          duration: DEFAULT_SNACKBAR_DURATION,
+        });
       },
     });
   }

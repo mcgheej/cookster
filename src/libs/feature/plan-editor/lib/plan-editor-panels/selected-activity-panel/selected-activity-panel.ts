@@ -35,7 +35,7 @@ import { SelectedActivityPanelService } from './selected-activity-panel-service'
       <div class="pt-2 pl-[18px]">
         <ck-activity-panel-buttons
           (edit)="service.editActivity()"
-          (createTemplate)="service.createTemplateFromActivity()"
+          (createTemplate)="service.createTemplateFromActivity(activity)"
           (delete)="service.deleteActivity(activity)"
           (deselect)="service.deselectActivity()"></ck-activity-panel-buttons>
       </div>

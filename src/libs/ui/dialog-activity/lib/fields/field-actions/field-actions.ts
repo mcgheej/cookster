@@ -123,7 +123,6 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
       const currEndTime = (changes['plan'].currentValue as Plan).properties.endTime;
       const prevEndTime = (changes['plan'].previousValue as Plan | undefined)?.properties.endTime;
       if (prevEndTime && prevEndTime !== currEndTime) {
-        console.log('Plan end time changed so need to revalidate actions');
         this.onValidatorChange();
       }
     }

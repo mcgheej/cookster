@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FIELD_COLOR, PlanPropertiesFormService } from './plan-properties-form-service.ts';
-import { googleColors } from '@util/app-config/lib/google-colors';
+import { googleColors } from '@util/app-config/index';
 import { DEFAULT_PLAN_COLOR, DIALOG_COLOR_OPACITY } from '@util/app-config/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { opaqueColor } from '@util/color-utilities/index.js';
+import { opaqueColor } from '@util/color-utilities/index';
+import { FIELD_PLAN_COLOR, PlanPropertiesFormService } from './plan-properties-form-service';
 
 @Component({
-  selector: 'ck-field-color',
+  selector: 'ck-plan-field-color',
   imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatIconModule],
   template: `
     <div class="grid grid-cols-[1fr]" [formGroup]="form">
@@ -38,10 +38,10 @@ import { opaqueColor } from '@util/color-utilities/index.js';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FieldColor {
+export class FieldPlanColor {
   protected readonly form = inject(PlanPropertiesFormService).form;
 
-  protected readonly controlName = FIELD_COLOR;
+  protected readonly controlName = FIELD_PLAN_COLOR;
   // readonly googleColors = googleColors;
   readonly googleColorsArray = Object.entries(googleColors).map(([key, value]) => ({
     name: value.name,
@@ -51,7 +51,7 @@ export class FieldColor {
   selected = DEFAULT_PLAN_COLOR;
 
   constructor() {
-    this.form.get(FIELD_COLOR)?.valueChanges.subscribe((value) => {
+    this.form.get(FIELD_PLAN_COLOR)?.valueChanges.subscribe((value) => {
       this.selected = value ?? googleColors[DEFAULT_PLAN_COLOR].name.toLocaleLowerCase();
     });
   }

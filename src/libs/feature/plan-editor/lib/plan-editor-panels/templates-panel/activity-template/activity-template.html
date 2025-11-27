@@ -1,0 +1,46 @@
+@if (vm(); as vm) {
+  <div class="w-[95%] h-[90%] grid mt-1 ml-0.5 text-xs text-[var(--mat-sys-on-surface)]">
+    <div
+      class="size-full self-center justify-self-center rounded-[6px]"
+      [style.backgroundColor]="vm.color"
+      (mouseenter)="onEnterTemplate()"
+      (mouseleave)="onLeaveTemplate()">
+      <div class="size-full grid grid-rows-[1fr_26px]">
+        @if (vm.actionsPresent) {
+          <div class="row-start-1 row-end-2 col-start-1 col-end-2 size-full text-right px-1">
+            <div class="self-start justify-self-start">
+              <mat-icon [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10">electric_bolt</mat-icon>
+            </div>
+          </div>
+        }
+        <div class="row-start-1 row-end-2 col-start-1 col-end-2 size-full text-center px-1 grid grid-cols-1">
+          <div class="self-center justify-self-center select-none">{{ vm.name }}</div>
+        </div>
+        <div class="row-start-2 row-end-3 col-start-1 col-end-2 bg-white" [style.opacity]="vm.opacity">
+          <div class="inline-block size-[26px] rounded-[50%] hover:bg-[#FF408122]" (click)="onEditTemplate($event)">
+            <mat-icon
+              [inline]="true"
+              [style.fontSize.px]="18"
+              [style.height.px]="18"
+              [style.width.px]="18"
+              [style.color]="'#3F51B5'"
+              class="mt-[2px] ml-[4px] cursor-pointer text-center">
+              edit
+            </mat-icon>
+          </div>
+          <div class="inline-block size-[26px] rounded-[50%] hover:bg-[#FF408122]" (click)="onDeleteTemplate($event)">
+            <mat-icon
+              [inline]="true"
+              [style.fontSize.px]="18"
+              [style.height.px]="18"
+              [style.width.px]="18"
+              [style.color]="'#3F51B5'"
+              class="mt-[2px] ml-[4px] cursor-pointer text-center">
+              delete
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

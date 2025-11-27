@@ -18,15 +18,19 @@ import {
 import { LaneController, laneControllersEqual } from './types-constants/lane-control';
 import { ActivitiesDataService } from '@data-access/plans/lib/activities-data';
 import { isSameMinute } from 'date-fns';
+import { TemplatesDataService } from '@data-access/templates/index';
 
 @Injectable()
 export class PlanEditorDataService {
   private readonly plansData = inject(PlansDataService);
   private readonly activitiesData = inject(ActivitiesDataService);
+  private readonly activityTemplatesData = inject(TemplatesDataService);
 
   private readonly activitiesMap = toSignal(this.activitiesData.activitiesMap$, {
     initialValue: new Map<string, ActivityDB>(),
   });
+
+  readonly activityTemplates = toSignal(this.activityTemplatesData.templates$, { initialValue: [] });
 
   /**
    * currentPlan
