@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { addDoc, collection, Firestore, onSnapshot } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot } from '@angular/fire/firestore';
 import { ActivityTemplateDB } from '@util/data-types/index';
+import { te } from 'date-fns/locale';
 import { Unsubscribe, User } from 'firebase/auth';
 import { BehaviorSubject, from, map, Observable } from 'rxjs';
 
@@ -51,6 +52,11 @@ export class AfTemplatesService {
         return { id: docRef.id, ...template } as ActivityTemplateDB;
       })
     );
+  }
+
+  deleteActivityTemplate(templateId: string): Observable<void> {
+    const docRef = doc(this.firestore, `templates/${templateId}`);
+    return from(deleteDoc(docRef));
   }
 
   private setupSnapshotListener(): Unsubscribe {

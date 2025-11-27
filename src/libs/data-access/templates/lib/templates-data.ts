@@ -35,4 +35,8 @@ export class TemplatesDataService {
   createActivityTemplate(template: ActivityTemplateDB): Observable<ActivityTemplateDB> {
     return this.db.createActivityTemplate(template);
   }
+
+  deleteActivityTemplate(templateId: string): Observable<void> {
+    return this.db.deleteActivityTemplate(templateId);
+  }
 }

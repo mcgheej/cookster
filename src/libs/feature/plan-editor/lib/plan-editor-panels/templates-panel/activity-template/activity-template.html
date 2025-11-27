@@ -16,28 +16,25 @@
         <div class="row-start-1 row-end-2 col-start-1 col-end-2 size-full text-center px-1 grid grid-cols-1">
           <div class="self-center justify-self-center select-none">{{ vm.name }}</div>
         </div>
-        <div class="row-start-2 row-end-3 col-start-1 col-end-2 bg-white" [style.opacity]="vm.opacity">
-          <div class="inline-block size-[26px] rounded-[50%] hover:bg-[#FF408122]" (click)="onEditTemplate($event)">
-            <mat-icon
-              [inline]="true"
-              [style.fontSize.px]="18"
-              [style.height.px]="18"
-              [style.width.px]="18"
-              [style.color]="'#3F51B5'"
-              class="mt-[2px] ml-[4px] cursor-pointer text-center">
-              edit
-            </mat-icon>
+        <div class="pl-1 row-start-2 row-end-3 col-start-1 col-end-2 bg-white" [style.opacity]="vm.opacity">
+          <div class="inline-block size-[32px]">
+            <button
+              class="small"
+              matIconButton
+              [matTooltipShowDelay]="defaultTooltipShowDelay"
+              matTooltip="edit activity template">
+              <mat-icon>edit</mat-icon>
+            </button>
           </div>
-          <div class="inline-block size-[26px] rounded-[50%] hover:bg-[#FF408122]" (click)="onDeleteTemplate($event)">
-            <mat-icon
-              [inline]="true"
-              [style.fontSize.px]="18"
-              [style.height.px]="18"
-              [style.width.px]="18"
-              [style.color]="'#3F51B5'"
-              class="mt-[2px] ml-[4px] cursor-pointer text-center">
-              delete
-            </mat-icon>
+          <div class="inline-block size-[32px]">
+            <button
+              class="small"
+              matIconButton
+              [matTooltipShowDelay]="defaultTooltipShowDelay"
+              matTooltip="delete activity template"
+              (click)="onDeleteTemplate($event)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
       </div>
