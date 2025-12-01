@@ -23,10 +23,10 @@ export class ActivityActionFormService {
     { validators: [this.validateActionWithinValidTimePeriod()] }
   );
 
-  private plan: Plan | null = null;
-  private activity: ActivityDB | null = null;
+  private plan: Plan | undefined = undefined;
+  private activity: ActivityDB | undefined = undefined;
 
-  initialise(action: ActivityAction, activity: ActivityDB, plan: Plan): void {
+  initialise(action: ActivityAction, activity?: ActivityDB, plan?: Plan): void {
     this.plan = plan;
     this.activity = activity;
     this.loadFormData(action);

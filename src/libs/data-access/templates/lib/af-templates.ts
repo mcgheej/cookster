@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { ActivityTemplateDB } from '@util/data-types/index';
 import { te } from 'date-fns/locale';
 import { Unsubscribe, User } from 'firebase/auth';
@@ -52,6 +52,11 @@ export class AfTemplatesService {
         return { id: docRef.id, ...template } as ActivityTemplateDB;
       })
     );
+  }
+
+  updateTemplateActivity(templateId: string, updates: Partial<ActivityTemplateDB>): Observable<void> {
+    const docRef = doc(this.firestore, `templates/${templateId}`);
+    return from(updateDoc(docRef, updates));
   }
 
   deleteActivityTemplate(templateId: string): Observable<void> {

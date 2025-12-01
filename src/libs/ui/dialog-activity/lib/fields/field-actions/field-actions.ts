@@ -30,12 +30,12 @@ import {
   Plan,
 } from '@util/data-types/index';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { format } from 'date-fns';
 import {
   ActivityActionDialog,
   ActivityActionDialogData,
   ActivityActionDialogResult,
-} from './dialog-activity-action/activity-action-dialog';
-import { format } from 'date-fns';
+} from '@ui/dialog-activity-action/index';
 
 @Component({
   selector: 'ck-field-actions',
@@ -67,10 +67,10 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
   protected actionsSignal = signal<ActivityAction[]>([]);
 
   protected readonly actionSummaries = computed(() => {
-    const actions = this.actionsSignal();
+    const actionsCopy = this.actionsSignal();
     const activity = this.activity();
     const plan = this.plan();
-    return actions.map((a) => {
+    return actionsCopy.map((a) => {
       const actionTime = activityActionTime(a, activity.startTimeOffset, activity.duration, plan.properties.endTime);
       const isInvalid = activityActionOutsideValidTimePeriod(
         a,

@@ -36,6 +36,10 @@ export class TemplatesDataService {
     return this.db.createActivityTemplate(template);
   }
 
+  updateTemplateActivity(templateId: string, updates: Partial<ActivityTemplateDB>): Observable<void> {
+    return this.db.updateTemplateActivity(templateId, updates);
+  }
+
   deleteActivityTemplate(templateId: string): Observable<void> {
     return this.db.deleteActivityTemplate(templateId);
   }

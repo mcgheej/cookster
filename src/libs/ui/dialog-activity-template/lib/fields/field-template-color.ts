@@ -4,7 +4,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivityTemplateFormService } from '../activity-template-form-service';
-import { defaultGoogleColor, googleColors } from '@util/app-config/index';
+import { DEFAULT_COLOR_OPACITY, defaultGoogleColor, googleColors } from '@util/app-config/index';
+import { opaqueColor } from '@util/color-utilities/index';
 
 @Component({
   selector: 'ck-field-template-color',
@@ -39,12 +40,12 @@ import { defaultGoogleColor, googleColors } from '@util/app-config/index';
 export class FieldTemplateColor {
   readonly formService = inject(ActivityTemplateFormService);
   readonly form = this.formService.form;
-
   readonly controlName = 'color';
+
   readonly googleColors = googleColors;
   readonly googleColorsArr = Object.entries(googleColors).map(([key, value]) => ({
     name: value.name,
-    color: value.color,
+    color: opaqueColor(value.color, DEFAULT_COLOR_OPACITY),
   }));
 
   selected!: string;

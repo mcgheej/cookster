@@ -11,6 +11,8 @@ import { FieldResource } from './fields/field-resource';
 import { FieldDescription } from './fields/field-description';
 import { FieldStartEndMessages } from './fields/field-start-end-messages';
 import { FieldActions } from './fields/field-actions/field-actions';
+import { FieldTime } from './fields/field-time';
+import { FieldDuration } from './fields/field-duration';
 
 export interface ActivityDialogData {
   plan: Plan;
@@ -24,7 +26,8 @@ export interface ActivityDialogData {
     MatDialogModule,
     MatButtonModule,
     FieldName,
-    FieldTimeDuration,
+    FieldTime,
+    FieldDuration,
     FieldColor,
     FieldResource,
     FieldActions,

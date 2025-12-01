@@ -2,8 +2,9 @@
 <form [formGroup]="form" (ngSubmit)="saveActivity()">
   <div class="px-[24px]">
     <ck-field-name />
-    <div class="grid grid-cols-[1fr]">
-      <ck-field-time-duration />
+    <div class="mt-3 grid grid-cols-[1fr_1fr] gap-4">
+      <ck-field-time />
+      <ck-field-duration />
     </div>
     <div class="mt-3 grid grid-cols-[10fr_6fr] gap-4">
       <ck-field-resource />

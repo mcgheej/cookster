@@ -7,6 +7,9 @@
       <ck-field-template-color />
       <div></div>
     </div>
+    <ck-field-template-actions [formControlName]="'actions'" />
+    <ck-field-template-description />
+    <ck-template-field-start-end-messages />
   </div>
   <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
     <button mat-button [mat-dialog-close]="undefined" color="accent">Cancel</button>

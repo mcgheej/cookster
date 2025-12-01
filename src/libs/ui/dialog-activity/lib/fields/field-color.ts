@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DEFAULT_ACTIVITY_COLOR, defaultGoogleColor, DIALOG_COLOR_OPACITY, googleColors } from '@util/app-config/index';
+import { DEFAULT_ACTIVITY_COLOR, DIALOG_COLOR_OPACITY, googleColors } from '@util/app-config/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -50,9 +50,6 @@ export class FieldColor {
   selected = DEFAULT_ACTIVITY_COLOR;
 
   constructor() {
-    // this.form.get(F_COLOR)?.valueChanges.subscribe((value) => {
-    //   this.selected = value ?? googleColors[defaultGoogleColor].name.toLocaleLowerCase();
-    // });
     this.form.controls.color.valueChanges.subscribe((value) => {
       this.selected = value;
     });

@@ -17,8 +17,14 @@ export class TemplatesPanelService {
     const dialogRef = openActivityTemplateDialog(template, this.dialog);
     dialogRef.afterClosed().subscribe((updatedTemplate) => {
       if (updatedTemplate) {
-        // update the template
-        console.log('updated template', updatedTemplate);
+        const { id, ...updates } = updatedTemplate;
+        this.templatesData.updateTemplateActivity(id, updates).subscribe({
+          error: (error) => {
+            this.snackBar.open(`Error updating template: ${error.message}`, 'Close', {
+              duration: DEFAULT_SNACKBAR_DURATION,
+            });
+          },
+        });
       }
     });
   }

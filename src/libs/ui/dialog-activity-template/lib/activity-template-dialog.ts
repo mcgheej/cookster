@@ -7,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { FieldTemplateName } from './fields/field-template-name';
 import { FieldTemplateColor } from './fields/field-template-color';
 import { FieldTemplateDuration } from './fields/field-template-duration';
+import { FieldTemplateActions } from './fields/field-template-actions/field-template-actions';
+import { FieldTemplateDescription } from './fields/field-template-description';
+import { FieldTemplateStartEndMessages } from './fields/field-template-start-end-messages';
 
 @Component({
   selector: 'ck-activity-template-dialog',
@@ -17,6 +20,9 @@ import { FieldTemplateDuration } from './fields/field-template-duration';
     FieldTemplateName,
     FieldTemplateDuration,
     FieldTemplateColor,
+    FieldTemplateActions,
+    FieldTemplateDescription,
+    FieldTemplateStartEndMessages,
   ],
   templateUrl: './activity-template-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -13,8 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export interface ActivityActionDialogData {
   actionIndex: number;
   action: ActivityAction;
-  activity: ActivityDB;
-  plan: Plan;
+  activity?: ActivityDB;
+  plan?: Plan;
 }
 
 export type ActivityActionDialogResult = { operation: 'save'; action: ActivityAction } | { operation: 'delete' };
