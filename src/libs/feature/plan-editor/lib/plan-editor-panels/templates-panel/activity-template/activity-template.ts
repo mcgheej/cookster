@@ -20,6 +20,7 @@ import { ActivityTemplateDB } from '@util/data-types/index';
 })
 export class ActivityTemplate {
   readonly template = input.required<ActivityTemplateDB>();
+  protected readonly editTemplate = output<void>();
   protected readonly deleteTemplate = output<void>();
 
   protected readonly vm = computed(() => {
@@ -40,7 +41,11 @@ export class ActivityTemplate {
 
   private showButtons = signal<boolean>(false);
 
-  onEditTemplate(ev: MouseEvent) {}
+  onEditTemplate(ev: MouseEvent) {
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.editTemplate.emit();
+  }
 
   onDeleteTemplate(ev: MouseEvent) {
     ev.stopPropagation();

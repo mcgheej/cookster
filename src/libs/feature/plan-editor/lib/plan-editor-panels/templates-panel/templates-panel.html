@@ -7,6 +7,7 @@
     @for (template of activityTemplates(); track template.id) {
       <ck-activity-template
         [template]="template"
+        (editTemplate)="service.editTemplate(template)"
         (deleteTemplate)="service.deleteTemplate(template)"></ck-activity-template>
     }
   </div>

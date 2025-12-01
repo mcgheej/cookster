@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Edit Activity Template</h2>
+<form [formGroup]="form" (ngSubmit)="saveTemplate()">
+  <div class="px-[24px]">
+    <ck-field-template-name />
+    <div class="grid grid-cols-[10fr_12fr_10fr] gap-4">
+      <ck-field-template-duration />
+      <ck-field-template-color />
+      <div></div>
+    </div>
+  </div>
+  <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+    <button mat-button [mat-dialog-close]="undefined" color="accent">Cancel</button>
+    <button mat-button type="submit" [disabled]="form.invalid">Save</button>
+  </mat-dialog-actions>
+</form>

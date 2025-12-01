@@ -28,6 +28,7 @@
       "@feature/plans/*": ["libs/feature/plans/*"],
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
       "@ui/activity-dialog/*": ["libs/ui/dialog-activity/*"],
+      "@ui/activity-template-dialog/*": ["libs/ui/dialog-activity-template/*"],
       "@ui/dialog-generic-input/*": ["libs/ui/dialog-generic-input/*"],
       "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
       "@ui/dialog-time-snap/*": ["libs/ui/dialog-time-snap/*"],

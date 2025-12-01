@@ -38,7 +38,6 @@ const defaultResource: PlanKitchenResource = {
 
 @Injectable()
 export class ActivityFormService {
-  private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
 
   // Define the form structure and validation requirements

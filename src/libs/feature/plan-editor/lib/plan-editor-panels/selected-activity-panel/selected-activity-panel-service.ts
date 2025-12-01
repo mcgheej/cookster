@@ -13,9 +13,9 @@ import {
   googleColors,
 } from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
-import { DeleteActivitySnack } from './delete-activity-snack/delete-activity-snack';
 import { openActivityDialog } from '@ui/activity-dialog/index';
 import { TemplatesDataService } from 'libs/data-access/templates';
+import { DeleteActivitySnack } from '@ui/snack-bars/index';
 
 @Injectable()
 export class SelectedActivityPanelService {

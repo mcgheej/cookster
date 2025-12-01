@@ -22,7 +22,8 @@
               class="small"
               matIconButton
               [matTooltipShowDelay]="defaultTooltipShowDelay"
-              matTooltip="edit activity template">
+              matTooltip="edit activity template"
+              (click)="onEditTemplate($event)">
               <mat-icon>edit</mat-icon>
             </button>
           </div>
