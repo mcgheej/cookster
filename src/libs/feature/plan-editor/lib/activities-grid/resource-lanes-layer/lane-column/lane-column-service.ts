@@ -86,6 +86,7 @@ export class LaneColumnService {
             new AcceptedDragOperation('drag-change-activity-duration', dropId, PreviewChangeActivityDuration),
           ],
           ['drag-activity', new AcceptedDragOperation('drag-activity', dropId, PreviewMoveActivity)],
+          ['drag-template-activity', new AcceptedDragOperation('drag-template-activity', dropId, PreviewMoveActivity)],
         ]),
         scrollX: this.planEditorData.activitiesGridScrollX,
         scrollY: this.planEditorData.activitiesGridScrollY,

@@ -13,13 +13,15 @@
             </div>
           </div>
         }
-        <div class="row-start-1 row-end-2 col-start-1 col-end-2 size-full text-center px-1 grid grid-cols-1">
+        <div
+          [ckDrag]="dragOperation()"
+          class="row-start-1 row-end-2 col-start-1 col-end-2 size-full text-center px-1 grid grid-cols-1">
           <div class="self-center justify-self-center select-none">{{ vm.name }}</div>
         </div>
         <div class="pl-1 row-start-2 row-end-3 col-start-1 col-end-2 bg-white" [style.opacity]="vm.opacity">
           <div class="inline-block size-[32px]">
             <button
-              class="small"
+              class="small z-10"
               matIconButton
               [matTooltipShowDelay]="defaultTooltipShowDelay"
               matTooltip="edit activity template"
@@ -29,7 +31,7 @@
           </div>
           <div class="inline-block size-[32px]">
             <button
-              class="small"
+              class="z-10 small"
               matIconButton
               [matTooltipShowDelay]="defaultTooltipShowDelay"
               matTooltip="delete activity template"

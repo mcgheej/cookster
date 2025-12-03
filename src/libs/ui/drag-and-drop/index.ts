@@ -4,6 +4,7 @@ export * from './lib/drag-operations/operations/drag-tethered-plan-end';
 export * from './lib/drag-operations/operations/drag-untethered-plan-end';
 export * from './lib/drag-operations/operations/drag-change-activity-duration';
 export * from './lib/drag-operations/operations/drag-activity';
+export * from './lib/drag-operations/operations/drag-template-activity';
 export * from './lib/drop-areas/drop-area-resource-lane-header/drop-area-resource-lane-header';
 export * from './lib/drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 export * from './lib/ck-drag';
