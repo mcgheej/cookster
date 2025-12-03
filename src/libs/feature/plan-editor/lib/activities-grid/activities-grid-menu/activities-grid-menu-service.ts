@@ -3,10 +3,10 @@ import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { LaneWidth, TimeWindow } from '@util/data-types/index';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TimeWindowDialog, TimeWindowDialogData } from '@ui/dialog-time-window/index';
-import { TimeSnapDialog } from '@ui/dialog-time-snap/index';
 import { PlansDataService } from '@data-access/plans/index';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
+import { openTimeSnapDialog } from '@ui/dialog-time-snap/index';
 
 @Injectable()
 export class ActivitiesGridMenuService {
@@ -68,10 +68,7 @@ export class ActivitiesGridMenuService {
   }
 
   openTimeSnapDialog() {
-    const dialogRef: MatDialogRef<TimeSnapDialog, number> = this.dialog.open(TimeSnapDialog, {
-      width: '350px',
-      data: this.editorData.timeSnapMins(),
-    });
+    const dialogRef = openTimeSnapDialog(this.editorData.timeSnapMins(), this.dialog);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.editorData.setTimeSnapMins(result);

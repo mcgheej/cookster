@@ -1,1 +1,1 @@
-export * from './lib/time-snap-dialog';
+export * from './lib/open-time-snap-dialog';
