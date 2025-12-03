@@ -47,7 +47,7 @@ export class ActivityTile {
     return new DragActivity({
       id: 'drag-activity',
       plan: this.planEditorData.currentPlan(),
-      displayTile: this.tile(),
+      activity: this.tile().activity,
     });
   });
 

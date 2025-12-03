@@ -1,17 +1,29 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PlansDataService } from '@data-access/plans/index';
 import { TemplatesDataService } from '@data-access/templates/index';
 import { openActivityTemplateDialog } from '@ui/activity-template-dialog/index';
 import { DeleteActivitySnack } from '@ui/snack-bars/index';
 import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
-import { ActivityTemplateDB } from '@util/data-types/index';
+import { ActivityDB, ActivityTemplateDB } from '@util/data-types/index';
 
 @Injectable()
 export class TemplatesPanelService {
   private readonly dialog = inject(MatDialog);
   private readonly templatesData = inject(TemplatesDataService);
+  private readonly plansData = inject(PlansDataService);
   private readonly snackBar = inject(MatSnackBar);
+
+  createActivityFromTemplate(newActivity: ActivityDB): void {
+    this.plansData.createActivity(newActivity).subscribe({
+      error: (error) => {
+        this.snackBar.open(`Error creating activity: ${error.message}`, 'Close', {
+          duration: DEFAULT_SNACKBAR_DURATION,
+        });
+      },
+    });
+  }
 
   editTemplate(template: ActivityTemplateDB): void {
     const dialogRef = openActivityTemplateDialog(template, this.dialog);

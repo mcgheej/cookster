@@ -1,23 +1,27 @@
-import { ActivityTemplateDB, Plan } from '@util/data-types/index';
+import { ActivityDB, ActivityTemplateDB, Plan } from '@util/data-types/index';
 import { DragData, DragEndProps, DragMoveProps, DragOperation, DragResult, DragStartProps } from '../drag-operation';
 import { DropArea } from '../../drop-areas/drop-area';
 import { signal, Type } from '@angular/core';
 import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/preview-component-base';
-import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
 import { PreviewTemplateActivity } from '../../drop-areas/preview-template-activity';
+import { DragActivityData } from './drag-activity';
+import { config } from 'rxjs';
+import { PreviewMoveActivity } from '../../drop-areas/drop-area-resource-lane-column/preview-move-activity/preview-move-activity';
 
-export interface DragTemplateActivityData extends DragData {
-  plan: Plan | null;
+export interface DragTemplateActivityData extends DragActivityData {
   template: ActivityTemplateDB;
   hostWidthPx: number;
   hostHeightPx: number;
 }
 
-export interface DragTemplateActivityResult extends DragResult {}
+export interface DragTemplateActivityResult extends DragResult {
+  newActivity: ActivityDB;
+}
 
 export class DragTemplateActivity extends DragOperation implements DragTemplateActivityData {
   plan: Plan | null;
+  activity: ActivityDB;
   template: ActivityTemplateDB;
   hostHeightPx: number;
   hostWidthPx: number;
@@ -48,6 +52,7 @@ export class DragTemplateActivity extends DragOperation implements DragTemplateA
   constructor(configData: DragTemplateActivityData) {
     super(configData as DragData);
     this.plan = configData.plan;
+    this.activity = configData.activity;
     this.template = configData.template;
     this.hostWidthPx = configData.hostWidthPx;
     this.hostHeightPx = configData.hostHeightPx;
@@ -78,11 +83,30 @@ export class DragTemplateActivity extends DragOperation implements DragTemplateA
 
   end(props: DragEndProps): DragResult | undefined {
     this.setupDropArea(props.pointerPos);
+
+    let result: DragTemplateActivityResult | undefined = undefined;
+    if (this.lastDropArea && this.plan) {
+      if (this.previewComponent === PreviewMoveActivity) {
+        const position = (props.overlayService.attachedComponentRef?.instance as PreviewMoveActivity).activityPosition;
+        if (position) {
+          const { timeOffset, resourceLane } = position;
+          result = {
+            newActivity: {
+              ...this.activity,
+              startTimeOffset: timeOffset,
+              resourceIndex: resourceLane.kitchenResource.index,
+              planId: this.plan.properties.id,
+            },
+          };
+        }
+      }
+    }
+
     props.overlayService.detachComponent(props.renderer);
     this.associatedDropAreas = [];
     this.lastDropArea = null;
     this.previewComponent = PreviewTemplateActivity;
-    return undefined;
+    return result;
   }
 
   private setupDropArea(pointerPos: PointerData): 'same' | 'changed' {

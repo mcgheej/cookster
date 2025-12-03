@@ -11,8 +11,8 @@ import {
   googleColors,
 } from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
-import { ActivityTemplateDB } from '@util/data-types/index';
-import { CkDrag, DragTemplateActivity } from '@ui/drag-and-drop/index';
+import { ActivityDB, ActivityTemplateDB } from '@util/data-types/index';
+import { CkDrag, DragResult, DragTemplateActivity, DragTemplateActivityResult } from '@ui/drag-and-drop/index';
 
 @Component({
   selector: 'ck-activity-template',
@@ -27,6 +27,7 @@ export class ActivityTemplate {
   readonly template = input.required<ActivityTemplateDB>();
   protected readonly editTemplate = output<void>();
   protected readonly deleteTemplate = output<void>();
+  protected readonly createActivityFromTemplate = output<ActivityDB>();
 
   protected readonly vm = computed(() => {
     const template = this.template();
@@ -43,10 +44,26 @@ export class ActivityTemplate {
   });
 
   protected readonly dragOperation = computed(() => {
+    const template = this.template();
+    const plan = this.planEditorData.currentPlan();
+    const activity = {
+      id: '',
+      name: template.name,
+      description: template.description,
+      duration: template.duration,
+      actions: template.actions,
+      color: template.color,
+      startMessage: template.startMessage,
+      endMessage: template.endMessage,
+      startTimeOffset: 200,
+      planId: plan ? plan.properties.id : '',
+      resourceIndex: 0,
+    };
     return new DragTemplateActivity({
       id: 'drag-template-activity',
-      plan: this.planEditorData.currentPlan(),
-      template: this.template(),
+      plan,
+      template,
+      activity,
       hostWidthPx: this.hostElementRef.nativeElement.offsetWidth,
       hostHeightPx: this.hostElementRef.nativeElement.offsetHeight,
     });
@@ -66,6 +83,12 @@ export class ActivityTemplate {
     ev.stopPropagation();
     ev.preventDefault();
     this.deleteTemplate.emit();
+  }
+
+  onDragEnd(result: DragResult | undefined) {
+    if (result) {
+      this.createActivityFromTemplate.emit((result as DragTemplateActivityResult).newActivity);
+    }
   }
 
   onEnterTemplate() {

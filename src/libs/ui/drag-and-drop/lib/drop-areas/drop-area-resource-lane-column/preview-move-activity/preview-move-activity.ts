@@ -4,11 +4,16 @@ import { DragActivity } from '@ui/drag-and-drop/lib/drag-operations/operations/d
 import { DropAreaResourceLaneColumn } from '../drop-area-resource-lane-column';
 import { getDateFromMinutesSinceMidnight, getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { getActivityEnvelope, ResourceLane } from '@util/data-types/index';
-import { ACTIVITY_TILES_LEFT_MARGIN_PX, ACTIVITY_TILES_RIGHT_MARGIN_PX } from '@util/app-config/index';
+import {
+  ACTIVITY_TILES_LEFT_MARGIN_PX,
+  ACTIVITY_TILES_RIGHT_MARGIN_PX,
+  DEFAULT_COLOR_OPACITY,
+  googleColors,
+} from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { format } from 'date-fns';
+import { format, subMinutes } from 'date-fns';
 
 @Component({
   selector: 'ck-preview-move-activity',
@@ -36,7 +41,8 @@ export class PreviewMoveActivity extends PreviewComponentBase {
     // Pull out commonly used values from previewProps and check essential data present for drop area
     const { pointerPos, dragOp: baseDragOp, dropArea: baseDropArea, clipArea } = previewProps;
     const dropAreaEl = baseDropArea?.hostElement;
-    const plan = (baseDragOp as DragActivity).plan;
+    const dragOp = baseDragOp as DragActivity;
+    const plan = dragOp.plan;
     if (!baseDropArea || !baseDropArea.hostElement || !dropAreaEl || !plan) {
       return undefined;
     }
@@ -44,9 +50,8 @@ export class PreviewMoveActivity extends PreviewComponentBase {
     // The displayTile (of type DisplayTile) is the object defining the tile displayed in the resource
     // lane for the subject activity.
     const { dragPosition: dragPos, shiftKey } = pointerPos;
-    const dragOp = baseDragOp as DragActivity;
     const dropArea = baseDropArea as DropAreaResourceLaneColumn;
-    const displayTile = dragOp.displayTile;
+    const targetActivity = dragOp.activity;
     const pixelsPerHour = dropArea.pixelsPerHour();
     const timeSnapMins = dropArea.timeSnapMins();
     const timeWindow = dropArea.timeWindow();
@@ -68,13 +73,15 @@ export class PreviewMoveActivity extends PreviewComponentBase {
     // Calculate the y value in the overlay corresponding to the plan end. Do this by using
     // the activity start time offset (number of minutes from the start of the activity to
     // the plan end).
-    const activityTileTop = displayTile.topPx + dropAreaTop;
-    const planEndY = activityTileTop + Math.round((displayTile.activity.startTimeOffset / 60) * pixelsPerHour);
+    const activityTileTop = dropArea.getVerticalPositionFromTime(
+      subMinutes(plan.properties.endTime, targetActivity.startTimeOffset)
+    );
+    const planEndY = activityTileTop + Math.round((targetActivity.startTimeOffset / 60) * pixelsPerHour);
 
     // Calculate the y overlay values for the altered activity envelope (envelopeStartY and envelopeEndY).
     const planEndMinsSinceMidnight = getMinutesSinceMidnight(plan.properties.endTime);
     let { startTimeOffset: envelopeStartTimeOffset, duration: envelopeDuration } = getActivityEnvelope({
-      ...displayTile.activity,
+      ...targetActivity,
       startTimeOffset: planEndMinsSinceMidnight - activityStartMins,
     });
     let envelopeStartY = planEndY - Math.round((envelopeStartTimeOffset / 60) * pixelsPerHour);
@@ -98,7 +105,7 @@ export class PreviewMoveActivity extends PreviewComponentBase {
       // envelopeEndY = planEndY;
     }
     const t = getActivityEnvelope({
-      ...displayTile.activity,
+      ...targetActivity,
       startTimeOffset: planEndMinsSinceMidnight - activityStartMins,
     });
     envelopeStartTimeOffset = t.startTimeOffset;
@@ -110,34 +117,36 @@ export class PreviewMoveActivity extends PreviewComponentBase {
     const previewTileTop = activityStartY;
     const previewTileLeft = dropAreaLeft + ACTIVITY_TILES_LEFT_MARGIN_PX;
     const previewTileWidth = dropAreaWidth - ACTIVITY_TILES_LEFT_MARGIN_PX - ACTIVITY_TILES_RIGHT_MARGIN_PX;
-    const previewTileHeight = Math.round((displayTile.activity.duration / 60) * pixelsPerHour);
+    const previewTileHeight = Math.round((targetActivity.duration / 60) * pixelsPerHour);
     const clipPath = this.getClipPath(
       clipArea,
       DOMRect.fromRect({ x: previewTileLeft, y: previewTileTop, width: previewTileWidth, height: previewTileHeight })
     );
-    const color = displayTile.styles['backgroundColor'] || '#888888';
+    const color = googleColors[targetActivity.color].color || '#888888';
     const styles = {
-      ...displayTile.styles,
+      boxSizing: 'border-box',
+      border: `2px solid ${googleColors[targetActivity.color].contrastColor}`,
+      position: 'fixed',
+      borderLeftWidth: '4px',
+      borderRightWidth: '4px',
       top: `${previewTileTop}px`,
       left: `${previewTileLeft}px`,
       height: `${previewTileHeight}px`,
       width: `${previewTileWidth}px`,
-      position: 'fixed',
-      backgroundColor: opaqueColor(color, 0.6),
+      backgroundColor: opaqueColor(color, DEFAULT_COLOR_OPACITY),
+      borderRadius: '6px',
       clipPath,
     };
 
-    // Calculate new start time as a string
     const newStartTime = format(getDateFromMinutesSinceMidnight(activityStartMins), 'HH:mm');
 
-    // Calculate envelope wings data
     const topEnvelopeWing =
       envelopeStartY < previewTileTop
         ? {
             top: envelopeStartY,
             left: previewTileLeft,
             height: previewTileTop - envelopeStartY + 4,
-            border: displayTile.styles['border'],
+            border: `2px solid ${googleColors[targetActivity.color].contrastColor}`,
           }
         : undefined;
 
@@ -148,13 +157,13 @@ export class PreviewMoveActivity extends PreviewComponentBase {
             left: previewTileLeft,
             height: envelopeEndY - (previewTileTop + previewTileHeight) + 4,
             bottom: envelopeEndY,
-            border: displayTile.styles['border'],
+            border: `2px solid ${googleColors[targetActivity.color].contrastColor}`,
           }
         : undefined;
 
     return {
-      name: displayTile.activity.name,
-      actionsPresent: displayTile.activity.actions.length > 0,
+      name: targetActivity.name,
+      actionsPresent: targetActivity.actions.length > 0,
       styles,
       newStartTime,
       timeOffset: planEndMinsSinceMidnight - activityStartMins,

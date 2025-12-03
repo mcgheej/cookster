@@ -1,4 +1,4 @@
-import { DisplayTile, Plan, ResourceLane } from '@util/data-types/index';
+import { ActivityDB, DisplayTile, Plan, ResourceLane } from '@util/data-types/index';
 import { DragData, DragEndProps, DragMoveProps, DragOperation, DragResult, DragStartProps } from '../drag-operation';
 import { DropArea } from '../../drop-areas/drop-area';
 import { signal, Type } from '@angular/core';
@@ -9,7 +9,7 @@ import { PreviewMoveActivity } from '../../drop-areas/drop-area-resource-lane-co
 
 export interface DragActivityData extends DragData {
   plan: Plan | null;
-  displayTile: DisplayTile;
+  activity: ActivityDB;
 }
 
 export interface DragActivityResult extends DragResult {
@@ -19,7 +19,7 @@ export interface DragActivityResult extends DragResult {
 
 export class DragActivity extends DragOperation implements DragActivityData {
   plan: Plan | null;
-  displayTile: DisplayTile;
+  activity: ActivityDB;
 
   /**
    * The drop areas associated with this drag operation. Initialised on drag start and cleared on drag end.
@@ -46,7 +46,7 @@ export class DragActivity extends DragOperation implements DragActivityData {
   constructor(configData: DragActivityData) {
     super(configData as DragData);
     this.plan = configData.plan;
-    this.displayTile = configData.displayTile;
+    this.activity = configData.activity;
   }
 
   start(props: DragStartProps): void {
