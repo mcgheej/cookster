@@ -71,6 +71,10 @@ export class PlansDataService {
     return this.afPlansDB.updatePlanProperties(id, createPlanDbUpdates(changedProperties));
   }
 
+  deletePlan(planId: string): Observable<void> {
+    return this.afPlansDB.deletePlan(planId);
+  }
+
   createActivity(a: ActivityDB): Observable<ActivityDB> {
     return this.activitiesData.createActivity(a);
   }

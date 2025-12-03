@@ -95,7 +95,19 @@ export class PlansService {
       })
       .onAction()
       .subscribe({
-        next: () => console.log('deletePlan click', planSummary),
+        next: () => this.doDeletePlan(planSummary),
       });
+  }
+
+  private doDeletePlan(planSummary: PlanSummary): void {
+    this.snackBar.open('Deleting plan...', undefined, { duration: 0 });
+    this.plansData.deletePlan(planSummary.id).subscribe({
+      next: () => {
+        this.snackBar.open(`${planSummary.name} deleted`, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (err) => {
+        this.snackBar.open(err.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+    });
   }
 }
