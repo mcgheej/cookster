@@ -5,7 +5,6 @@ import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/pr
 import { signal, Type } from '@angular/core';
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
-import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 import { PreviewMoveActionInResourceLaneHeader } from '../../drop-areas/drop-area-resource-lane-header/preview-move-action-in-resource-lane-header';
 import { PreviewMoveActionInResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/preview-move-action-in-resource-lane-column';
 import { isAfter } from 'date-fns';
@@ -86,11 +85,8 @@ export class DragMoveResourceAction extends DragOperation implements DragMoveRes
       if (this.previewComponent === PreviewMoveActionInResourceLaneHeader) {
         operation = 'delete';
       } else if (this.previewComponent === PreviewMoveActionInResourceLaneColumn) {
-        time = (this.lastDropArea as DropAreaResourceLaneColumn).getTimeFromPositionAsDate(
-          props.pointerPos.dragPosition,
-          props.pointerPos.shiftKey,
-          this.plan.properties.endTime
-        );
+        time = (props.overlayService.attachedComponentRef?.instance as PreviewMoveActionInResourceLaneColumn)
+          .actionTime;
         if (time && isAfter(time, this.plan.properties.endTime)) {
           time = this.plan.properties.endTime;
         }

@@ -39,7 +39,7 @@ export class PreviewUntetheredPlanEnd extends PreviewComponentBase {
   private getVM(previewProps: PreviewComponentProps) {
     // Pull out commonly used values and initialise local reference for plan and
     // check essential data present
-    const { pointerPos, dropArea: baseDropArea, dragOp } = this.previewProps();
+    const { pointerPos, dropArea: baseDropArea, dragOp } = previewProps;
     const plan = (dragOp as DragUntetheredPlanEnd).plan;
     const dropAreaEl = baseDropArea?.hostElement;
     if (!baseDropArea || !plan || !dropAreaEl) {

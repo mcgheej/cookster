@@ -57,7 +57,7 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
   private getVM(previewProps: PreviewComponentProps) {
     // Pull out commonly used values and initialise local reference for plan and
     // check essential data present
-    const { pointerPos, dropArea: baseDropArea, dragOp, clipArea } = this.previewProps();
+    const { pointerPos, dropArea: baseDropArea, dragOp, clipArea } = previewProps;
     const plan = (dragOp as DragNewResourceAction).plan;
     const dropAreaEl = baseDropArea?.hostElement;
     if (!baseDropArea || !plan || !dropAreaEl) {
@@ -70,8 +70,6 @@ export class PreviewNewActionInResourceLaneColumn extends PreviewComponentBase {
     const pixelsPerHour = dropArea.pixelsPerHour();
     const timeSnapMins = dropArea.timeSnapMins();
     const timeWindow = dropArea.timeWindow();
-    const gridRect = dropArea.activitiesGridRect();
-    const gridBoundingRect = dropArea.activitiesGridBoundingRect();
 
     // Apply any time snap required.
     const dropAreaTop = dropAreaEl.getBoundingClientRect().top;
