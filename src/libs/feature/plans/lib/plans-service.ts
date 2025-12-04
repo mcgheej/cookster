@@ -11,7 +11,7 @@ import {
   DEFAULT_TIME_WINDOW,
   INITIAL_PLAN_DURATION_MINS,
 } from '@util/app-config/index';
-import { PlanProperties, PlanSummary } from '@util/data-types/index';
+import { createPlanDB, createPlanFactory, PlanProperties, PlanSummary } from '@util/data-types/index';
 import { getDateToLastHour } from '@util/date-utilities/index';
 import { subMinutes } from 'date-fns';
 
@@ -79,7 +79,7 @@ export class PlansService {
       })
       .onAction()
       .subscribe({
-        next: () => console.log('copyPlan click', planSummary),
+        next: () => this.doCopy(planSummary),
       });
   }
 
@@ -97,6 +97,23 @@ export class PlansService {
       .subscribe({
         next: () => this.doDeletePlan(planSummary),
       });
+  }
+
+  private doCopy(planSummary: PlanSummary): void {
+    this.snackBar.open('Copying plan...', undefined, { duration: 0 });
+
+    // Create a PlanDB instance from the supplied PlanSummary object
+    const plan = createPlanFactory(planSummary, []);
+    const planDB = createPlanDB(plan);
+
+    this.plansData.copyPlan(planDB).subscribe({
+      next: () => {
+        this.snackBar.open(`Plan copied`, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (err) => {
+        this.snackBar.open(err.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+    });
   }
 
   private doDeletePlan(planSummary: PlanSummary): void {

@@ -1,6 +1,7 @@
 import { Timestamp } from '@angular/fire/firestore';
 import { PlanBase } from './plan-base';
 import { PlanProperties } from './plan-properties';
+import { Plan } from './plan';
 
 export interface PlanDB extends PlanBase {
   date: Timestamp;
@@ -30,4 +31,17 @@ export function createPlanDbUpdates(planProperties: Partial<PlanProperties>): Pa
     updates.timeWindow = planProperties.timeWindow;
   }
   return updates;
+}
+
+export function createPlanDB(plan: Plan): PlanDB {
+  return {
+    id: plan.properties.id,
+    name: plan.properties.name,
+    description: plan.properties.description,
+    color: plan.properties.color,
+    kitchenName: plan.properties.kitchenName,
+    kitchenResources: plan.properties.kitchenResources,
+    timeWindow: plan.properties.timeWindow,
+    date: Timestamp.fromDate(plan.properties.endTime),
+  } as PlanDB;
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AfPlansService } from './af-plans';
 import { ActivityDB, createPlanDbUpdates, Plan, PlanDB, PlanProperties, PlanSummary } from '@util/data-types/index';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, Observable, of } from 'rxjs';
 import { compareAsc } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { ActivitiesDataService } from './activities-data';
@@ -63,12 +63,16 @@ export class PlansDataService {
     });
   }
 
-  createPlan(planProperties: Partial<PlanProperties>): Observable<void> {
+  createPlan(planProperties: Partial<PlanProperties>): Observable<PlanDB> {
     return this.afPlansDB.createPlan(createPlanDbUpdates(planProperties) as Omit<PlanDB, 'id'>);
   }
 
   updatePlanProperties(id: string, changedProperties: Partial<PlanProperties>): Observable<void> {
     return this.afPlansDB.updatePlanProperties(id, createPlanDbUpdates(changedProperties));
+  }
+
+  copyPlan(planDB: PlanDB): Observable<PlanDB> {
+    return this.afPlansDB.copyPlan(planDB);
   }
 
   deletePlan(planId: string): Observable<void> {

@@ -10,10 +10,12 @@ import {
   updateDoc,
   where,
   writeBatch,
+  Timestamp,
+  collectionData,
 } from '@angular/fire/firestore';
 import { ActivityDB, PlanDB } from '@util/data-types/index';
 import { doc } from 'firebase/firestore';
-import { BehaviorSubject, from, map, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, from, map, Observable, of, switchMap, take } from 'rxjs';
 
 interface PlanChange {
   type: 'added' | 'modified' | 'removed' | 'flush';
@@ -42,10 +44,10 @@ export class AfPlansService {
     });
   }
 
-  createPlan(newPlan: Omit<PlanDB, 'id'>): Observable<void> {
+  createPlan(newPlan: Omit<PlanDB, 'id'>): Observable<PlanDB> {
     return from(addDoc(collection(this.firestore, 'plans'), newPlan)).pipe(
-      map(() => {
-        return;
+      map((docRef) => {
+        return { ...newPlan, id: docRef.id } as PlanDB;
       })
     );
   }
@@ -53,6 +55,53 @@ export class AfPlansService {
   updatePlanProperties(id: string, updates: Partial<Omit<PlanDB, 'id'>>): Observable<void> {
     const docRef = doc(this.firestore, `plans/${id}`);
     return from(updateDoc(docRef, updates));
+  }
+
+  copyPlan(srcPlan: PlanDB): Observable<PlanDB> {
+    // Step 1: Create a copy plan based on the source plan, omitting the id and adjusting necessary fields
+    const srcPlanEndDate = srcPlan.date.toDate();
+    const newEnd = new Date();
+    newEnd.setHours(srcPlanEndDate.getHours());
+    newEnd.setMinutes(srcPlanEndDate.getMinutes());
+    newEnd.setSeconds(0);
+
+    const { id: srcId, ...srcPlanData } = srcPlan;
+    const cpyPlan: Omit<PlanDB, 'id'> = {
+      ...srcPlanData,
+      name: srcPlanData.name + ' - Copy',
+      date: Timestamp.fromDate(newEnd),
+    };
+
+    let newPlanId = '';
+
+    // Step 2: Create the new plan in Firestore
+    return this.createPlan(cpyPlan).pipe(
+      switchMap((newPlan) => {
+        newPlanId = newPlan.id;
+        // Step 3: Fetch all activities for the source plan
+        const activitiesCollection = collection(this.firestore, 'activities');
+        const q = query(activitiesCollection, where('planId', '==', srcPlan.id));
+        return collectionData(q, { idField: 'id' }) as Observable<ActivityDB[]>;
+      }),
+      take(1),
+      switchMap((activities: ActivityDB[]) => {
+        if (!activities.length) return of([]);
+        // Step 4: Duplicate each activity for the new plan
+        const batch = writeBatch(this.firestore);
+        const newActivities = activities.map((activity) => {
+          const { id, ...rest } = activity;
+          const newActivity = {
+            ...rest,
+            planId: newPlanId, // Use the newly created plan's id
+          };
+          const docRef = doc(collection(this.firestore, 'activities'));
+          batch.set(docRef, newActivity);
+          return newActivity;
+        });
+        return from(batch.commit()).pipe(map(() => newActivities));
+      }),
+      map(() => ({ ...cpyPlan, id: newPlanId }) as PlanDB)
+    );
   }
 
   deletePlan(planId: string): Observable<void> {
