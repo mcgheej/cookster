@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PreviewComponentProps } from '../../preview-component-base';
@@ -7,7 +7,7 @@ import { DropAreaResourceLaneColumn } from '../drop-area-resource-lane-column';
 
 @Component({
   selector: 'ck-preview-clone-template-activity',
-  imports: [CommonModule, MatIconModule],
+  imports: [MatIconModule],
   templateUrl: './preview-clone-template-activity.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

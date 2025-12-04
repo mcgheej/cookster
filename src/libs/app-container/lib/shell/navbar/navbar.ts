@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { navItems } from './navbar-props';
 
 @Component({
   selector: 'ck-navbar',
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   template: `
     <nav
       class="flex flex-wrap items-center w-full py-0 px-4 text-xl font-medium text-[var(--mat-sys-on-primary)] bg-[var(--mat-sys-primary)]">

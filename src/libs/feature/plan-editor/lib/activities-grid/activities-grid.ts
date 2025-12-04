@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY, TIMESLOTS } from '@util/app-config/index';
 import { ActivitiesGridMenu } from './activities-grid-menu/activities-grid-menu';
 import { TimeLabels } from './time-labels/time-labels';
-import { CommonModule } from '@angular/common';
+
 import { ResourceLaneHeaders } from './resource-lane-headers/resource-lane-headers';
 import { TimeGridLayer } from './time-grid-layer/time-grid-layer';
 import { PlanEditorDataService } from '../plan-editor-data-service';
@@ -17,7 +17,6 @@ import { FULL_TIME_WINDOW } from '@util/data-types/index';
 @Component({
   selector: 'ck-activities-grid',
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
@@ -27,8 +26,8 @@ import { FULL_TIME_WINDOW } from '@util/data-types/index';
     TimeGridLayer,
     ResourceLanesLayer,
     PlanEnd,
-    TfxResizeObserver,
-  ],
+    TfxResizeObserver
+],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,7 +12,7 @@ import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data
 
 @Component({
   selector: 'ck-lane-header-menu',
-  imports: [CommonModule, MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule, MatTooltipModule],
+  imports: [MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule, MatTooltipModule],
   templateUrl: './lane-header-menu.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

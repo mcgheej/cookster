@@ -5,7 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 import { MatDividerModule } from '@angular/material/divider';
-import { CommonModule } from '@angular/common';
+
 import { timeZoomOptions } from '../../types-constants/time-zoom-options';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { laneWidthOptions } from '../../types-constants/lane-width-options';
@@ -13,7 +13,7 @@ import { ActivitiesGridMenuService } from './activities-grid-menu-service';
 
 @Component({
   selector: 'ck-activities-grid-menu',
-  imports: [CommonModule, MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule, MatTooltipModule],
+  imports: [MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule, MatTooltipModule],
   templateUrl: './activities-grid-menu.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ActivitiesGridMenuService],

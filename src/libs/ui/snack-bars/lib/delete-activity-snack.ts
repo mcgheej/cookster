@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'ck-delete-activity-snack',
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="w-full flex items-center">
       <div class="text-white text-base grow">{{ title }}:</div>

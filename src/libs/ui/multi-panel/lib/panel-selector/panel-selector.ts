@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { SelectorButton } from '../selector-button';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'ck-panel-selector',
-  imports: [CommonModule, MatIconModule, MatDividerModule],
+  imports: [MatIconModule, MatDividerModule],
   templateUrl: './panel-selector.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

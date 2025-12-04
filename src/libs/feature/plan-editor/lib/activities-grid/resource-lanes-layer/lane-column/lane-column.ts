@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CkDrop } from '@ui/drag-and-drop/index';
 import { LaneColumnService } from './lane-column-service';
@@ -9,7 +9,7 @@ import { ResourceActionTiles } from './resource-action-tiles/resource-action-til
 
 @Component({
   selector: 'ck-lane-column',
-  imports: [CommonModule, ActivityTiles, ResourceActionTiles, CkDrop],
+  imports: [ActivityTiles, ResourceActionTiles, CkDrop],
   templateUrl: './lane-column.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Tiler, LaneColumnService],

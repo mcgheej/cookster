@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 
 @Component({
   selector: 'ck-plans-list',
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, PlansListRow],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule, PlansListRow],
   template: `
     <div class="my-0 mx-auto w-[80%] text-base sm:w-[600px] grid grid-cols-[1fr] grid-rows-[auto,_auto] pt-2">
       @if (planSummaries().length > 0) {

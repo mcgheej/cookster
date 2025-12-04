@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { PlanProperties } from '@util/data-types/index';
@@ -14,7 +14,6 @@ import { PlanPropertiesFormService } from './plan-properties-form-service';
 @Component({
   selector: 'ck-plan-properties-dialog',
   imports: [
-    CommonModule,
     MatButtonModule,
     MatDialogModule,
     ReactiveFormsModule,
@@ -22,8 +21,8 @@ import { PlanPropertiesFormService } from './plan-properties-form-service';
     FieldDate,
     FieldPlanColor,
     FieldKitchen,
-    FieldDescription,
-  ],
+    FieldDescription
+],
   template: `
     <h2 mat-dialog-title>{{ planProperties.id ? 'Edit Plan Properties' : 'Create Plan Properties' }}</h2>
     <form [formGroup]="form" (ngSubmit)="saveProperties()">

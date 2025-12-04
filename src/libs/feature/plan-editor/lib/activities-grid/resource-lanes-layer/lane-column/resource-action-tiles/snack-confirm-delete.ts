@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'tfx-snack-confirm-delete',
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="w-full flex items-center">
       <div class="text-white text-base grow select-none">Delete resource?</div>

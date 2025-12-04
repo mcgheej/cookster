@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +7,7 @@ import { LoginService } from './login-service';
 
 @Component({
   selector: 'ck-email-field',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   template: `
     <mat-form-field class="w-full mt-4" appearance="outline" [formGroup]="loginService.loginForm">
       <mat-label>Email</mat-label>

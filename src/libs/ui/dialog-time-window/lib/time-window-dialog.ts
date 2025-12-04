@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -20,7 +20,7 @@ interface WindowBarRegion {
 
 @Component({
   selector: 'ck-time-window-dialog',
-  imports: [CommonModule, MatButtonModule, MatDialogModule],
+  imports: [MatButtonModule, MatDialogModule],
   templateUrl: './time-window-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { CkDrag, DragResult, DragTemplateActivity, DragTemplateActivityResult } 
 
 @Component({
   selector: 'ck-activity-template',
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, CkDrag],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule, CkDrag],
   templateUrl: './activity-template.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

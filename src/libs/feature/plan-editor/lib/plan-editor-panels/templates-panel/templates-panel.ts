@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { opaqueColor } from '@util/color-utilities/index';
 import { DEFAULT_COLOR_OPACITY } from '@util/app-config/index';
-import { CommonModule } from '@angular/common';
+
 import { ActivityTemplate } from './activity-template/activity-template';
 import { ActivityTemplateDB } from '@util/data-types/index';
 import { TemplatesPanelService } from './templates-panel-service';
 
 @Component({
   selector: 'ck-templates-panel',
-  imports: [CommonModule, ActivityTemplate],
+  imports: [ActivityTemplate],
   templateUrl: './templates-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [TemplatesPanelService],

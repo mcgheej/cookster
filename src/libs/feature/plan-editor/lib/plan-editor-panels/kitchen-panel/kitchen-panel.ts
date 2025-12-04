@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,7 +7,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 
 @Component({
   selector: 'ck-kitchen-panel',
-  imports: [CommonModule, MatIconModule, MatTooltipModule],
+  imports: [MatIconModule, MatTooltipModule],
   templateUrl: './kitchen-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

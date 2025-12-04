@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActionDisplayTile, ResourceLane } from '@util/data-types/index';
 import { ResourceActionTilesService } from './resource-action-tiles-service';
-import { CommonModule } from '@angular/common';
+
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
 
 @Component({
   selector: 'ck-resource-action-tiles',
-  imports: [CommonModule, ResourceActionTile],
+  imports: [ResourceActionTile],
   template: `
     @for (actionTile of actionDisplayTiles(); track $index) {
       <ck-resource-action-tile

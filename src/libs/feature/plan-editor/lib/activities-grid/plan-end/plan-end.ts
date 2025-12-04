@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { PLAN_END_BAR_HEIGHT } from '@util/app-config/lib/constants';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CkDrag, DragResult } from '@ui/drag-and-drop/index';
 import { PlanEndService } from './plan-end-service';
@@ -12,7 +12,7 @@ import { PlanEndService } from './plan-end-service';
   host: {
     '[style.visibility]': 'showElement()',
   },
-  imports: [CommonModule, MatIconModule, MatTooltipModule, CkDrag],
+  imports: [MatIconModule, MatTooltipModule, CkDrag],
   templateUrl: './plan-end.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PlanEndService],
