@@ -5,7 +5,6 @@ import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/pr
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
 import { PreviewNewActionInResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/preview-new-action-in-resource-lane-column';
-import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 import { Plan } from '@util/data-types/index';
 import { isAfter } from 'date-fns';
 
@@ -73,11 +72,7 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
     this.setupDropArea(props.pointerPos);
     let time: Date | undefined = undefined;
     if (this.previewComponent === PreviewNewActionInResourceLaneColumn && this.lastDropArea && this.plan) {
-      time = (this.lastDropArea as DropAreaResourceLaneColumn).getTimeFromPositionAsDate(
-        props.pointerPos.dragPosition,
-        props.pointerPos.shiftKey,
-        this.plan.properties.endTime
-      );
+      time = (props.overlayService.attachedComponentRef?.instance as PreviewNewActionInResourceLaneColumn).actionTime;
       if (time && isAfter(time, this.plan.properties.endTime)) {
         time = this.plan.properties.endTime;
       }

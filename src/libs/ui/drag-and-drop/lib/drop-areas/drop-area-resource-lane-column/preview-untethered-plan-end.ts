@@ -35,34 +35,6 @@ export class PreviewUntetheredPlanEnd extends PreviewComponentBase {
   }
 
   protected readonly vm = computed(() => this.getVM(this.previewProps()));
-  // protected readonly vm = computed(() => {
-  //   const { pointerPos, dropArea: baseDropArea, dragOp } = this.previewProps();
-  //   const plan = (dragOp as DragUntetheredPlanEnd).plan;
-  //   if (baseDropArea && plan) {
-  //     const dropArea = baseDropArea as DropAreaResourceLaneColumn;
-  //     const { timeWindow, pixelsPerHour, scrollY, activitiesGridRect, activitiesGridBoundingRect } = dropArea;
-  //     const dragPos = pointerPos.dragPosition;
-  //     const gridRect = activitiesGridRect();
-  //     const gridBoundingRect = activitiesGridBoundingRect();
-  //     const contentEndPx =
-  //       (getMinutesSinceMidnight(plan.properties.contentEnd) / 60 - timeWindow().startHours) * pixelsPerHour() -
-  //       scrollY() +
-  //       gridBoundingRect.top;
-  //     const pos = { ...dragPos, y: Math.max(dragPos.y, contentEndPx) };
-  //     const planEndBarRect = DOMRect.fromRect({
-  //       x: gridBoundingRect.left,
-  //       y: pos.y,
-  //       width: gridRect.width,
-  //       height: PLAN_END_BAR_HEIGHT,
-  //     });
-  //     const endTime = dropArea.getTimeFromPosition(pos, pointerPos.shiftKey);
-  //     return {
-  //       planEndBarRect,
-  //       endTime,
-  //     };
-  //   }
-  //   return undefined;
-  // });
 
   private getVM(previewProps: PreviewComponentProps) {
     // Pull out commonly used values and initialise local reference for plan and

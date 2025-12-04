@@ -6,7 +6,6 @@ import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/pr
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
 import { PreviewUntetheredPlanEnd } from '../../drop-areas/drop-area-resource-lane-column/preview-untethered-plan-end';
-import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 import { isBefore } from 'date-fns';
 
 export interface DragUntetheredPlanEndData extends DragData {
