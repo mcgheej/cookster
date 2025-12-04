@@ -74,11 +74,7 @@ export class DragUntetheredPlanEnd extends DragOperation implements DragUntether
     this.setupDropArea(props.pointerPos);
     let time: Date | undefined = undefined;
     if (this.previewComponent === PreviewUntetheredPlanEnd && this.lastDropArea && this.plan) {
-      time = (this.lastDropArea as DropAreaResourceLaneColumn).getTimeFromPositionAsDate(
-        props.pointerPos.dragPosition,
-        props.pointerPos.shiftKey,
-        this.plan.properties.endTime
-      );
+      time = (props.overlayService.attachedComponentRef?.instance as PreviewUntetheredPlanEnd).planEnd;
       if (time && isBefore(time, this.plan.properties.contentEnd)) {
         time = this.plan.properties.contentEnd;
       }

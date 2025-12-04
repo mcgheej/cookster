@@ -6,7 +6,6 @@ import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/pr
 import { PreviewNoDrop } from '../../drop-areas/preview-no-drop';
 import { PointerData } from '../../types/pointer-data';
 import { PreviewTetheredPlanEnd } from '../../drop-areas/drop-area-resource-lane-column/preview-tethered-plan-end';
-import { DropAreaResourceLaneColumn } from '../../drop-areas/drop-area-resource-lane-column/drop-area-resource-lane-column';
 
 export interface DragTetheredPlanEndData extends DragData {
   plan: Plan | null;
