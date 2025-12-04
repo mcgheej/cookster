@@ -26,6 +26,9 @@
     [ckDrag]="dragDurationOperation()"
     class="absolute h-[6px] w-[24px] z-20"
     [ngStyle]="getResizeHandleStyles()"
+    matTooltip="drag to change duration"
+    [matTooltipShowDelay]="showDelay"
+    matTooltipPosition="above"
     (ckDragStarted)="onDragDurationStart()"
     (ckDragEnded)="onDragDurationEnd($event)"></div>
   <div
@@ -33,7 +36,10 @@
     (ckDragStarted)="onDragActivityStart()"
     (ckDragEnded)="onDragActivityEnd($event)"
     class="absolute h-[16px] w-[16px] z-20"
-    [ngStyle]="getMoveHandleStyles()">
+    [ngStyle]="getMoveHandleStyles()"
+    matTooltip="drag to move activity"
+    [matTooltipShowDelay]="showDelay"
+    matTooltipPosition="above">
     <mat-icon
       [style.fontSize.px]="16"
       [style.height.px]="16"
