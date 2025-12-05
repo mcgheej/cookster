@@ -41,6 +41,7 @@ import { SelectedActivityPanelService } from './selected-activity-panel-service'
       </div>
     } @else {
       <div class="ml-1">
+        <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
         <div class="inline-block pl-1 pt-2 font-bold text-sm select-none">No activities selected</div>
       </div>
     }
@@ -55,4 +56,5 @@ export class SelectedActivityPanel {
   protected readonly timeString = this.service.timeString;
   protected readonly resourceName = this.service.resourceName;
   protected readonly actionsAsText = this.service.actionsAsText;
+  protected readonly flairColor = this.service.flairColor;
 }

@@ -27,6 +27,9 @@ export class SelectedActivityPanelService {
 
   // Signals and Computed Signals
   // ----------------------------
+  readonly flairColor = computed(() => {
+    return opaqueColor(this.planEditorData.planColor(), DEFAULT_COLOR_OPACITY);
+  });
 
   /**
    * The currently selected activity in the plan editor, or undefined if none is selected.

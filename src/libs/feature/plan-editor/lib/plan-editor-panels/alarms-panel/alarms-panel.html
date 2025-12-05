@@ -1,0 +1,19 @@
+<div class="ml-1">
+  <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
+  <div class="inline-block pl-1 pt-2 font-bold text-sm select-none">Alarms:</div>
+</div>
+@if (alarms().length === 0) {
+  <div>No alarms</div>
+} @else {
+  <div class="mt-1 ml-[18px]">
+    @for (alarm of alarms(); track $index) {
+      @if (alarm.timeString && $index > 0) {
+        <div class="mt-1"></div>
+      }
+      <div class="grid grid-cols-[35px_1fr] gap-1" [style.backgroundColor]="alarm.backgroundColor">
+        <div>{{ alarm.timeString }}</div>
+        <div>{{ alarm.message }}</div>
+      </div>
+    }
+  </div>
+}
