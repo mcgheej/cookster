@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  linkedSignal,
-  signal,
-  untracked,
-  WritableSignal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, linkedSignal, untracked } from '@angular/core';
 import { PanelSelector } from './panel-selector/panel-selector';
 import { SelectorButton } from './selector-button';
 import { PanelContent } from './panel-content/panel-content';
