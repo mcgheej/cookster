@@ -2,14 +2,31 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { CommonModule } from '@angular/common';
 import { opaqueColor } from '@util/color-utilities/index';
-import { DEFAULT_COLOR_OPACITY } from '@util/app-config/index';
+import { DEFAULT_COLOR_OPACITY, DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { isToday } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ck-alarms-panel',
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
   template: `
     <div class="ml-1">
       <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
       <div class="inline-block pl-1 pt-2 font-bold text-sm select-none">Alarms:</div>
+      @if (showRunAlarmsButton()) {
+        <div class="inline-block h-[10px] w-[50px] float-right text-[var(--mat-sys-primary)]">
+          <button
+            matIconButton
+            [matTooltipShowDelay]="tooltipShowDelay"
+            matTooltip="run plan alarms"
+            (click)="runAlarmsClick($event)">
+            <mat-icon>play_circle</mat-icon>
+          </button>
+        </div>
+      }
     </div>
     @if (alarmGroups().length === 0) {
       <div>No alarms</div>
@@ -31,15 +48,34 @@ import { DEFAULT_COLOR_OPACITY } from '@util/app-config/index';
     }
   `,
   // templateUrl: './alarms-panel.html',
-  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlarmsPanel {
+  private readonly router = inject(Router);
   private readonly planEditorData = inject(PlanEditorDataService);
 
   protected readonly flairColor = computed(() => {
     return opaqueColor(this.planEditorData.planColor(), DEFAULT_COLOR_OPACITY);
   });
 
+  protected readonly showRunAlarmsButton = computed(() => {
+    const plan = this.planEditorData.currentPlan();
+    if (!plan) {
+      return false;
+    }
+    const planEnd = plan.properties.endTime;
+    return isToday(planEnd) && new Date() < planEnd;
+  });
+
+  protected readonly tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
+
   protected readonly alarmGroups = this.planEditorData.alarmGroups;
+
+  protected runAlarmsClick(event: Event): void {
+    event.stopPropagation();
+    const plan = this.planEditorData.currentPlan();
+    if (plan) {
+      this.router.navigateByUrl(`/plans/alarms/${plan.properties.id}`);
+    }
+  }
 }
