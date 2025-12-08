@@ -99,6 +99,10 @@ export class PlansService {
       });
   }
 
+  runAlarms(planSummary: PlanSummary) {
+    this.router.navigateByUrl(`/plans/alarms/${planSummary.id}`);
+  }
+
   private doCopy(planSummary: PlanSummary): void {
     this.snackBar.open('Copying plan...', undefined, { duration: 0 });
 

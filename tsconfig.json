@@ -27,6 +27,7 @@
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],
       "@feature/plan-editor/*": ["libs/feature/plan-editor/*"],
+      "@feature/alarms-runner/*": ["libs/feature/alarms-runner/*"],
       "@ui/activity-dialog/*": ["libs/ui/dialog-activity/*"],
       "@ui/activity-template-dialog/*": ["libs/ui/dialog-activity-template/*"],
       "@ui/dialog-activity-action/*": ["libs/ui/dialog-activity-action/*"],

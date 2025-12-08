@@ -21,7 +21,8 @@ import { PlanSummary } from '@util/data-types/index';
           [planSummary]="planSummary()"
           (editPlan)="editPlan.emit()"
           (copyPlan)="copyPlan.emit()"
-          (deletePlan)="deletePlan.emit()"></ck-plan-detail>
+          (deletePlan)="deletePlan.emit()"
+          (runAlarms)="runAlarms.emit()" />
       }
     </div>
   `,
@@ -34,6 +35,7 @@ export class PlansListRow {
   protected readonly editPlan = output<void>();
   protected readonly copyPlan = output<void>();
   protected readonly deletePlan = output<void>();
+  protected readonly runAlarms = output<void>();
 
   protected onToggleExpand(ev: MouseEvent): void {
     ev.stopPropagation();

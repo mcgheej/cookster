@@ -23,6 +23,10 @@ export const routes: Routes = [
     canActivate: [authGuard('/login')],
   },
   {
+    path: 'plans/alarms/:planId',
+    loadComponent: () => import('@feature/alarms-runner/index').then((m) => m.AlarmsRunner),
+  },
+  {
     path: 'plans',
     loadComponent: () => import('@feature/plans/index').then((m) => m.Plans),
     canActivate: [authGuard('/login')],

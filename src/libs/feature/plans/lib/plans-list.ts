@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,7 +24,8 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
               (editPlan)="editPlanClick(planSummary)"
               (copyPlan)="copyPlanClick(planSummary)"
               (deletePlan)="deletePlanClick(planSummary)"
-              (toggleExpand)="onToggleExpand(planSummary)"></ck-plans-list-row>
+              (runAlarms)="runAlarmsClick(planSummary)"
+              (toggleExpand)="onToggleExpand(planSummary)" />
             <div class="h-0.5 bg-slate-400"></div>
           </div>
         }
@@ -53,6 +53,7 @@ export class PlansList {
   protected readonly editPlan = output<PlanSummary>();
   protected readonly copyPlan = output<PlanSummary>();
   protected readonly deletePlan = output<PlanSummary>();
+  protected readonly runAlarms = output<PlanSummary>();
 
   protected expandedPlanSummaryId = '';
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
@@ -75,6 +76,11 @@ export class PlansList {
   protected deletePlanClick(planSummary: PlanSummary) {
     this.expandedPlanSummaryId = '';
     this.deletePlan.emit(planSummary);
+  }
+
+  protected runAlarmsClick(planSummary: PlanSummary) {
+    this.expandedPlanSummaryId = '';
+    this.runAlarms.emit(planSummary);
   }
 
   protected onToggleExpand(planSummary: PlanSummary) {
