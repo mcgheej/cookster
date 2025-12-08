@@ -55,8 +55,10 @@ export class PlanEditorDataService {
    * The "planColor" signal is a string representing the colour of the current plan. If there is no current plan,
    * it defaults to a predefined colour. The result is a hex colour string.
    */
-  readonly currentPlan = toSignal(this.plansData.currentPlan$, { initialValue: null });
+  // readonly currentPlan = toSignal(this.plansData.currentPlan$, { initialValue: null });
+  readonly currentPlan = this.plansData.currentPlan;
   readonly activities = computed(() => this.currentPlan()?.activities || []);
+  readonly alarmGroups = this.plansData.currentAlarms;
   readonly kitchenResources = computed(
     () => {
       return this.currentPlan()?.properties.kitchenResources || [];

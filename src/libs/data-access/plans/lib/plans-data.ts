@@ -1,11 +1,23 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { AfPlansService } from './af-plans';
-import { ActivityDB, createPlanDbUpdates, Plan, PlanDB, PlanProperties, PlanSummary } from '@util/data-types/index';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, Observable, of } from 'rxjs';
-import { compareAsc } from 'date-fns';
+import {
+  ActivityAction,
+  activityActionTime,
+  ActivityDB,
+  Alarm,
+  AlarmGroup,
+  createPlanDbUpdates,
+  Plan,
+  PlanDB,
+  PlanProperties,
+  PlanSummary,
+} from '@util/data-types/index';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';
+import { compareAsc, format, subMinutes } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { ActivitiesDataService } from './activities-data';
 import { createPlanFactory } from '@util/data-types/lib/plan';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class PlansDataService {
@@ -37,7 +49,15 @@ export class PlansDataService {
   }
 
   private lastEmittedPlan: Plan | null = null;
-  readonly currentPlan$ = this.getCurrentPlan$();
+  readonly currentPlan = toSignal(this.getCurrentPlan$(), { initialValue: null });
+
+  readonly currentAlarms = computed(() => {
+    const plan = this.currentPlan();
+    if (!plan) {
+      return [] as AlarmGroup[];
+    }
+    return getAlarmGroupsForPlan(plan);
+  });
 
   constructor() {
     this.afPlansDB.plansChanges$.subscribe((changes) => {
@@ -132,4 +152,85 @@ export class PlansDataService {
       })
     );
   }
+}
+
+function getAlarmGroupsForPlan(plan: Plan): AlarmGroup[] {
+  const allAlarms: Alarm[] = [];
+  const planEnd = plan.properties.endTime;
+  plan.activities.forEach((activity) => {
+    allAlarms.push(activityStartAlarm(planEnd, activity));
+    allAlarms.push(activityEndAlarm(planEnd, activity));
+    allAlarms.push(...activityActionsAlarms(planEnd, activity));
+  });
+  plan.properties.kitchenResources.forEach((resource) => {
+    resource.actions.forEach((action) => {
+      const time = subMinutes(planEnd, action.timeOffset);
+      allAlarms.push({
+        time,
+        timeString: format(time, 'HH:mm'),
+        message: action.name,
+      });
+    });
+  });
+
+  allAlarms.sort((a, b) => a.time.getTime() - b.time.getTime());
+
+  const alarmGroups: AlarmGroup[] = [];
+  let currentGroup: Alarm[] = [];
+  let lastTimeString = '';
+  allAlarms.forEach((alarm) => {
+    if (alarm.timeString !== lastTimeString && lastTimeString) {
+      // Store current group and start a new group
+      alarmGroups.push({ alarms: currentGroup });
+      currentGroup = [alarm];
+      lastTimeString = alarm.timeString;
+    } else {
+      // Add to current group
+      currentGroup.push(alarm);
+      lastTimeString = alarm.timeString;
+    }
+  });
+  // Push the final group if it has alarms
+  if (currentGroup.length > 0) {
+    alarmGroups.push({ alarms: currentGroup });
+  }
+
+  return alarmGroups;
+}
+
+function activityStartAlarm(planEnd: Date, activity: ActivityDB): Alarm {
+  const startTime = subMinutes(planEnd, activity.startTimeOffset);
+  const message = activity.startMessage || `${activity.name} starts now.`;
+  return {
+    time: startTime,
+    timeString: format(startTime, 'HH:mm'),
+    message,
+  };
+}
+
+function activityEndAlarm(planEnd: Date, activity: ActivityDB): Alarm {
+  const endTime = subMinutes(planEnd, activity.startTimeOffset - activity.duration);
+  const message = activity.endMessage || `${activity.name} ends now.`;
+  return {
+    time: endTime,
+    timeString: format(endTime, 'HH:mm'),
+    message,
+  };
+}
+
+function activityActionsAlarms(planEnd: Date, activity: ActivityDB): Alarm[] {
+  const alarms: Alarm[] = [];
+  activity.actions.forEach((action) => {
+    alarms.push(activityActionAlarm(planEnd, activity, action));
+  });
+  return alarms;
+}
+
+function activityActionAlarm(planEnd: Date, activity: ActivityDB, action: ActivityAction): Alarm {
+  const actionTime = activityActionTime(action, activity.startTimeOffset, activity.duration, planEnd);
+  return {
+    time: actionTime,
+    timeString: format(actionTime, 'HH:mm'),
+    message: action.name,
+  };
 }

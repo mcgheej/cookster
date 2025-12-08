@@ -17,3 +17,4 @@ export * from './lib/time-window';
 export * from './lib/display-tile';
 export * from './lib/action-display-tile';
 export * from './lib/point';
+export * from './lib/alarms';
