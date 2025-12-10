@@ -8,10 +8,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { isToday } from 'date-fns';
 import { Router } from '@angular/router';
+import { AlarmGroupComponent } from '@ui/shared-components/index';
 
 @Component({
   selector: 'ck-alarms-panel',
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, AlarmGroupComponent],
   template: `
     <div class="ml-1">
       <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
@@ -34,20 +35,12 @@ import { Router } from '@angular/router';
       <div class="mt-1 ml-[18px]">
         @for (alarmGroup of alarmGroups(); track $index; let isOdd = $odd) {
           <div class="mt-1">
-            @for (alarm of alarmGroup.alarms; track $index; let isFirst = $first) {
-              <div
-                class="grid grid-cols-[35px_1fr] gap-1"
-                [style.backgroundColor]="isOdd ? 'var(--mat-sys-surface-variant)' : 'var(--mat-sys-surface)'">
-                <div>{{ isFirst ? alarm.timeString : '' }}</div>
-                <div>{{ alarm.message }}</div>
-              </div>
-            }
+            <ck-alarm-group-component [alarmGroup]="alarmGroup" [highlightOn]="isOdd" />
           </div>
         }
       </div>
     }
   `,
-  // templateUrl: './alarms-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlarmsPanel {

@@ -12,15 +12,15 @@ import { PasswordField } from './password-field';
   template: `
     <div class="flex justify-center">
       <div class="w-full min-w-[310px] max-w-md h-auto px-8 py-6 mt-4 bg-white shadow-lg">
-        <ck-header></ck-header>
+        <ck-header />
         <div class="flex justify-center">
           <form
             [formGroup]="loginForm"
             #formDirective="ngForm"
             (ngSubmit)="submitForm(loginForm.value, formDirective)"
             class="w-full">
-            <ck-email-field></ck-email-field>
-            <ck-password-field></ck-password-field>
+            <ck-email-field />
+            <ck-password-field />
             <div class="flex items-baseline justify-between mt-4">
               <button mat-raised-button type="submit" [disabled]="!loginForm.valid" color="primary">Sign In</button>
               <a href="/home" class="text-sm text-blue-600 hover:underline" (click)="forgotPassword()"

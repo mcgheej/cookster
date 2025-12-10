@@ -77,10 +77,7 @@ export class PlanEditorDataService {
       },
     }
   );
-  readonly planColor = computed(() => {
-    const plan = this.currentPlan();
-    return plan ? googleColors[plan.properties.color].color : googleColors[DEFAULT_PLAN_COLOR].color;
-  });
+  readonly planColor = this.plansData.currentPlanColor;
   readonly planEndTime = computed(
     () => {
       return this.currentPlan()?.properties.endTime || new Date(0);

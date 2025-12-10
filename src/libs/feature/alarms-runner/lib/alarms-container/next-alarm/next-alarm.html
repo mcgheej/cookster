@@ -1,0 +1,10 @@
+@if (nextAlarm(); as nextAlarm) {
+  <div class="min-h-[75px] grid grid-rows-1 grid-cols-1">
+    <div class="box-border grid grid-cols-[100px_minmax(0,_1fr)] gap-1">
+      <div class="justify-self-center text-sm mt-2">{{ time() }}</div>
+      <div class="my-2 w-[95%] box-border border-[1px] border-[var(--mat-sys-secondary-fixed)]">
+        <ck-alarm-group-component [alarmGroup]="nextAlarm.group" />
+      </div>
+    </div>
+  </div>
+}

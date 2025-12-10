@@ -18,6 +18,7 @@ import { Timestamp } from 'firebase/firestore';
 import { ActivitiesDataService } from './activities-data';
 import { createPlanFactory } from '@util/data-types/lib/plan';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { DEFAULT_PLAN_COLOR, googleColors } from '@util/app-config/index';
 
 @Injectable({ providedIn: 'root' })
 export class PlansDataService {
@@ -50,6 +51,10 @@ export class PlansDataService {
 
   private lastEmittedPlan: Plan | null = null;
   readonly currentPlan = toSignal(this.getCurrentPlan$(), { initialValue: null });
+  readonly currentPlanColor = computed(() => {
+    const plan = this.currentPlan();
+    return plan ? googleColors[plan.properties.color].color : googleColors[DEFAULT_PLAN_COLOR].color;
+  });
 
   readonly currentAlarms = computed(() => {
     const plan = this.currentPlan();

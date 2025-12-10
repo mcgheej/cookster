@@ -1,0 +1,23 @@
+<div class="min-h-[75px] grid grid-rows-1 grid-cols-1">
+  @if (soundingAlarms().length > 0) {
+    <div class="box-border grid grid-cols-[100px_minmax(0,_1fr)] gap-1">
+      <div class="justify-self-center mt-3">
+        <button [style.backgroundColor]="blink()()" matButton="filled" (click)="cancelAlarmClick()">Cancel</button>
+      </div>
+      <div class="mt-2 mb-2.5 w-full relative">
+        @if (soundingAlarms().length > 1) {
+          <div
+            class="absolute top-[4px] left-[4px] size-full w-[95%] box-border border-[1px] border-[var(--mat-sys-secondary-fixed)]"></div>
+        }
+        <div
+          class="absolute top-0 left-0 size-full w-[95%] box-border border-[1px] border-[var(--mat-sys-secondary-fixed)] bg-[var(--mat-sys-surface)]"
+          [matBadge]="soundingAlarms().length"
+          [matBadgeHidden]="soundingAlarms().length === 1">
+          <ck-alarm-group-component [alarmGroup]="soundingAlarms()[0].group" />
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="justify-self-center self-center text-xl">No alarms sounding</div>
+  }
+</div>
