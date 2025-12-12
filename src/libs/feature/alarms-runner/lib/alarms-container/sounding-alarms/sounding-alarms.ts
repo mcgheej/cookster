@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { AlarmGroupController } from '../../alarm-group-controller';
 import { CommonModule } from '@angular/common';
 import { AlarmGroupComponent } from '@ui/shared-components/index';
@@ -13,7 +23,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   templateUrl: './sounding-alarms.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SoundingAlarms {
+export class SoundingAlarms implements OnInit, OnDestroy {
   readonly soundingAlarms = input.required<AlarmGroupController[]>();
   readonly blinkCancelButton = input<boolean>(false);
   protected readonly cancelAlarm = output<void>();
@@ -23,6 +33,41 @@ export class SoundingAlarms {
   );
 
   private readonly _noBlink = signal<string>('var(--mat-sys-error)');
+
+  private audioPlayer: HTMLAudioElement | undefined = undefined;
+  private audioPlayerReady = signal<boolean>(false);
+
+  constructor() {
+    effect(() => {
+      const soundingAlarms = this.soundingAlarms();
+      const audioPlayerReady = this.audioPlayerReady();
+      if (this.audioPlayer) {
+        if (soundingAlarms.length > 0 && audioPlayerReady && this.audioPlayer.paused) {
+          this.audioPlayer.play();
+        } else if (soundingAlarms.length === 0 && this.audioPlayer.paused === false) {
+          this.audioPlayer.pause();
+        }
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.audioPlayer = new Audio('./assets/alarm-429128.mp3');
+    this.audioPlayer.loop = true;
+    this.audioPlayer.addEventListener('canplaythrough', () => {
+      if (!this.audioPlayerReady()) {
+        this.audioPlayerReady.set(true);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.audioPlayer) {
+      this.audioPlayer.pause();
+      this.audioPlayer.removeEventListener('canplaythrough', () => {});
+      this.audioPlayer = undefined;
+    }
+  }
 
   protected blink = computed(() => {
     if (this.blinkCancelButton()) {

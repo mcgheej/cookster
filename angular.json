@@ -50,6 +50,11 @@
                 "glob": "*.jpg",
                 "input": "src/libs/util/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "*.mp3",
+                "input": "src/libs/util/assets",
+                "output": "assets"
               }
             ],
             "styles": ["src/custom-theme.scss", "src/styles.css"]
