@@ -17,6 +17,7 @@
     "baseUrl": "./src",
     "paths": {
       "@app-container/*": ["libs/app-container/*"],
+      "@data-access/app-settings/*": ["libs/data-access/app-settings/*"],
       "@data-access/authentication/*": ["libs/data-access/authentication/*"],
       "@data-access/kitchens/*": ["libs/data-access/kitchens/*"],
       "@data-access/plans/*": ["libs/data-access/plans/*"],

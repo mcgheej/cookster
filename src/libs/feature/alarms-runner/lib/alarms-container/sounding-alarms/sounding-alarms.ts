@@ -41,13 +41,14 @@ const initialVolume = 10;
 })
 export class SoundingAlarms implements OnInit, OnDestroy {
   readonly soundingAlarms = input.required<AlarmGroupController[]>();
+  readonly volume = input<number>(initialVolume);
+  readonly blinkCancelButton = input<boolean>(true);
   protected readonly cancelAlarm = output<void>();
+  protected readonly blinkCancelButtonChange = output<boolean>();
+  protected readonly alarmVolumeChange = output<number>();
 
-  protected volume = signal(initialVolume);
   protected muted = signal<boolean>(false);
   private lastVolume = initialVolume;
-
-  protected readonly blinkCancelButton = signal<boolean>(true);
 
   private readonly _blink = toSignal(
     concat(of('var(--mat-sys-error)').pipe(delay(300)), of('var(--mat-sys-primary)').pipe(delay(700))).pipe(repeat())
@@ -78,6 +79,7 @@ export class SoundingAlarms implements OnInit, OnDestroy {
     this.audioPlayer = new Audio('./assets/alarm-429128.mp3');
     this.audioPlayer.loop = true;
     this.audioPlayer.volume = this.volume() / 10;
+    this.muted.set(this.volume() === 0);
     this.audioPlayer.addEventListener('canplaythrough', () => {
       if (!this.audioPlayerReady()) {
         this.audioPlayerReady.set(true);
@@ -106,15 +108,15 @@ export class SoundingAlarms implements OnInit, OnDestroy {
 
   protected onBlinkToggle(ev: MouseEvent): void {
     ev.stopPropagation();
-    this.blinkCancelButton.set(!this.blinkCancelButton());
+    this.blinkCancelButtonChange.emit(!this.blinkCancelButton());
   }
 
   protected onVolumeChange(inputEvent: Event): void {
     const newVolume = Number((inputEvent.target as HTMLInputElement).value);
     if (this.lastVolume !== newVolume) {
-      this.volume.set(newVolume);
       this.lastVolume = newVolume;
       this.changeAudioVolume(newVolume);
+      this.alarmVolumeChange.emit(newVolume);
     }
     if (newVolume === 0) {
       this.muted.set(true);
@@ -126,16 +128,16 @@ export class SoundingAlarms implements OnInit, OnDestroy {
     const newMuted = !this.muted();
     if (newMuted === false) {
       if (this.lastVolume !== 0) {
-        this.volume.set(this.lastVolume);
         this.changeAudioVolume(this.lastVolume);
+        this.alarmVolumeChange.emit(this.lastVolume);
       } else {
         this.lastVolume = 1;
-        this.volume.set(1);
         this.changeAudioVolume(1);
+        this.alarmVolumeChange.emit(1);
       }
     } else {
-      this.volume.set(0);
       this.changeAudioVolume(0);
+      this.alarmVolumeChange.emit(0);
     }
     this.muted.set(newMuted);
   }

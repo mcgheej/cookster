@@ -5,6 +5,7 @@ import { AlarmGroupController, AlarmsByCategory } from '../alarm-group-controlle
 import { SoundingAlarms } from './sounding-alarms/sounding-alarms';
 import { UpcomingAlarms } from './upcoming-alarms/upcoming-alarms';
 import { NextAlarm } from './next-alarm/next-alarm';
+import { AppSettingsService } from '@data-access/app-settings/index';
 
 @Component({
   selector: 'ck-alarms-container',
@@ -13,11 +14,15 @@ import { NextAlarm } from './next-alarm/next-alarm';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlarmsContainer {
+  private readonly appSettings = inject(AppSettingsService);
   private readonly plansData = inject(PlansDataService);
 
   readonly currentTime = input.required<Date>();
 
   readonly currentAlarmGroups = this.plansData.currentAlarms;
+
+  protected readonly alarmVolume = this.appSettings.alarmVolume;
+  protected readonly flashAlarmCancelButton = this.appSettings.flashAlarmCancelButton;
 
   protected distinctTime = computed(
     () => {
@@ -64,6 +69,11 @@ export class AlarmsContainer {
     return { soundingAlarms, nextAlarm, upcomingAlarms } as AlarmsByCategory;
   });
 
+  private currentPlanId = computed(() => {
+    const plan = this.plansData.currentPlan();
+    return plan ? plan.properties.id : '';
+  });
+
   cancelAlarm(): void {
     const alarms = [...this.alarms()];
     const idx = alarms.findIndex((a) => !a.expired);
@@ -71,5 +81,13 @@ export class AlarmsContainer {
       alarms[idx] = { ...alarms[idx], expired: true };
       this.alarms.set(alarms);
     }
+  }
+
+  protected onAlarmVolumeChange(newVolume: number): void {
+    this.appSettings.setAlarmVolume(this.currentPlanId(), newVolume);
+  }
+
+  protected onBlinkCancelButtonChange(newBlinkCancelButton: boolean): void {
+    this.appSettings.setFlashAlarmCancelButton(this.currentPlanId(), newBlinkCancelButton);
   }
 }

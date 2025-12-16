@@ -19,9 +19,11 @@ import { LaneController, laneControllersEqual } from './types-constants/lane-con
 import { ActivitiesDataService } from '@data-access/plans/lib/activities-data';
 import { isSameMinute } from 'date-fns';
 import { TemplatesDataService } from '@data-access/templates/index';
+import { AppSettingsService } from '@data-access/app-settings/index';
 
 @Injectable()
 export class PlanEditorDataService {
+  private readonly appSettings = inject(AppSettingsService);
   private readonly plansData = inject(PlansDataService);
   private readonly activitiesData = inject(ActivitiesDataService);
   private readonly activityTemplatesData = inject(TemplatesDataService);
@@ -172,15 +174,15 @@ export class PlanEditorDataService {
    * timeSnapMins
    * --------------
    */
-  private readonly _timeSnapMins = signal<number>(DEFAULT_TIME_SNAP_MINS);
-  readonly timeSnapMins = computed(() => this._timeSnapMins());
+  readonly timeSnapMins = this.appSettings.timeSnapMins;
 
   /**
    * activitiesGridPixelsPerHour
    * ---------------------------
    */
-  private readonly pixelsPerHour = signal<number>(DEFAULT_PIXELS_PER_HOUR);
-  readonly activitiesGridPixelsPerHour = computed(() => this.pixelsPerHour());
+  // private readonly pixelsPerHour = signal<number>(DEFAULT_PIXELS_PER_HOUR);
+  // readonly activitiesGridPixelsPerHour = computed(() => this.pixelsPerHour());
+  readonly activitiesGridPixelsPerHour = this.appSettings.pixelsPerHour;
 
   /**
    * activitiesGridWidth
@@ -198,8 +200,7 @@ export class PlanEditorDataService {
    * activitiesGridPlanEndTethered
    * -----------------------------
    */
-  private readonly planEndTethered = signal<boolean>(true);
-  readonly activitiesGridPlanEndTethered = computed(() => this.planEndTethered());
+  readonly activitiesGridPlanEndTethered = this.appSettings.planEndTethered;
 
   /**
    * Activities Grid scrollX and scrollY
@@ -227,7 +228,7 @@ export class PlanEditorDataService {
    * snap enabled by holding down shift key.
    */
   setTimeSnapMins(newTimeSnapMins: number) {
-    this._timeSnapMins.set(newTimeSnapMins);
+    this.appSettings.setTimeSnapMins(this.currentPlan()?.properties.id || '', newTimeSnapMins);
   }
 
   /**
@@ -236,7 +237,7 @@ export class PlanEditorDataService {
    * @param newPixelsPerHour Number of pixels per hour to set for the activities grid
    */
   setActivitiesGridPixelsPerHour(newPixelsPerHour: number) {
-    this.pixelsPerHour.set(newPixelsPerHour);
+    this.appSettings.setPixelsPerHour(this.currentPlan()?.properties.id || '', newPixelsPerHour);
   }
 
   /**
@@ -245,7 +246,7 @@ export class PlanEditorDataService {
    * @param value
    */
   setActivitiesGridPlanEndTethered(value: boolean) {
-    this.planEndTethered.set(value);
+    this.appSettings.setPlanEndTethered(this.currentPlan()?.properties.id || '', value);
   }
 
   /**
