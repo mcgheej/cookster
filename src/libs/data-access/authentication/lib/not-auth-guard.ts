@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
-import { AuthenticationService } from './authentication';
+import { AuthenticationService } from './authentication-service';
 import { map } from 'rxjs';
 
 export function notAuthGuard(redirectUrl: string): CanActivateFn {
