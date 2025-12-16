@@ -167,3 +167,21 @@ mat-icon {
     line-height: 24px;
   }
 }
+
+mat-slider.small {
+  @include mat.slider-overrides(
+    (
+      handle-height: 10px,
+      handle-width: 10px,
+    )
+  );
+}
+
+mat-slider.no-highlight {
+  @include mat.slider-overrides(
+    (
+      hover-state-layer-color: transparent,
+      focus-state-layer-color: transparent,
+    )
+  );
+}

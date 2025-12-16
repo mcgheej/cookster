@@ -14,12 +14,25 @@ import { CommonModule } from '@angular/common';
 import { AlarmGroupComponent } from '@ui/shared-components/index';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatSliderModule } from '@angular/material/slider';
 import { concat, of, delay, repeat } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+
+const initialVolume = 10;
 
 @Component({
   selector: 'ck-sounding-alarms',
-  imports: [CommonModule, MatBadgeModule, MatButtonModule, AlarmGroupComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSliderModule,
+    AlarmGroupComponent,
+  ],
   templateUrl: './sounding-alarms.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -27,6 +40,10 @@ export class SoundingAlarms implements OnInit, OnDestroy {
   readonly soundingAlarms = input.required<AlarmGroupController[]>();
   readonly blinkCancelButton = input<boolean>(false);
   protected readonly cancelAlarm = output<void>();
+
+  protected volume = signal(initialVolume);
+  protected muted = signal<boolean>(false);
+  private lastVolume = initialVolume;
 
   private readonly _blink = toSignal(
     concat(of('var(--mat-sys-error)').pipe(delay(300)), of('var(--mat-sys-primary)').pipe(delay(700))).pipe(repeat())
@@ -54,6 +71,7 @@ export class SoundingAlarms implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.audioPlayer = new Audio('./assets/alarm-429128.mp3');
     this.audioPlayer.loop = true;
+    this.audioPlayer.volume = this.volume() / 10;
     this.audioPlayer.addEventListener('canplaythrough', () => {
       if (!this.audioPlayerReady()) {
         this.audioPlayerReady.set(true);
@@ -78,5 +96,42 @@ export class SoundingAlarms implements OnInit, OnDestroy {
 
   protected cancelAlarmClick(): void {
     this.cancelAlarm.emit();
+  }
+
+  protected onVolumeChange(inputEvent: Event): void {
+    const newVolume = Number((inputEvent.target as HTMLInputElement).value);
+    if (this.lastVolume !== newVolume) {
+      this.volume.set(newVolume);
+      this.lastVolume = newVolume;
+      this.changeAudioVolume(newVolume);
+    }
+    if (newVolume === 0) {
+      this.muted.set(true);
+    }
+  }
+
+  protected onMuteToggle(ev: MouseEvent): void {
+    ev.stopPropagation();
+    const newMuted = !this.muted();
+    if (newMuted === false) {
+      if (this.lastVolume !== 0) {
+        this.volume.set(this.lastVolume);
+        this.changeAudioVolume(this.lastVolume);
+      } else {
+        this.lastVolume = 1;
+        this.volume.set(1);
+        this.changeAudioVolume(1);
+      }
+    } else {
+      this.volume.set(0);
+      this.changeAudioVolume(0);
+    }
+    this.muted.set(newMuted);
+  }
+
+  private changeAudioVolume(newVolume: number): void {
+    if (this.audioPlayer) {
+      this.audioPlayer.volume = newVolume / 10;
+    }
   }
 }

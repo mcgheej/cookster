@@ -21,3 +21,17 @@
     <div class="justify-self-center self-center text-xl">No alarms sounding</div>
   }
 </div>
+@if (soundingAlarms().length > 0) {
+  <div class="w-full h-[44px] relative grid grid-cols-[max-content_max-content_auto]">
+    <mat-icon
+      class="relative z-10 ml-3 cursor-pointer self-center"
+      [style.color]="'var(--mat-sys-primary)'"
+      (click)="onMuteToggle($event)"
+      >{{ volume() === 0 || muted() ? 'volume_off' : 'volume_up' }}</mat-icon
+    >
+    <mat-slider class="small no-highlight self-center" min="0" max="10" step="1">
+      <input matSliderThumb [value]="volume()" (input)="onVolumeChange($event)" #slider />
+    </mat-slider>
+    <div class="self-center">{{ slider.value }}</div>
+  </div>
+}
