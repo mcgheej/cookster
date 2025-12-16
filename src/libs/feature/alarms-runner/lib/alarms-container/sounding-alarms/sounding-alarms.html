@@ -22,10 +22,31 @@
   }
 </div>
 @if (soundingAlarms().length > 0) {
-  <div class="w-full h-[44px] relative grid grid-cols-[max-content_max-content_auto]">
+  <div class="w-full h-[44px] relative grid grid-cols-[max-content_max-content_max-content_auto]">
+    <div class="ml-7 relative grid">
+      @if (blinkCancelButton() === false) {
+        <div
+          class="ml-3 row-start-1 row-end-2 col-start-1 col-end-2 text-3xl justify-self-center self-center"
+          [style.color]="'var(--mat-sys-primary)'">
+          \
+        </div>
+      }
+      <mat-icon
+        class="relative z-10 ml-3 cursor-pointer row-start-1 row-end-2 col-start-1 col-end-2 self-center"
+        [style.color]="'var(--mat-sys-primary)'"
+        [matTooltip]="blinkCancelButton() ? 'stop flash cancel button' : 'flash cancel button'"
+        matTooltipPosition="below"
+        [matTooltipShowDelay]="showTooltipDelay"
+        (click)="onBlinkToggle($event)"
+        >wb_iridescent</mat-icon
+      >
+    </div>
     <mat-icon
-      class="relative z-10 ml-3 cursor-pointer self-center"
+      class="relative z-10 ml-10 cursor-pointer self-center"
       [style.color]="'var(--mat-sys-primary)'"
+      [matTooltip]="volume() === 0 ? 'unmute' : 'mute'"
+      matTooltipPosition="below"
+      [matTooltipShowDelay]="showTooltipDelay"
       (click)="onMuteToggle($event)"
       >{{ volume() === 0 || muted() ? 'volume_off' : 'volume_up' }}</mat-icon
     >

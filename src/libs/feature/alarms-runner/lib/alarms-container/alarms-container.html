@@ -1,9 +1,6 @@
 <div class="box-border border-l-[1px] border-r-[1px] h-full grid grid-rows-[auto_auto_minmax(0,_1fr)] grid-cols-1">
   <div class="border-box border-b-[1px]">
-    <ck-sounding-alarms
-      [soundingAlarms]="alarmsByCategory().soundingAlarms"
-      [blinkCancelButton]="false"
-      (cancelAlarm)="cancelAlarm()" />
+    <ck-sounding-alarms [soundingAlarms]="alarmsByCategory().soundingAlarms" (cancelAlarm)="cancelAlarm()" />
   </div>
   @if (alarmsByCategory().nextAlarm) {
     <div class="border-box border-b-[1px]">

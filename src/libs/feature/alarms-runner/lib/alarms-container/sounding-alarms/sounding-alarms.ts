@@ -19,6 +19,8 @@ import { concat, of, delay, repeat } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 
 const initialVolume = 10;
 
@@ -31,6 +33,7 @@ const initialVolume = 10;
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
+    MatTooltipModule,
     AlarmGroupComponent,
   ],
   templateUrl: './sounding-alarms.html',
@@ -38,12 +41,13 @@ const initialVolume = 10;
 })
 export class SoundingAlarms implements OnInit, OnDestroy {
   readonly soundingAlarms = input.required<AlarmGroupController[]>();
-  readonly blinkCancelButton = input<boolean>(false);
   protected readonly cancelAlarm = output<void>();
 
   protected volume = signal(initialVolume);
   protected muted = signal<boolean>(false);
   private lastVolume = initialVolume;
+
+  protected readonly blinkCancelButton = signal<boolean>(true);
 
   private readonly _blink = toSignal(
     concat(of('var(--mat-sys-error)').pipe(delay(300)), of('var(--mat-sys-primary)').pipe(delay(700))).pipe(repeat())
@@ -53,6 +57,8 @@ export class SoundingAlarms implements OnInit, OnDestroy {
 
   private audioPlayer: HTMLAudioElement | undefined = undefined;
   private audioPlayerReady = signal<boolean>(false);
+
+  protected readonly showTooltipDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   constructor() {
     effect(() => {
@@ -96,6 +102,11 @@ export class SoundingAlarms implements OnInit, OnDestroy {
 
   protected cancelAlarmClick(): void {
     this.cancelAlarm.emit();
+  }
+
+  protected onBlinkToggle(ev: MouseEvent): void {
+    ev.stopPropagation();
+    this.blinkCancelButton.set(!this.blinkCancelButton());
   }
 
   protected onVolumeChange(inputEvent: Event): void {
