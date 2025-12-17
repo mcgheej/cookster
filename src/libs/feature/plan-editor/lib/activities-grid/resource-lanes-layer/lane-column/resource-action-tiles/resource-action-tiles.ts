@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { ActionDisplayTile, ResourceLane } from '@util/data-types/index';
+import { ActionDisplayTile, ResourceAction, ResourceLane } from '@util/data-types/index';
 import { ResourceActionTilesService } from './resource-action-tiles-service';
 
 import { ResourceActionTile } from './resource-action-tile/resource-action-tile';
@@ -14,7 +14,8 @@ import { ResourceActionTile } from './resource-action-tile/resource-action-tile'
         [plan]="plan()"
         [tile]="actionTile"
         (deleteResourceAction)="deleteResourceAction(actionTile)"
-        (updateResourceActionTime)="updateResourceActionTime(actionTile, $event)" />
+        (updateResourceActionTime)="updateResourceActionTime(actionTile, $event)"
+        (updateResourceAction)="updateResourceAction(actionTile, $event)" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,6 +46,14 @@ export class ResourceActionTiles {
     if (!plan) {
       return;
     }
-    this.service.modifyResourceAction(plan, this.resourceLane(), tile.index, newTime);
+    this.service.modifyResourceActionTime(plan, this.resourceLane(), tile.index, newTime);
+  }
+
+  updateResourceAction(tile: ActionDisplayTile, updatedAction: ResourceAction): void {
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    this.service.modifyResourceAction(plan, this.resourceLane(), tile.index, updatedAction);
   }
 }

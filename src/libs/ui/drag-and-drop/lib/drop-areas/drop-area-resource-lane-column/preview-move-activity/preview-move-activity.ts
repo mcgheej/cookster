@@ -138,7 +138,7 @@ export class PreviewMoveActivity extends PreviewComponentBase {
       clipPath,
     };
 
-    const newStartTime = format(getDateFromMinutesSinceMidnight(activityStartMins), 'HH:mm');
+    const newStartTime = format(getDateFromMinutesSinceMidnight(activityStartMins, plan.properties.startTime), 'HH:mm');
 
     const topEnvelopeWing =
       envelopeStartY < previewTileTop

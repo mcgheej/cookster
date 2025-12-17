@@ -1,7 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DEFAULT_SNACKBAR_DURATION, defaultGoogleColor, INITIAL_ACTIVITY_DURATION_MINS } from '@util/app-config/index';
 import {
@@ -17,16 +16,6 @@ import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { isEmptyObject } from '@util/misc-utilities/index';
 import { exceedsMaxParallelActivities } from '@util/tiler/index';
 import { addHours, addMinutes, isAfter, isBefore, isValid, startOfDay, subMinutes } from 'date-fns';
-
-// export const F_NAME = 'name';
-// export const F_START_TIME = 'startTime';
-// export const F_DURATION = 'duration';
-// export const F_COLOR = 'color';
-// export const F_RESOURCE = 'resource';
-// export const F_ACTIONS = 'actions';
-// export const F_DESCRIPTION = 'description';
-// export const F_START_MESSAGE = 'startMessage';
-// export const F_END_MESSAGE = 'endMessage';
 
 const defaultResource: PlanKitchenResource = {
   index: 0,

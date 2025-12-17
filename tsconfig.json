@@ -34,6 +34,7 @@
       "@ui/dialog-activity-action/*": ["libs/ui/dialog-activity-action/*"],
       "@ui/dialog-generic-input/*": ["libs/ui/dialog-generic-input/*"],
       "@ui/dialog-plan-properties/*": ["libs/ui/dialog-plan-properties/*"],
+      "@ui/dialog-resource-action/*": ["libs/ui/dialog-resource-action/*"],
       "@ui/dialog-time-snap/*": ["libs/ui/dialog-time-snap/*"],
       "@ui/dialog-time-window/*": ["libs/ui/dialog-time-window/*"],
       "@ui/drag-and-drop/*": ["libs/ui/drag-and-drop/*"],

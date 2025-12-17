@@ -88,7 +88,7 @@ export class PreviewUntetheredPlanEnd extends PreviewComponentBase {
     );
     const clipPath = this.getClipPath(clipArea, planEndBarRect);
 
-    const planEnd = getDateFromMinutesSinceMidnight(planEndMins);
+    const planEnd = getDateFromMinutesSinceMidnight(planEndMins, plan.properties.endTime);
     return {
       planEndBarRect,
       planEnd,

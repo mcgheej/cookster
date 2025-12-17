@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { openResourceActionDialog } from '@ui/dialog-resource-action/index';
 import { CkDrag, DragMoveResourceAction, DragMoveResourceActionResult, DragResult } from '@ui/drag-and-drop/index';
 import { RESOURCE_ACTION_COMPONENT_HEIGHT } from '@util/app-config/index';
-import { ActionDisplayTile, Plan, ResourceLane } from '@util/data-types/index';
+import { ActionDisplayTile, Plan, ResourceAction, ResourceLane } from '@util/data-types/index';
 
 @Component({
   selector: 'ck-resource-action-tile',
@@ -15,12 +17,15 @@ import { ActionDisplayTile, Plan, ResourceLane } from '@util/data-types/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResourceActionTile {
+  private readonly dialog = inject(MatDialog);
+
   resourceLane = input.required<ResourceLane>();
   plan = input.required<Plan | null>();
   tile = input.required<ActionDisplayTile>();
 
   deleteResourceAction = output<void>();
   updateResourceActionTime = output<Date>();
+  updateResourceAction = output<ResourceAction>();
 
   protected showElement = signal<'visible' | 'hidden'>('visible');
 
@@ -37,9 +42,22 @@ export class ResourceActionTile {
 
   protected readonly componentHeight = RESOURCE_ACTION_COMPONENT_HEIGHT.toString() + 'px';
 
-  onClick(ev: Event): void {
+  onEditAction(ev: Event): void {
     ev.stopPropagation();
     ev.preventDefault();
+    const plan = this.plan();
+    if (plan) {
+      const dialogRef = openResourceActionDialog({ plan, resourceAction: this.tile().resourceAction }, this.dialog);
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          if (result.operation === 'save') {
+            this.updateResourceAction.emit(result.action);
+          } else if (result.operation === 'delete') {
+            this.deleteResourceAction.emit();
+          }
+        }
+      });
+    }
   }
 
   onDragStart(): void {

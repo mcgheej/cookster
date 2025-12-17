@@ -5,7 +5,6 @@ import { ActivityDB, Plan } from '@util/data-types/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { FieldName } from './fields/field-name';
-import { FieldTimeDuration } from './fields/field-time-duration';
 import { FieldColor } from './fields/field-color';
 import { FieldResource } from './fields/field-resource';
 import { FieldDescription } from './fields/field-description';

@@ -102,7 +102,7 @@ export class PreviewTetheredPlanEnd extends PreviewComponentBase {
     );
     const clipPath = this.getClipPath(clipArea, shadowRect);
 
-    const planEnd = getDateFromMinutesSinceMidnight(planEndMins);
+    const planEnd = getDateFromMinutesSinceMidnight(planEndMins, plan.properties.endTime);
     return {
       shadowRect,
       planEnd,

@@ -97,7 +97,7 @@ export class PreviewMoveActionInResourceLaneColumn extends PreviewComponentBase 
 
     const clipPath = this.getClipPath(clipArea, actionTimeRect);
 
-    const actionTime = getDateFromMinutesSinceMidnight(actionTimeMins);
+    const actionTime = getDateFromMinutesSinceMidnight(actionTimeMins, plan.properties.startTime);
     return {
       name: (dragOp as DragMoveResourceAction).resourceAction.name,
       actionTimeRect,
