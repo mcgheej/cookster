@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AfActivitiesService } from './af-activities';
 import { ActivityDB } from '@util/data-types/index';
-import { BehaviorSubject, from, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ActivitiesDataService {

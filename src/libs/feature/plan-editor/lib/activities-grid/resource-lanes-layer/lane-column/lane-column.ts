@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CkDrop } from '@ui/drag-and-drop/index';
 import { LaneColumnService } from './lane-column-service';

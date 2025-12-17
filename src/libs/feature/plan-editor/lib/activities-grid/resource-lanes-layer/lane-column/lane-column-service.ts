@@ -1,13 +1,6 @@
 import { computed, inject, Injectable, InputSignal, Signal } from '@angular/core';
 import { PlanEditorDataService } from '../../../plan-editor-data-service';
-import {
-  ActivityDB,
-  FULL_TIME_WINDOW,
-  Plan,
-  ResourceLane,
-  resourceLanesEqual,
-  TimeWindow,
-} from '@util/data-types/index';
+import { ActivityDB, Plan, ResourceLane, resourceLanesEqual } from '@util/data-types/index';
 import {
   AcceptedDragOperation,
   DropAreaResourceLaneColumn,

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { TIMESLOTS } from '@util/app-config/index';
 import { CommonModule } from '@angular/common';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 

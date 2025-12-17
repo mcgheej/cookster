@@ -13,7 +13,6 @@ import {
   DropAreaResourceLaneHeader,
   PreviewMoveActionInResourceLaneHeader,
   PreviewNewActionInResourceLaneHeader,
-  PreviewNoDrop,
 } from '@ui/drag-and-drop/index';
 import { LaneHeaderService } from './lane-header-service';
 

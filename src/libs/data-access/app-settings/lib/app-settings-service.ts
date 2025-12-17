@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, linkedSignal, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, linkedSignal } from '@angular/core';
 import { DEFAULT_PIXELS_PER_HOUR, DEFAULT_TIME_SNAP_MINS } from '@util/app-config/index';
 import * as LocalStorage from './local-storage';
 import { PlansDataService } from '@data-access/plans/index';

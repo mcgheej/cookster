@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
-
 import { laneWidthPx } from '@util/data-types/index';
 import { LaneColumn } from './lane-column/lane-column';
 

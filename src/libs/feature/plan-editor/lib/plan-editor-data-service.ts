@@ -1,13 +1,7 @@
 import { computed, inject, Injectable, linkedSignal, signal, WritableSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PlansDataService } from '@data-access/plans/index';
-import {
-  DEFAULT_LANE_WIDTH,
-  DEFAULT_PIXELS_PER_HOUR,
-  DEFAULT_PLAN_COLOR,
-  DEFAULT_TIME_SNAP_MINS,
-  googleColors,
-} from '@util/app-config/index';
+import { DEFAULT_LANE_WIDTH } from '@util/app-config/index';
 import {
   ActivityDB,
   FULL_TIME_WINDOW,

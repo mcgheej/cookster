@@ -2,9 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { opaqueColor } from '@util/color-utilities/index';
 import { DEFAULT_COLOR_OPACITY } from '@util/app-config/index';
-
 import { ActivityTemplate } from './activity-template/activity-template';
-import { ActivityTemplateDB } from '@util/data-types/index';
 import { TemplatesPanelService } from './templates-panel-service';
 
 @Component({

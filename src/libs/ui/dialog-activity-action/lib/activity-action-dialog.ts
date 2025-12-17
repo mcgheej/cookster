@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ActivityAction, ActivityDB, Plan } from '@util/data-types/index';
 import { FieldActionName } from './fields/field-action-name';
-import { FieldActionOffset } from './fields/field-action.offset';
+import { FieldActionOffset } from './fields/field-action-offset';
 import { FieldActionDirection } from './fields/field-action-direction';
 import { FieldActionReferencePoint } from './fields/field-action-reference-point';
 import { ActivityActionFormService } from './activity-action-form-service';

@@ -6,7 +6,6 @@ import { PreviewComponentBase, PreviewComponentProps } from '../../drop-areas/pr
 import { PointerData } from '../../types/pointer-data';
 import { PreviewTemplateActivity } from '../../drop-areas/preview-template-activity';
 import { DragActivityData } from './drag-activity';
-import { config } from 'rxjs';
 import { PreviewMoveActivity } from '../../drop-areas/drop-area-resource-lane-column/preview-move-activity/preview-move-activity';
 
 export interface DragTemplateActivityData extends DragActivityData {

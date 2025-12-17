@@ -1,4 +1,4 @@
-import { ActivityDB, DisplayTile, Plan, ResourceLane } from '@util/data-types/index';
+import { ActivityDB, Plan, ResourceLane } from '@util/data-types/index';
 import { DragData, DragEndProps, DragMoveProps, DragOperation, DragResult, DragStartProps } from '../drag-operation';
 import { DropArea } from '../../drop-areas/drop-area';
 import { signal, Type } from '@angular/core';

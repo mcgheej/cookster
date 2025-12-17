@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { ActivityTemplateDB } from '@util/data-types/index';
-import { te } from 'date-fns/locale';
 import { Unsubscribe, User } from 'firebase/auth';
 import { BehaviorSubject, from, map, Observable } from 'rxjs';
 
