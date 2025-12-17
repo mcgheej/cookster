@@ -19,15 +19,15 @@ import { ActivitiesGridMenuService } from './activities-grid-menu-service';
   providers: [ActivitiesGridMenuService],
 })
 export class ActivitiesGridMenu {
-  private readonly editorData = inject(PlanEditorDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
   protected readonly service = inject(ActivitiesGridMenuService);
 
-  protected readonly planEndTethered = this.editorData.activitiesGridPlanEndTethered;
-  private readonly laneController = this.editorData.laneController;
+  protected readonly planEndTethered = this.planEditorData.activitiesGridPlanEndTethered;
+  private readonly laneController = this.planEditorData.laneController;
 
   protected readonly gridMenuData = computed(() => {
     return {
-      pixelsPerHour: this.editorData.activitiesGridPixelsPerHour(),
+      pixelsPerHour: this.planEditorData.activitiesGridPixelsPerHour(),
     };
   });
 

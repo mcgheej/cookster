@@ -15,7 +15,7 @@ import { ActivityDB, FULL_TIME_WINDOW, PlanKitchenResource } from '@util/data-ty
 @Injectable()
 export class PlanEndService {
   private readonly snackBar = inject(MatSnackBar);
-  private readonly db = inject(PlansDataService);
+  private readonly plansData = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
 
   /**
@@ -68,7 +68,7 @@ export class PlanEndService {
         });
         return; // Plan cannot start before time window. Ignoring drag result.
       }
-      this.db.updatePlanProperties(plan.properties.id, { endTime: newTime }).subscribe({
+      this.plansData.updatePlanProperties(plan.properties.id, { endTime: newTime }).subscribe({
         error: (error) => {
           this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
           console.error('Error updating plan end time', error);
@@ -96,7 +96,7 @@ export class PlanEndService {
         },
         activities: shiftedActivities,
       };
-      this.db.updateUntetheredPlanEnd(newPlan).subscribe({
+      this.plansData.updateUntetheredPlanEnd(newPlan).subscribe({
         error: (error) => {
           this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
           console.error('Error updating untethered plan end', error);

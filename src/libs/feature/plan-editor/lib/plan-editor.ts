@@ -19,19 +19,19 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class PlanEditor implements OnChanges, OnDestroy {
   private readonly dialog = inject(MatDialog);
-  private readonly planEditorDataService = inject(PlanEditorDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
   private readonly planEditorService = inject(PlanEditorService);
   private readonly textSpeech = inject(SpeechService);
 
   readonly planId = input.required<string>();
 
   protected readonly selectorButtons = selectorButtons;
-  protected readonly currentPlan = this.planEditorDataService.currentPlan;
-  protected readonly activities = this.planEditorDataService.activities;
-  protected readonly timeSnap = this.planEditorDataService.timeSnapMins;
+  protected readonly currentPlan = this.planEditorData.currentPlan;
+  protected readonly activities = this.planEditorData.activities;
+  protected readonly timeSnap = this.planEditorData.timeSnapMins;
 
   protected readonly openPanel = computed(() => {
-    return this.planEditorDataService.selectedActivityId() ? SELECTED_ACTIVITY_PANEL_NAME : '';
+    return this.planEditorData.selectedActivityId() ? SELECTED_ACTIVITY_PANEL_NAME : '';
   });
 
   ngOnChanges() {
@@ -43,10 +43,10 @@ export class PlanEditor implements OnChanges, OnDestroy {
   }
 
   protected openTimeSnapDialog() {
-    const dialogRef = openTimeSnapDialog(this.planEditorDataService.timeSnapMins(), this.dialog);
+    const dialogRef = openTimeSnapDialog(this.planEditorData.timeSnapMins(), this.dialog);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.planEditorDataService.setTimeSnapMins(result);
+        this.planEditorData.setTimeSnapMins(result);
       }
     });
   }

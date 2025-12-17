@@ -18,7 +18,7 @@ import { isSameMinute } from 'date-fns';
 @Injectable()
 export class ActivityTilesService {
   private readonly snackBar = inject(MatSnackBar);
-  private readonly db = inject(PlansDataService);
+  private readonly plansData = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
   private readonly tiler = inject(Tiler);
 
@@ -80,7 +80,7 @@ export class ActivityTilesService {
   // --------------
 
   updateActivityDuration(activityId: string, newDurationMins: number): void {
-    this.db.updateActivity(activityId, { duration: newDurationMins }).subscribe({
+    this.plansData.updateActivity(activityId, { duration: newDurationMins }).subscribe({
       error: (err) => {
         console.error('Error updating activity duration', err);
         this.snackBar.open('Error updating activity duration', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
@@ -89,7 +89,7 @@ export class ActivityTilesService {
   }
 
   updateActivityPosition(activityId: string, newStartTimeOffset: number, newResourceIndex: number): void {
-    this.db
+    this.plansData
       .updateActivity(activityId, {
         startTimeOffset: newStartTimeOffset,
         resourceIndex: newResourceIndex,

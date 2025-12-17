@@ -11,10 +11,10 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KitchenPanel {
-  private readonly planEditorDataService = inject(PlanEditorDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
 
   // protected readonly laneControls = this.planEditorDataService.laneControls;
-  protected readonly laneController = this.planEditorDataService.laneController;
+  protected readonly laneController = this.planEditorData.laneController;
   protected readonly defaultTooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected toggleLane(index: number): void {

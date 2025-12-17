@@ -9,14 +9,14 @@ import { PlanEditorDataService } from '../../plan-editor-data-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeLabels {
-  private readonly editorData = inject(PlanEditorDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
 
   readonly hoursInGrid = input.required<string[]>();
 
-  protected readonly pixelsPerHour = this.editorData.activitiesGridPixelsPerHour;
+  protected readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
 
   protected readonly scrollY = computed(() => {
-    const sY = this.editorData.activitiesGridScrollY();
+    const sY = this.planEditorData.activitiesGridScrollY();
     return `0 ${sY}px`;
   });
 }

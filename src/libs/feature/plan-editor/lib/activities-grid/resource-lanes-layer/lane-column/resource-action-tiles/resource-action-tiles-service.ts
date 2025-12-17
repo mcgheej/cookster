@@ -18,7 +18,7 @@ import { PlansDataService } from '@data-access/plans/index';
 @Injectable()
 export class ResourceActionTilesService {
   private readonly snackBar = inject(MatSnackBar);
-  private readonly db = inject(PlansDataService);
+  private readonly plansData = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
 
   plan = this.planEditorData.currentPlan;
@@ -96,7 +96,7 @@ export class ResourceActionTilesService {
       return;
     }
     const newPlan = modifyResourceActionInPlan(plan, resourceLane, actionIndex, modifiedResourceAction);
-    this.db
+    this.plansData
       .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
       .subscribe({
         error: (error) => {
@@ -111,7 +111,7 @@ export class ResourceActionTilesService {
 
   private doDeleteResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number): void {
     const newPlan = removeResourceActionFromPlan(plan, resourceLane, actionIndex);
-    this.db
+    this.plansData
       .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
       .subscribe({
         next: () => {

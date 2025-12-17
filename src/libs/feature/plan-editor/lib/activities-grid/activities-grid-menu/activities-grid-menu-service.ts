@@ -12,21 +12,21 @@ import { openTimeSnapDialog } from '@ui/dialog-time-snap/index';
 export class ActivitiesGridMenuService {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly editorData = inject(PlanEditorDataService);
-  private readonly db = inject(PlansDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
+  private readonly plansData = inject(PlansDataService);
 
-  private readonly planEndTethered = this.editorData.activitiesGridPlanEndTethered;
-  private readonly laneController = this.editorData.laneController;
+  private readonly planEndTethered = this.planEditorData.activitiesGridPlanEndTethered;
+  private readonly laneController = this.planEditorData.laneController;
   // private readonly timeWindow = this.editorData.activitiesGridTimeWindow;
 
   setPixelsPerHour(pixelsPerHour: number) {
-    if (pixelsPerHour !== this.editorData.activitiesGridPixelsPerHour()) {
-      this.editorData.setActivitiesGridPixelsPerHour(pixelsPerHour);
+    if (pixelsPerHour !== this.planEditorData.activitiesGridPixelsPerHour()) {
+      this.planEditorData.setActivitiesGridPixelsPerHour(pixelsPerHour);
     }
   }
 
   togglePlanEndTethered() {
-    this.editorData.setActivitiesGridPlanEndTethered(!this.planEndTethered());
+    this.planEditorData.setActivitiesGridPlanEndTethered(!this.planEndTethered());
   }
 
   setLaneWidths(optionValue: string) {
@@ -42,7 +42,7 @@ export class ActivitiesGridMenuService {
   }
 
   openTimeWindowDialog() {
-    const plan = this.editorData.currentPlan();
+    const plan = this.planEditorData.currentPlan();
     if (!plan) {
       console.warn('No plan selected - cannot set time window');
       return;
@@ -56,7 +56,7 @@ export class ActivitiesGridMenuService {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // this.editorData.setActivitiesGridTimeWindow(result);
-        this.db.updatePlanProperties(plan.properties.id, { timeWindow: result }).subscribe({
+        this.plansData.updatePlanProperties(plan.properties.id, { timeWindow: result }).subscribe({
           error: (err) => {
             this.snackBar.open(`Error updating plan time window - ${err}`, 'Close', {
               duration: DEFAULT_SNACKBAR_DURATION,
@@ -68,10 +68,10 @@ export class ActivitiesGridMenuService {
   }
 
   openTimeSnapDialog() {
-    const dialogRef = openTimeSnapDialog(this.editorData.timeSnapMins(), this.dialog);
+    const dialogRef = openTimeSnapDialog(this.planEditorData.timeSnapMins(), this.dialog);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.editorData.setTimeSnapMins(result);
+        this.planEditorData.setTimeSnapMins(result);
       }
     });
   }
