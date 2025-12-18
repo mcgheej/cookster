@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DEFAULT_PLAN_COLOR } from '@util/app-config/index';
-import { Kitchen, PlanProperties } from '@util/data-types/index';
+import { FULL_TIME_WINDOW, Kitchen, PlanProperties } from '@util/data-types/index';
 import { getDateToLastHour, isDifferentMinute } from '@util/date-utilities/index';
 import { set } from 'date-fns';
 
@@ -66,6 +66,7 @@ export class PlanPropertiesFormService {
     changedProperties.endTime = endTime;
     changedProperties.kitchenName = kitchenName;
     changedProperties.kitchenResources = kitchenResources;
+    changedProperties.timeWindow = FULL_TIME_WINDOW;
     return changedProperties;
   }
 

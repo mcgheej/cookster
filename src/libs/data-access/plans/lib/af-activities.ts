@@ -85,6 +85,8 @@ export class AfActivitiesService {
         resourceIndex: activity.resourceIndex,
         actions: activity.actions,
         color: activity.color,
+        startMessage: activity.startMessage,
+        endMessage: activity.endMessage,
       })
     ).pipe(
       map((docRef) => {

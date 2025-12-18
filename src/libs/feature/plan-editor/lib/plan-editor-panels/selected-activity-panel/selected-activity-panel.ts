@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivityPanelButtons } from './activity-panel-buttons/activity-panel-buttons';
 import { SelectedActivityPanelService } from './selected-activity-panel-service';
+import { ActivityDB } from '@util/data-types/index';
 
 @Component({
   selector: 'ck-selected-activity-panel',
@@ -32,6 +33,9 @@ import { SelectedActivityPanelService } from './selected-activity-panel-service'
           <div class="pl-1 pr-1 text-sm select-none">No actions</div>
         }
       </div>
+      <div class="pl-[18px] pt-2 font-bold text-sm select-none">Start/End Messages:</div>
+      <div class="pl-[18px] text-sm select-none">{{ getStartMessage(activity) }}</div>
+      <div class="pl-[18px] text-sm select-none">{{ getEndMessage(activity) }}</div>
       <div class="pt-2 pl-[18px]">
         <ck-activity-panel-buttons
           (edit)="service.editActivity()"
@@ -57,4 +61,12 @@ export class SelectedActivityPanel {
   protected readonly resourceName = this.service.resourceName;
   protected readonly actionsAsText = this.service.actionsAsText;
   protected readonly flairColor = this.service.flairColor;
+
+  protected getStartMessage(activity: ActivityDB): string {
+    return 'Start: ' + (activity.startMessage ? activity.startMessage : '<empty>');
+  }
+
+  protected getEndMessage(activity: ActivityDB): string {
+    return 'End: ' + (activity.endMessage ? activity.endMessage : '<empty>');
+  }
 }

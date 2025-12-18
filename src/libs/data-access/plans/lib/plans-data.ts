@@ -89,6 +89,7 @@ export class PlansDataService {
   }
 
   createPlan(planProperties: Partial<PlanProperties>): Observable<PlanDB> {
+    console.log('planProperties', planProperties);
     return this.afPlansDB.createPlan(createPlanDbUpdates(planProperties) as Omit<PlanDB, 'id'>);
   }
 

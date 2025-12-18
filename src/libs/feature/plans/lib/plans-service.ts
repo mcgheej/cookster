@@ -45,7 +45,7 @@ export class PlansService {
         width: '600px',
         maxWidth: '800px',
         maxHeight: '100vh',
-        height: '775px',
+        height: '600px',
       }
     );
     dialogRef.afterClosed().subscribe((result) => {
