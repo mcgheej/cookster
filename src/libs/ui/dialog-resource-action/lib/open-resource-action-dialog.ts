@@ -6,9 +6,9 @@ export function openResourceActionDialog(
   dialog: MatDialog
 ): MatDialogRef<ResourceActionDialog, ResourceActionDialogResult> {
   return dialog.open(ResourceActionDialog, {
-    width: '600px',
+    width: '400px',
     maxHeight: '100vh',
-    height: '350px',
+    height: '325px',
     data,
   });
 }

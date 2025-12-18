@@ -1,17 +1,18 @@
 <h2 mat-dialog-title>Edit Resource Action</h2>
 <form [formGroup]="form" (ngSubmit)="saveActivity()">
   <div class="px-6">
-    <div class="mt-3 grid grid-cols-[1fr_1fr] gap-4">
+    <!-- <div class="mt-3 grid grid-cols-[1fr_1fr] gap-4"> -->
+    <div class="mt-3 w-[125px] grid grid-cols-1">
       <mat-form-field floatLabel="auto">
         <mat-label>Time</mat-label>
         <input matInput [matTimepicker]="timepicker" formControlName="actionTime" />
         @if (form.get('actionTime')?.invalid && form.get('actionTime')?.touched) {
-          <mat-error>{{ getErrorMessage() }}</mat-error>
+          <mat-error class="w-[200px] overflow-auto">{{ getErrorMessage() }}</mat-error>
         }
         <mat-timepicker #timepicker />
         <mat-timepicker-toggle matSuffix [for]="timepicker" />
       </mat-form-field>
-      <div></div>
+      <!-- <div></div> -->
     </div>
     <div class="mt-3 grid grid-cols-1">
       <mat-form-field class="mat-headline-5" floatLabel="auto">
