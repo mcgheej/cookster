@@ -30,7 +30,7 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
-/.firebase
+.firebase/*
 .sass-cache/
 /connect.lock
 /coverage
