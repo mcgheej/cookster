@@ -3,12 +3,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ActivityAction, ActivityDB, Plan } from '@util/data-types/index';
-import { FieldActionName } from './fields/field-action-name';
+// import { FieldActionName } from './fields/field-action-name';
 import { FieldActionOffset } from './fields/field-action-offset';
 import { FieldActionDirection } from './fields/field-action-direction';
 import { FieldActionReferencePoint } from './fields/field-action-reference-point';
 import { ActivityActionFormService } from './activity-action-form-service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FieldError, FieldText } from '@ui/shared-components/index';
 
 export interface ActivityActionDialogData {
   actionIndex: number;
@@ -26,10 +27,11 @@ export type ActivityActionDialogResult = { operation: 'save'; action: ActivityAc
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
-    FieldActionName,
+    // FieldActionName,
     FieldActionOffset,
     FieldActionDirection,
     FieldActionReferencePoint,
+    FieldText,
   ],
   templateUrl: './activity-action-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +43,11 @@ export class ActivityActionDialog implements OnInit {
   protected readonly formService = inject(ActivityActionFormService);
 
   readonly form = this.formService.form;
+
+  protected readonly nameErrors: FieldError[] = [
+    { errorName: 'required', errorString: 'Name is required' },
+    { errorName: 'invalidActionTime', errorString: 'Action before time window or after plan end' },
+  ] as const;
 
   ngOnInit(): void {
     this.formService.initialise(this.data.action, this.data.activity, this.data.plan);

@@ -59,7 +59,7 @@ export class FieldTemplateActions implements ControlValueAccessor {
         {
           width: '500px',
           maxHeight: '100vh',
-          height: '600px',
+          height: '420px',
           data: {
             actionIndex: -1,
             action: { name: 'New Action', timeOffset: 30, referencePoint: 'start' } as ActivityAction,
@@ -88,7 +88,7 @@ export class FieldTemplateActions implements ControlValueAccessor {
         {
           width: '500px',
           maxHeight: '100vh',
-          height: '600px',
+          height: '420px',
           data: {
             actionIndex,
             action: this.actions[actionIndex],

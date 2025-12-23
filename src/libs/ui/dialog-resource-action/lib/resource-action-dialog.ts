@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatTimepickerModule } from '@angular/material/timepicker';
+import { FieldTimepicker } from '@ui/shared-components/index';
 
 export interface ResourceActionDialogData {
   plan: Plan;
@@ -17,14 +17,7 @@ export type ResourceActionDialogResult = { operation: 'save'; action: ResourceAc
 
 @Component({
   selector: 'ck-resource-action-dialog',
-  imports: [
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTimepickerModule,
-  ],
+  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, FieldTimepicker],
   templateUrl: './resource-action-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ResourceActionFormService],
@@ -58,15 +51,5 @@ export class ResourceActionDialog implements OnInit {
       return;
     }
     this.dialogRef.close({ operation: 'save', action: this.formService.getResourceActionFromForm() });
-  }
-
-  // Protected methods
-  // -----------------
-
-  protected getErrorMessage(): string {
-    if (this.form.controls.actionTime.errors?.['invalidActionTime']) {
-      return 'Action time outside valid period';
-    }
-    return '';
   }
 }

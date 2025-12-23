@@ -4,12 +4,10 @@ import { ActivityTemplateDB } from '@util/data-types/index';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldTemplateName } from './fields/field-template-name';
 import { FieldTemplateColor } from './fields/field-template-color';
-import { FieldTemplateDuration } from './fields/field-template-duration';
 import { FieldTemplateActions } from './fields/field-template-actions/field-template-actions';
 import { FieldTemplateDescription } from './fields/field-template-description';
-import { FieldTemplateStartEndMessages } from './fields/field-template-start-end-messages';
+import { FieldError, FieldText, FieldTimepicker } from '@ui/shared-components/index';
 
 @Component({
   selector: 'ck-activity-template-dialog',
@@ -17,12 +15,11 @@ import { FieldTemplateStartEndMessages } from './fields/field-template-start-end
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    FieldTemplateName,
-    FieldTemplateDuration,
     FieldTemplateColor,
     FieldTemplateActions,
     FieldTemplateDescription,
-    FieldTemplateStartEndMessages,
+    FieldTimepicker,
+    FieldText,
   ],
   templateUrl: './activity-template-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +31,8 @@ export class ActivityTemplateDialog implements OnInit {
   protected readonly template: ActivityTemplateDB = inject(MAT_DIALOG_DATA);
 
   protected readonly form = this.formService.form;
+
+  protected readonly nameErrors: FieldError[] = [{ errorName: 'required', errorString: 'Name is required' }] as const;
 
   // Lifecyle methods
   // ----------------

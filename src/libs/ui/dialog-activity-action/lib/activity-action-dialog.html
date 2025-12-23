@@ -1,7 +1,13 @@
 <h2 mat-dialog-title>{{ data.actionIndex < 0 ? 'Create Activity Action' : 'Edit Activity Action' }}</h2>
 <form [formGroup]="form" (ngSubmit)="saveAction()">
-  <div class="px-[24px]">
-    <ck-field-action-name />
+  <div class="mt-[3px] px-[24px]">
+    <!-- <ck-field-action-name /> -->
+    <ck-field-text
+      [form]="form"
+      controlName="name"
+      controlLabel="Action Name"
+      placeholder="Name your action..."
+      [errors]="nameErrors" />
     <div class="grid grid-cols-[90px_1fr] gap-2">
       <ck-field-action-offset />
       <div class="mt-[24px]">mins</div>

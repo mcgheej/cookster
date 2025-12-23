@@ -4,14 +4,11 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { ActivityDB, Plan } from '@util/data-types/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldName } from './fields/field-name';
 import { FieldColor } from './fields/field-color';
 import { FieldResource } from './fields/field-resource';
 import { FieldDescription } from './fields/field-description';
-import { FieldStartEndMessages } from './fields/field-start-end-messages';
 import { FieldActions } from './fields/field-actions/field-actions';
-import { FieldTime } from './fields/field-time';
-import { FieldDuration } from './fields/field-duration';
+import { FieldError, FieldText, FieldTimepicker } from '@ui/shared-components/index';
 
 export interface ActivityDialogData {
   plan: Plan;
@@ -24,14 +21,12 @@ export interface ActivityDialogData {
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    FieldName,
-    FieldTime,
-    FieldDuration,
     FieldColor,
     FieldResource,
     FieldActions,
     FieldDescription,
-    FieldStartEndMessages,
+    FieldTimepicker,
+    FieldText,
   ],
   templateUrl: './activity-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,6 +38,8 @@ export class ActivityDialog implements OnInit {
   protected readonly data: ActivityDialogData = inject(MAT_DIALOG_DATA);
 
   protected readonly form = this.formService.form;
+
+  protected readonly nameErrors: FieldError[] = [{ errorName: 'required', errorString: 'Name is required' }] as const;
 
   // Lifecyle methods
   // ----------------

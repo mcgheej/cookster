@@ -146,7 +146,7 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
         {
           width: '500px',
           maxHeight: '100vh',
-          height: '600px',
+          height: '420px',
           data: {
             actionIndex: -1,
             action: { name: 'New Action', timeOffset: 30, referencePoint: 'start' } as ActivityAction,
@@ -179,7 +179,7 @@ export class FieldActions implements ControlValueAccessor, Validator, OnChanges 
         {
           width: '500px',
           maxHeight: '100vh',
-          height: '600px',
+          height: '420px',
           data: {
             actionIndex,
             action: this.actions[actionIndex],
