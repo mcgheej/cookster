@@ -24,8 +24,8 @@ export class FieldText {
   form = input.required<FormGroup>();
   controlName = input.required<string>();
   controlLabel = input.required<string>();
-  errors = input<FieldError[]>([]);
   placeholder = input<string>('');
+  errors = input<FieldError[]>([]);
 
   protected errorMessage = computed(() => {
     const errors = this.errors();

@@ -7,13 +7,19 @@
       controlLabel="Activity Name"
       placeholder="Name your activity..."
       [errors]="nameErrors" />
-    <div class="grid grid-cols-[10fr_12fr_10fr] gap-4">
+    <div class="mt-3 grid grid-cols-[10fr_13fr_9fr] gap-4">
       <ck-field-timepicker [form]="form" controlName="duration" pickerInterval="5m" controlLabel="Duration" />
-      <ck-field-template-color />
+      <ck-field-color [form]="form" controlName="color" controlLabel="Color" [defaultColor]="defaultActivityColor" />
       <div></div>
     </div>
     <ck-field-template-actions [formControlName]="'actions'" />
-    <ck-field-template-description />
+    <div class="mt-3 grid-grid-cols-1">
+      <ck-field-textarea
+        [form]="form"
+        controlName="description"
+        controlLabel="Description"
+        placeholder="Add a description here..." />
+    </div>
     <div class="mt-3 grid grid-cols-[1fr_1fr] gap-4">
       <ck-field-text [form]="form" controlName="startMessage" controlLabel="Start message" />
       <ck-field-text [form]="form" controlName="endMessage" controlLabel="End message" />

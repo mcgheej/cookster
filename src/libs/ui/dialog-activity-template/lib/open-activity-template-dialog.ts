@@ -9,7 +9,7 @@ export function openActivityTemplateDialog(
   return dialog.open(ActivityTemplateDialog, {
     width: '600px',
     maxHeight: '100vh',
-    height: '755px',
+    height: '765px',
     data: template,
   });
 }

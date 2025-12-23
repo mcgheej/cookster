@@ -10,7 +10,7 @@ export function openPlanPropertiesDialog(
     width: '600px',
     maxWidth: '800px',
     maxHeight: '100vh',
-    height: data.id ? '525px' : '600px',
+    height: data.id ? '500px' : '575px',
     data,
   });
 }

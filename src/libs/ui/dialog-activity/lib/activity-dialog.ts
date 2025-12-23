@@ -4,11 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { ActivityDB, Plan } from '@util/data-types/index';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldColor } from './fields/field-color';
 import { FieldResource } from './fields/field-resource';
-import { FieldDescription } from './fields/field-description';
 import { FieldActions } from './fields/field-actions/field-actions';
-import { FieldError, FieldText, FieldTimepicker } from '@ui/shared-components/index';
+import { FieldColor, FieldError, FieldText, FieldTextarea, FieldTimepicker } from '@ui/shared-components/index';
+import { DEFAULT_ACTIVITY_COLOR } from '@util/app-config/index';
 
 export interface ActivityDialogData {
   plan: Plan;
@@ -21,12 +20,12 @@ export interface ActivityDialogData {
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    FieldColor,
     FieldResource,
     FieldActions,
-    FieldDescription,
     FieldTimepicker,
     FieldText,
+    FieldTextarea,
+    FieldColor,
   ],
   templateUrl: './activity-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +39,8 @@ export class ActivityDialog implements OnInit {
   protected readonly form = this.formService.form;
 
   protected readonly nameErrors: FieldError[] = [{ errorName: 'required', errorString: 'Name is required' }] as const;
+
+  protected defaultActivityColor = DEFAULT_ACTIVITY_COLOR;
 
   // Lifecyle methods
   // ----------------

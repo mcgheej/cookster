@@ -4,10 +4,9 @@ import { ActivityTemplateDB } from '@util/data-types/index';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldTemplateColor } from './fields/field-template-color';
 import { FieldTemplateActions } from './fields/field-template-actions/field-template-actions';
-import { FieldTemplateDescription } from './fields/field-template-description';
-import { FieldError, FieldText, FieldTimepicker } from '@ui/shared-components/index';
+import { FieldColor, FieldError, FieldText, FieldTextarea, FieldTimepicker } from '@ui/shared-components/index';
+import { DEFAULT_ACTIVITY_COLOR } from '@util/app-config/index';
 
 @Component({
   selector: 'ck-activity-template-dialog',
@@ -15,11 +14,11 @@ import { FieldError, FieldText, FieldTimepicker } from '@ui/shared-components/in
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    FieldTemplateColor,
     FieldTemplateActions,
-    FieldTemplateDescription,
     FieldTimepicker,
     FieldText,
+    FieldTextarea,
+    FieldColor,
   ],
   templateUrl: './activity-template-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +32,8 @@ export class ActivityTemplateDialog implements OnInit {
   protected readonly form = this.formService.form;
 
   protected readonly nameErrors: FieldError[] = [{ errorName: 'required', errorString: 'Name is required' }] as const;
+
+  protected readonly defaultActivityColor = DEFAULT_ACTIVITY_COLOR;
 
   // Lifecyle methods
   // ----------------

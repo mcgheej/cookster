@@ -16,13 +16,19 @@
     </div>
     <div class="mt-3 grid grid-cols-[10fr_6fr] gap-4">
       <ck-field-resource />
-      <ck-field-color />
+      <ck-field-color [form]="form" controlName="color" controlLabel="Color" [defaultColor]="defaultActivityColor" />
     </div>
     <ck-field-actions
       [activity]="formService.formActivity()"
       [plan]="formService.plan()"
       [formControlName]="'actions'" />
-    <ck-field-description />
+    <div class="mt-3 grid grid-cols-1">
+      <ck-field-textarea
+        [form]="form"
+        controlName="description"
+        controlLabel="Description"
+        placeholder="Add a description here..." />
+    </div>
     <div class="mt-3 grid grid-cols-[1fr_1fr] gap-4">
       <ck-field-text [form]="form" controlName="startMessage" controlLabel="Start message" />
       <ck-field-text [form]="form" controlName="endMessage" controlLabel="End message" />
