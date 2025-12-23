@@ -1,15 +1,14 @@
-
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { PlanProperties } from '@util/data-types/index';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldName } from './field-name';
 import { MatButtonModule } from '@angular/material/button';
-import { FieldDate } from './field-date';
-import { FieldKitchen } from './field-kitchen';
-import { FieldDescription } from './field-description';
-import { FieldPlanColor } from './field-plan-color';
+import { FieldDate } from './fields/field-date';
+import { FieldKitchen } from './fields/field-kitchen';
+import { FieldDescription } from './fields/field-description';
+import { FieldPlanColor } from './fields/field-plan-color';
 import { PlanPropertiesFormService } from './plan-properties-form-service';
+import { FieldError, FieldText } from '@ui/shared-components/index';
 
 @Component({
   selector: 'ck-plan-properties-dialog',
@@ -17,18 +16,23 @@ import { PlanPropertiesFormService } from './plan-properties-form-service';
     MatButtonModule,
     MatDialogModule,
     ReactiveFormsModule,
-    FieldName,
     FieldDate,
     FieldPlanColor,
     FieldKitchen,
-    FieldDescription
-],
+    FieldDescription,
+    FieldText,
+  ],
   template: `
     <h2 mat-dialog-title>{{ planProperties.id ? 'Edit Plan Properties' : 'Create Plan Properties' }}</h2>
     <form [formGroup]="form" (ngSubmit)="saveProperties()">
-      <div class="p-4">
-        <ck-field-name></ck-field-name>
-        <div class="grid grid-cols-[10fr_6fr] gap-4">
+      <div class="mt-[3px] px-6">
+        <ck-field-text
+          [form]="form"
+          controlName="name"
+          controlLabel="Plan Name"
+          placeholder="Name your plan..."
+          [errors]="nameErrors" />
+        <div class="mt-3 grid grid-cols-[10fr_6fr] gap-4">
           <ck-field-date></ck-field-date>
           <ck-plan-field-color></ck-plan-field-color>
         </div>
@@ -57,6 +61,8 @@ export class PlanPropertiesDialog implements OnInit {
   protected readonly planProperties: PlanProperties = inject(MAT_DIALOG_DATA);
 
   protected form = this.formService.form;
+
+  protected readonly nameErrors: FieldError[] = [{ errorName: 'required', errorString: 'Name is required' }] as const;
 
   ngOnInit() {
     this.formService.initialise(this.planProperties);

@@ -8,16 +8,12 @@
         [errors]="[{ errorName: 'invalidActionTime', errorString: 'Action time outside valid period' }]" />
     </div>
     <div class="mt-3 w-full grid grid-cols-1">
-      <mat-form-field class="mat-headline-5" floatLabel="auto">
-        <mat-label>Activity Name</mat-label>
-        <input type="text" matInput [formControlName]="'name'" placeholder="Name your activity..." />
-        @if (form.get('name')?.invalid && form.get('name')?.touched) {
-          <mat-error>Name is required</mat-error>
-        }
-        @if (form.get('name')?.invalid && !form.get('name')?.touched) {
-          <mat-hint>The activity must have a name</mat-hint>
-        }
-      </mat-form-field>
+      <ck-field-text
+        [form]="form"
+        controlName="name"
+        controlLabel="Resource Action Name"
+        placeholder="Name your action..."
+        [errors]="nameErrors"></ck-field-text>
     </div>
   </div>
   <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">

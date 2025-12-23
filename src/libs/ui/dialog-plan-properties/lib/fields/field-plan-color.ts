@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { opaqueColor } from '@util/color-utilities/index';
-import { FIELD_PLAN_COLOR, PlanPropertiesFormService } from './plan-properties-form-service';
+import { FIELD_PLAN_COLOR, PlanPropertiesFormService } from '../plan-properties-form-service';
 
 @Component({
   selector: 'ck-plan-field-color',

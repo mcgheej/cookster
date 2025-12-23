@@ -4,9 +4,7 @@ import { Plan, ResourceAction } from '@util/data-types/index';
 import { ResourceActionFormService } from './resource-action-form-service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FieldTimepicker } from '@ui/shared-components/index';
+import { FieldError, FieldText, FieldTimepicker } from '@ui/shared-components/index';
 
 export interface ResourceActionDialogData {
   plan: Plan;
@@ -17,7 +15,7 @@ export type ResourceActionDialogResult = { operation: 'save'; action: ResourceAc
 
 @Component({
   selector: 'ck-resource-action-dialog',
-  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, FieldTimepicker],
+  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, FieldTimepicker, FieldText],
   templateUrl: './resource-action-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ResourceActionFormService],
@@ -28,6 +26,8 @@ export class ResourceActionDialog implements OnInit {
   private readonly data: ResourceActionDialogData = inject(MAT_DIALOG_DATA);
 
   protected readonly form = this.formService.form;
+
+  protected readonly nameErrors: FieldError[] = [{ errorName: 'required', errorString: 'Name is required' }] as const;
 
   // Lifecyle methods
   // ----------------

@@ -94,29 +94,30 @@ export class SelectedActivityPanelService {
     if (!selectedActivity || !plan) {
       return;
     }
-    const dialogRef = openActivityDialog({ activity: selectedActivity, plan: plan }, this.dialog);
-    dialogRef.afterClosed().subscribe((newActivity) => {
-      if (newActivity) {
-        // check if new activity location exceeds max parallel activities for the resource lane in question
-        const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
-        if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
-          this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
-            duration: DEFAULT_SNACKBAR_DURATION,
-          });
-        } else {
-          const { id, ...activityUpdates } = newActivity;
-          this.plansData.updateActivity(id, activityUpdates).subscribe({
-            next: () => {
-              this.snackBar.open('Activity updated', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-            },
-            error: (err) => {
-              console.error('Error updating activity', err);
-              this.snackBar.open('Error updating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-            },
-          });
+    openActivityDialog({ activity: selectedActivity, plan: plan }, this.dialog)
+      .afterClosed()
+      .subscribe((newActivity) => {
+        if (newActivity) {
+          // check if new activity location exceeds max parallel activities for the resource lane in question
+          const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
+          if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
+            this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
+              duration: DEFAULT_SNACKBAR_DURATION,
+            });
+          } else {
+            const { id, ...activityUpdates } = newActivity;
+            this.plansData.updateActivity(id, activityUpdates).subscribe({
+              next: () => {
+                this.snackBar.open('Activity updated', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+              },
+              error: (err) => {
+                console.error('Error updating activity', err);
+                this.snackBar.open('Error updating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+              },
+            });
+          }
         }
-      }
-    });
+      });
   }
 
   createTemplateFromActivity(activity: ActivityDB) {

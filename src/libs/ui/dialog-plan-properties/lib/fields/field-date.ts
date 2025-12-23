@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FIELD_DATE, FIELD_TIME, PlanPropertiesFormService } from './plan-properties-form-service';
+import { FIELD_DATE, FIELD_TIME, PlanPropertiesFormService } from '../plan-properties-form-service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

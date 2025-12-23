@@ -112,28 +112,29 @@ export class LaneColumnService {
 
   private createActivity(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): void {
     const newActivity = this.createActivityInstance(minutesSinceMidnight, resourceLane, plan);
-    const dialogRef = openActivityDialog({ activity: newActivity, plan: plan }, this.dialog);
-    dialogRef.afterClosed().subscribe((newActivity) => {
-      if (newActivity) {
-        // check if new activity location exceeds max parallel activities for the resource lane in question
-        const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
-        if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
-          this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
-            duration: DEFAULT_SNACKBAR_DURATION,
-          });
-        } else {
-          this.plansData.createActivity(newActivity).subscribe({
-            next: () => {
-              this.snackBar.open('Activity created', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-            },
-            error: (err) => {
-              console.error('Error creating activity', err);
-              this.snackBar.open('Error creating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-            },
-          });
+    openActivityDialog({ activity: newActivity, plan: plan }, this.dialog)
+      .afterClosed()
+      .subscribe((newActivity) => {
+        if (newActivity) {
+          // check if new activity location exceeds max parallel activities for the resource lane in question
+          const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
+          if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
+            this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
+              duration: DEFAULT_SNACKBAR_DURATION,
+            });
+          } else {
+            this.plansData.createActivity(newActivity).subscribe({
+              next: () => {
+                this.snackBar.open('Activity created', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+              },
+              error: (err) => {
+                console.error('Error creating activity', err);
+                this.snackBar.open('Error creating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
+              },
+            });
+          }
         }
-      }
-    });
+      });
   }
 
   private createActivityInstance(minutesSinceMidnight: number, resourceLane: ResourceLane, plan: Plan): ActivityDB {
