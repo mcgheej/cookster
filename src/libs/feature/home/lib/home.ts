@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ck-home',
-  template: ` <div>Home page under construction - v1.0.5</div> `,
+  template: ` <div>Home page under construction - v1.0.6</div> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {}
