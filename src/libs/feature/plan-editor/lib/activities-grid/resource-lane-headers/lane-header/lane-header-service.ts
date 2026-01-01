@@ -15,14 +15,12 @@ export class LaneHeaderService {
   private readonly plansData = inject(PlansDataService);
 
   createNewResourceAction(plan: Plan, resourceLane: ResourceLane, actionTime: Date): void {
-    console.log('Creating new resource action at time:', actionTime);
     if (compareAsc(actionTime, plan.properties.endTime) > 0) {
       this.snackBar.open('Can not create action beyond the end of the plan.', 'Close', {
         duration: DEFAULT_SNACKBAR_DURATION,
       });
       return;
     }
-    console.log('Opening dialog to create new resource action...', actionTime);
     this.dialog
       .open<GenericInputDialog, GenericInputDialogData, string | undefined>(GenericInputDialog, {
         data: {
@@ -41,7 +39,6 @@ export class LaneHeaderService {
             getMinutesSinceMidnight(plan.properties.endTime) - getMinutesSinceMidnight(actionTime)
           );
           const newAction: ResourceAction = { name: result, timeOffset };
-          console.log('Creating new resource action at time:', actionTime, result, timeOffset);
           const newPlan = addResourceActionToPlan(plan, resourceLane, newAction);
           this.plansData
             .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })

@@ -86,7 +86,10 @@ export class ResourceActionTilesService {
     actionIndex: number,
     modifiedResourceAction: ResourceAction
   ): void {
-    if (modifiedResourceAction.timeOffset === resourceLane.kitchenResource.actions[actionIndex].timeOffset) {
+    if (
+      modifiedResourceAction.timeOffset === resourceLane.kitchenResource.actions[actionIndex].timeOffset &&
+      modifiedResourceAction.name === resourceLane.kitchenResource.actions[actionIndex].name
+    ) {
       return;
     }
     if (modifiedResourceAction.timeOffset < 0) {

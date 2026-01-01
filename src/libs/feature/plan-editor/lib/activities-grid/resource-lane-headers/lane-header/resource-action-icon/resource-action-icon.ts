@@ -32,7 +32,6 @@ export class ResourceActionIcon {
 
   onDragEnd(dragResult: DragResult | undefined): void {
     if (dragResult) {
-      console.log('Drag result for new resource action:', dragResult);
       this.newResourceActionTime.emit((dragResult as DragNewResourceActionResult).time);
     }
   }

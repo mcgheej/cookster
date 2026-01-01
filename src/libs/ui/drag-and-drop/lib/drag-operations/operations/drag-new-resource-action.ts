@@ -73,7 +73,6 @@ export class DragNewResourceAction extends DragOperation implements DragNewResou
     let time: Date | undefined = undefined;
     if (this.previewComponent === PreviewNewActionInResourceLaneColumn && this.lastDropArea && this.plan) {
       time = (props.overlayService.attachedComponentRef?.instance as PreviewNewActionInResourceLaneColumn).actionTime;
-      console.log('time for new resource action:', time);
       if (time && isAfter(time, this.plan.properties.endTime)) {
         time = this.plan.properties.endTime;
       }

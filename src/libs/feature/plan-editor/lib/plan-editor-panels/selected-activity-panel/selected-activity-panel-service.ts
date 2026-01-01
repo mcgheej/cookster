@@ -163,7 +163,7 @@ export class SelectedActivityPanelService {
   private doCreateTemplateFromActivity(activity: ActivityDB) {
     const { startTimeOffset, planId, resourceIndex, ...activityTemplate } = { ...activity, id: '' };
     this.templatesData.createActivityTemplate(activityTemplate).subscribe({
-      next: (createdTemplate) => {
+      next: () => {
         this.snackBar.open('Activity template created', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
       },
       error: (error) => {
