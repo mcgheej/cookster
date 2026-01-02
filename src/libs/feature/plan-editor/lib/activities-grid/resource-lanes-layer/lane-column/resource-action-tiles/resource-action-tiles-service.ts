@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, InputSignal, Signal } from '@angular/core';
+import { computed, inject, Injectable, InputSignal, signal, Signal } from '@angular/core';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
 import { DEFAULT_SNACKBAR_DURATION, RESOURCE_ACTION_COMPONENT_HEIGHT } from '@util/app-config/index';
 import {
@@ -22,6 +22,8 @@ export class ResourceActionTilesService {
   private readonly planEditorData = inject(PlanEditorDataService);
 
   plan = this.planEditorData.currentPlan;
+
+  resourceActionDeleteInProgress = signal<{ resourceIndex: number; actionIndex: number } | null>(null);
 
   // Computed Signal Factories
   // -------------------------
@@ -63,6 +65,7 @@ export class ResourceActionTilesService {
   // --------------
 
   deleteResourceAction(plan: Plan, resourceLane: ResourceLane, actionIndex: number): void {
+    this.resourceActionDeleteInProgress.set({ resourceIndex: resourceLane.kitchenResource.index, actionIndex });
     this.snackBar
       .openFromComponent(SnackConfirmDelete, {
         duration: 0,
@@ -71,6 +74,7 @@ export class ResourceActionTilesService {
       .onAction()
       .subscribe({
         next: () => this.doDeleteResourceAction(plan, resourceLane, actionIndex),
+        complete: () => this.resourceActionDeleteInProgress.set(null),
       });
   }
 
@@ -118,11 +122,13 @@ export class ResourceActionTilesService {
       .updatePlanProperties(plan.properties.id, { kitchenResources: newPlan.properties.kitchenResources })
       .subscribe({
         next: () => {
+          this.resourceActionDeleteInProgress.set(null);
           this.snackBar.open('Resource action deleted.', 'Close', {
             duration: DEFAULT_SNACKBAR_DURATION,
           });
         },
         error: (error) => {
+          this.resourceActionDeleteInProgress.set(null);
           this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
           console.error('Error deleting resource action', error);
         },

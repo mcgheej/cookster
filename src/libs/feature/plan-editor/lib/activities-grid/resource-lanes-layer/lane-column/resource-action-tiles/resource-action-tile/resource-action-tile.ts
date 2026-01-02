@@ -22,12 +22,25 @@ export class ResourceActionTile {
   resourceLane = input.required<ResourceLane>();
   plan = input.required<Plan | null>();
   tile = input.required<ActionDisplayTile>();
+  deleteInProgress = input<{ resourceIndex: number; actionIndex: number } | null>(null);
 
   deleteResourceAction = output<void>();
   updateResourceActionTime = output<Date>();
   updateResourceAction = output<ResourceAction>();
 
   protected showElement = signal<'visible' | 'hidden'>('visible');
+
+  protected backgroundColor = computed(() => {
+    const deleteInProgress = this.deleteInProgress();
+    if (
+      deleteInProgress &&
+      deleteInProgress.resourceIndex === this.resourceLane().kitchenResource.index &&
+      deleteInProgress.actionIndex === this.tile().index
+    ) {
+      return 'var(--mat-sys-error-container)';
+    }
+    return 'transparent';
+  });
 
   protected readonly dragOperation = computed(() => {
     const id = `drag-move-resource-action-lane-${this.resourceLane().kitchenResource.index}`;

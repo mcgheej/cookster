@@ -13,6 +13,7 @@ import { ResourceActionTile } from './resource-action-tile/resource-action-tile'
         [resourceLane]="resourceLane()"
         [plan]="plan()"
         [tile]="actionTile"
+        [deleteInProgress]="service.resourceActionDeleteInProgress()"
         (deleteResourceAction)="deleteResourceAction(actionTile)"
         (updateResourceActionTime)="updateResourceActionTime(actionTile, $event)"
         (updateResourceAction)="updateResourceAction(actionTile, $event)" />

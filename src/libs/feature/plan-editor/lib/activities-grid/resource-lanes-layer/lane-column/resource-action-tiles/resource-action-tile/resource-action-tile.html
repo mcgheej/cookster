@@ -1,5 +1,8 @@
 <!-- <div>{{ 'Action: ' + tile().resourceAction.name }}</div> -->
-<div class="grid grid-cols-1 absolute left-0 w-full" [style.top.px]="tile().yPx">
+<div
+  class="grid grid-cols-1 absolute left-0 w-full"
+  [style.top.px]="tile().yPx"
+  [style.backgroundColor]="backgroundColor()">
   <div
     class="row-start-1 row-end-2 col-start-1 col-end-1 grid grid-cols-[1fr_1fr_16px]"
     [style.gridTemplateRows]="componentHeight">
