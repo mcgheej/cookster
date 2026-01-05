@@ -9,6 +9,7 @@ interface AppSettings {
   planEndTethered: boolean;
   flashAlarmCancelButton: boolean;
   alarmVolume: number;
+  showActivityDurationOnHover: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -35,6 +36,8 @@ export class AppSettingsService {
         flashAlarmCancelButton:
           LocalStorage.getItem<boolean>(`cookster.${currentPlanId}.flashAlarmCancelButton`, true) || true,
         alarmVolume: LocalStorage.getItem<number>(`cookster.${currentPlanId}.alarmVolume`, 10) || 10,
+        showActivityDurationOnHover:
+          LocalStorage.getItem<boolean>(`cookster.${currentPlanId}.showActivityDurationOnHover`, false) || false,
       } as AppSettings;
     },
   });
@@ -89,6 +92,16 @@ export class AppSettingsService {
     }
   );
 
+  readonly showActivityDurationOnHover = computed(
+    () => {
+      const settings = this.settings();
+      return settings.showActivityDurationOnHover;
+    },
+    {
+      equal: (a, b) => a === b,
+    }
+  );
+
   setTimeSnapMins(planId: string, timeSpanMins: number): void {
     LocalStorage.setItem<number>(`cookster.${planId}.timeSpanMins`, timeSpanMins);
     this.settings.update((settings) => ({ ...settings, timeSpanMins }));
@@ -114,13 +127,19 @@ export class AppSettingsService {
     this.settings.update((settings) => ({ ...settings, alarmVolume: volume }));
   }
 
+  setShowActivityDurationOnHover(planId: string, show: boolean): void {
+    LocalStorage.setItem<boolean>(`cookster.${planId}.showActivityDurationOnHover`, show);
+    this.settings.update((settings) => ({ ...settings, showActivityDurationOnHover: show }));
+  }
+
   private settingsEqual(a: AppSettings, b: AppSettings): boolean {
     return (
       a.timeSpanMins === b.timeSpanMins &&
       a.pixelsPerHour === b.pixelsPerHour &&
       a.planEndTethered === b.planEndTethered &&
       a.flashAlarmCancelButton === b.flashAlarmCancelButton &&
-      a.alarmVolume === b.alarmVolume
+      a.alarmVolume === b.alarmVolume &&
+      a.showActivityDurationOnHover === b.showActivityDurationOnHover
     );
   }
 }

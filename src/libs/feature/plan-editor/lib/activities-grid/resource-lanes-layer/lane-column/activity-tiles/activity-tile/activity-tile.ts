@@ -54,7 +54,21 @@ export class ActivityTile {
   protected startEndTimes = computed(() => {
     const startTime = this.timeFromMidnightToString(this.tile().startMinsFromMidnight);
     const endTime = this.timeFromMidnightToString(this.tile().endMinsFromMidnight);
-    return this.tile().activity.name + ': ' + startTime + ' - ' + endTime;
+    const durationMins = this.tile().activity.duration;
+    const duration = this.planEditorData.showActivityDurationOnHover()
+      ? ' (' +
+        Math.floor(durationMins / 60)
+          .toString()
+          .padStart(2, '0') +
+        ':' +
+        (durationMins % 60).toString().padStart(2, '0') +
+        ')'
+      : '';
+    // const hours = Math.floor(durationMins / 60)
+    //   .toString()
+    //   .padStart(2, '0');
+    // const minutes = (durationMins % 60).toString().padStart(2, '0');
+    return this.tile().activity.name + ': ' + startTime + ' - ' + endTime + duration;
   });
 
   protected showElement = signal<'visible' | 'hidden'>('visible');

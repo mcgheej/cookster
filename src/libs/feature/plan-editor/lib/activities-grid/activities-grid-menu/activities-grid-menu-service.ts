@@ -16,6 +16,7 @@ export class ActivitiesGridMenuService {
   private readonly plansData = inject(PlansDataService);
 
   private readonly planEndTethered = this.planEditorData.activitiesGridPlanEndTethered;
+  private readonly showActivityDurationOnHover = this.planEditorData.showActivityDurationOnHover;
   private readonly laneController = this.planEditorData.laneController;
   // private readonly timeWindow = this.editorData.activitiesGridTimeWindow;
 
@@ -27,6 +28,10 @@ export class ActivitiesGridMenuService {
 
   togglePlanEndTethered() {
     this.planEditorData.setActivitiesGridPlanEndTethered(!this.planEndTethered());
+  }
+
+  toggleShowActivityDurationOnHover() {
+    this.planEditorData.setShowActivityDurationOnHover(!this.showActivityDurationOnHover());
   }
 
   setLaneWidths(optionValue: string) {

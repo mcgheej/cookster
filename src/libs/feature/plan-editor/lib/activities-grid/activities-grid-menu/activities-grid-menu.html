@@ -35,9 +35,14 @@
       <mat-icon class="rotate-90">compare_arrows</mat-icon>
       <span>Time snap...</span>
     </button>
+    <mat-divider [style.margin]="0"></mat-divider>
     <button mat-menu-item (click)="service.togglePlanEndTethered()">
-      <mat-icon>{{ planEndTethered() ? 'lock_open' : 'lock_outline' }}</mat-icon>
-      <span>{{ planEndTethered() ? 'Untether plan end' : 'Tether plan end' }}</span>
+      <mat-icon>{{ planEndTethered() ? 'done' : '' }}</mat-icon>
+      <span>Plan end tethered</span>
+    </button>
+    <button mat-menu-item (click)="service.toggleShowActivityDurationOnHover()">
+      <mat-icon>{{ showActivityDurationOnHover() ? 'done' : '' }}</mat-icon>
+      <span>Show activity durations on hover</span>
     </button>
     <mat-divider [style.margin]="0"></mat-divider>
     <button mat-menu-item [disabled]="true">

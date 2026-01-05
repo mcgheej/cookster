@@ -171,6 +171,12 @@ export class PlanEditorDataService {
   readonly timeSnapMins = this.appSettings.timeSnapMins;
 
   /**
+   * showActivityDurationOnHover
+   * -----------------------------
+   */
+  readonly showActivityDurationOnHover = this.appSettings.showActivityDurationOnHover;
+
+  /**
    * activitiesGridPixelsPerHour
    * ---------------------------
    */
@@ -241,6 +247,15 @@ export class PlanEditorDataService {
    */
   setActivitiesGridPlanEndTethered(value: boolean) {
     this.appSettings.setPlanEndTethered(this.currentPlan()?.properties.id || '', value);
+  }
+
+  /**
+   * Control whether the plan end is tethered to the plan activities and resource actions.
+   *
+   * @param value
+   */
+  setShowActivityDurationOnHover(value: boolean) {
+    this.appSettings.setShowActivityDurationOnHover(this.currentPlan()?.properties.id || '', value);
   }
 
   /**

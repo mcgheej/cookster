@@ -23,6 +23,7 @@ export class ActivitiesGridMenu {
   protected readonly service = inject(ActivitiesGridMenuService);
 
   protected readonly planEndTethered = this.planEditorData.activitiesGridPlanEndTethered;
+  protected readonly showActivityDurationOnHover = this.planEditorData.showActivityDurationOnHover;
   private readonly laneController = this.planEditorData.laneController;
 
   protected readonly gridMenuData = computed(() => {
