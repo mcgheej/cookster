@@ -20,6 +20,7 @@ import { PlanSummary } from '@util/data-types/index';
         <ck-plan-detail
           [planSummary]="planSummary()"
           (openPlanEditor)="openPlanEditor.emit()"
+          (editPlanProperties)="editPlanProperties.emit()"
           (copyPlan)="copyPlan.emit()"
           (deletePlan)="deletePlan.emit()"
           (runAlarms)="runAlarms.emit()" />
@@ -33,6 +34,7 @@ export class PlansListRow {
   readonly expandedPlanId = input.required<string>();
   protected readonly toggleExpand = output<void>();
   protected readonly openPlanEditor = output<void>();
+  protected readonly editPlanProperties = output<void>();
   protected readonly copyPlan = output<void>();
   protected readonly deletePlan = output<void>();
   protected readonly runAlarms = output<void>();

@@ -14,6 +14,7 @@ import { PlansList } from './plans-list';
             [planSummaries]="planSummaries"
             (addPlan)="service.addPlan()"
             (openPlanEditor)="service.openPlanEditor($event)"
+            (editPlanProperties)="service.editPlanProperties($event)"
             (copyPlan)="service.copyPlan($event)"
             (deletePlan)="service.deletePlan($event)"
             (runAlarms)="service.runAlarms($event)"></ck-plans-list>

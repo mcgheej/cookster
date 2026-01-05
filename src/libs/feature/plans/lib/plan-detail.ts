@@ -18,13 +18,20 @@ import { isToday } from 'date-fns';
         <div class="border border-gray-300 w-full min-h-[30px] max-h-[75px] overflow-auto">
           <div class="pl-1 pr-1 select-none">{{ planSummary().description }}</div>
         </div>
-        <div class="mt-2 grid grid-cols-[50px_50px_50px_1fr]">
+        <div class="mt-2 grid grid-cols-[50px_50px_50px_50px_1fr]">
           <button
             matIconButton
             [matTooltipShowDelay]="tooltipShowDelay"
             matTooltip="open plan editor"
             (click)="openPlanEditorClick($event)">
             <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            matIconButton
+            [matTooltipShowDelay]="tooltipShowDelay"
+            matTooltip="edit plan properties"
+            (click)="editPlanPropertiesClick($event)">
+            <mat-icon>edit_attributes</mat-icon>
           </button>
           <button
             matIconButton
@@ -58,6 +65,7 @@ import { isToday } from 'date-fns';
 export class PlanDetail {
   readonly planSummary = input.required<PlanSummary>();
   protected readonly openPlanEditor = output<void>();
+  protected readonly editPlanProperties = output<void>();
   protected readonly copyPlan = output<void>();
   protected readonly deletePlan = output<void>();
   protected readonly runAlarms = output<void>();
@@ -72,6 +80,11 @@ export class PlanDetail {
   protected openPlanEditorClick(ev: MouseEvent): void {
     ev.stopPropagation();
     this.openPlanEditor.emit();
+  }
+
+  protected editPlanPropertiesClick(ev: MouseEvent): void {
+    ev.stopPropagation();
+    this.editPlanProperties.emit();
   }
 
   protected copyPlanClick(ev: MouseEvent): void {

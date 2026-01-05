@@ -12,7 +12,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
   template: `
     <div class="my-0 mx-auto w-[80%] text-base sm:w-[600px] grid grid-cols-[1fr] grid-rows-[auto,_auto] pt-2">
       @if (planSummaries().length > 0) {
-        <div class="w-full grid grid-cols-[1fr_75px] h-14 font-semibold border-b-2 border-slate-400">
+        <div class="w-full grid grid-cols-[1fr_75px] h-10 font-semibold border-b-2 border-slate-400">
           <div class="flex items-center">Name</div>
           <div class="flex items-center justify-end">Date</div>
         </div>
@@ -22,6 +22,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
               [planSummary]="planSummary"
               [expandedPlanId]="expandedPlanSummaryId"
               (openPlanEditor)="openPlanEditorClick(planSummary)"
+              (editPlanProperties)="editPlanPropertiesClick(planSummary)"
               (copyPlan)="copyPlanClick(planSummary)"
               (deletePlan)="deletePlanClick(planSummary)"
               (runAlarms)="runAlarmsClick(planSummary)"
@@ -51,6 +52,7 @@ export class PlansList {
   readonly planSummaries = input.required<PlanSummary[]>();
   protected readonly addPlan = output<void>();
   protected readonly openPlanEditor = output<PlanSummary>();
+  protected readonly editPlanProperties = output<PlanSummary>();
   protected readonly copyPlan = output<PlanSummary>();
   protected readonly deletePlan = output<PlanSummary>();
   protected readonly runAlarms = output<PlanSummary>();
@@ -66,6 +68,11 @@ export class PlansList {
   protected openPlanEditorClick(planSummary: PlanSummary) {
     this.expandedPlanSummaryId = '';
     this.openPlanEditor.emit(planSummary);
+  }
+
+  protected editPlanPropertiesClick(planSummary: PlanSummary) {
+    this.expandedPlanSummaryId = '';
+    this.editPlanProperties.emit(planSummary);
   }
 
   protected copyPlanClick(planSummary: PlanSummary) {

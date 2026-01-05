@@ -11,7 +11,13 @@ import {
   DEFAULT_TIME_WINDOW,
   INITIAL_PLAN_DURATION_MINS,
 } from '@util/app-config/index';
-import { createPlanDB, createPlanFactory, PlanProperties, PlanSummary } from '@util/data-types/index';
+import {
+  createPlanDB,
+  createPlanFactory,
+  createPlanPropertiesFromPlanSummary,
+  PlanProperties,
+  PlanSummary,
+} from '@util/data-types/index';
 import { getDateToLastHour } from '@util/date-utilities/index';
 import { subMinutes } from 'date-fns';
 
@@ -60,6 +66,24 @@ export class PlansService {
 
   openPlanEditor(planSummary: PlanSummary) {
     this.router.navigateByUrl(`/plans/editor/${planSummary.id}`);
+  }
+
+  editPlanProperties(planSummary: PlanSummary) {
+    openPlanPropertiesDialog(createPlanPropertiesFromPlanSummary(planSummary), this.dialog)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.plansData.updatePlanProperties(planSummary.id, result).subscribe({
+            next: () => {
+              this.snackBar.open('Plan updated', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+            },
+            error: (error) => {
+              this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+              console.error('Error creating plan', error);
+            },
+          });
+        }
+      });
   }
 
   copyPlan(planSummary: PlanSummary) {
