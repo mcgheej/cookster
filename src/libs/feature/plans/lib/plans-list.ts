@@ -21,7 +21,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
             <ck-plans-list-row
               [planSummary]="planSummary"
               [expandedPlanId]="expandedPlanSummaryId"
-              (editPlan)="editPlanClick(planSummary)"
+              (openPlanEditor)="openPlanEditorClick(planSummary)"
               (copyPlan)="copyPlanClick(planSummary)"
               (deletePlan)="deletePlanClick(planSummary)"
               (runAlarms)="runAlarmsClick(planSummary)"
@@ -50,7 +50,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
 export class PlansList {
   readonly planSummaries = input.required<PlanSummary[]>();
   protected readonly addPlan = output<void>();
-  protected readonly editPlan = output<PlanSummary>();
+  protected readonly openPlanEditor = output<PlanSummary>();
   protected readonly copyPlan = output<PlanSummary>();
   protected readonly deletePlan = output<PlanSummary>();
   protected readonly runAlarms = output<PlanSummary>();
@@ -63,9 +63,9 @@ export class PlansList {
     this.addPlan.emit();
   }
 
-  protected editPlanClick(planSummary: PlanSummary) {
+  protected openPlanEditorClick(planSummary: PlanSummary) {
     this.expandedPlanSummaryId = '';
-    this.editPlan.emit(planSummary);
+    this.openPlanEditor.emit(planSummary);
   }
 
   protected copyPlanClick(planSummary: PlanSummary) {

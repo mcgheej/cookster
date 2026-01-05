@@ -22,8 +22,8 @@ import { isToday } from 'date-fns';
           <button
             matIconButton
             [matTooltipShowDelay]="tooltipShowDelay"
-            matTooltip="edit plan"
-            (click)="editPlanClick($event)">
+            matTooltip="open plan editor"
+            (click)="openPlanEditorClick($event)">
             <mat-icon>edit</mat-icon>
           </button>
           <button
@@ -57,7 +57,7 @@ import { isToday } from 'date-fns';
 })
 export class PlanDetail {
   readonly planSummary = input.required<PlanSummary>();
-  protected readonly editPlan = output<void>();
+  protected readonly openPlanEditor = output<void>();
   protected readonly copyPlan = output<void>();
   protected readonly deletePlan = output<void>();
   protected readonly runAlarms = output<void>();
@@ -69,9 +69,9 @@ export class PlanDetail {
 
   protected readonly tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
-  protected editPlanClick(ev: MouseEvent): void {
+  protected openPlanEditorClick(ev: MouseEvent): void {
     ev.stopPropagation();
-    this.editPlan.emit();
+    this.openPlanEditor.emit();
   }
 
   protected copyPlanClick(ev: MouseEvent): void {

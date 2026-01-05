@@ -13,7 +13,7 @@ import { PlansList } from './plans-list';
           <ck-plans-list
             [planSummaries]="planSummaries"
             (addPlan)="service.addPlan()"
-            (editPlan)="service.editPlan($event)"
+            (openPlanEditor)="service.openPlanEditor($event)"
             (copyPlan)="service.copyPlan($event)"
             (deletePlan)="service.deletePlan($event)"
             (runAlarms)="service.runAlarms($event)"></ck-plans-list>

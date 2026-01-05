@@ -58,7 +58,7 @@ export class PlansService {
       });
   }
 
-  editPlan(planSummary: PlanSummary) {
+  openPlanEditor(planSummary: PlanSummary) {
     this.router.navigateByUrl(`/plans/editor/${planSummary.id}`);
   }
 
