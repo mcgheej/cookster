@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DEFAULT_PLAN_COLOR } from '@util/app-config/index';
-import { FULL_TIME_WINDOW, Kitchen, PlanProperties } from '@util/data-types/index';
+import { FULL_TIME_WINDOW, Kitchen, PlanKitchenResource, PlanProperties, ResourceAction } from '@util/data-types/index';
 import { getDateToLastHour, isDifferentMinute } from '@util/date-utilities/index';
 import { set } from 'date-fns';
 
@@ -105,13 +105,13 @@ export class PlanPropertiesFormService {
       kitchenName: kitchen?.name || '',
       kitchenResources: [
         ...[{ index: 0, name: 'Workspace', description: '', maxParallelActivities: 6, actions: [] }],
-        ...(kitchen?.resourcesArray?.map((r, seq) => ({
+        ...((kitchen?.resourcesArray?.map((r, seq) => ({
           index: seq + 1,
           name: r.name,
           description: r.description,
           maxParallelActivities: r.maxParallelActivities,
-          actions: [],
-        })) || []),
+          actions: [] as ResourceAction[],
+        })) || []) as PlanKitchenResource[]),
       ],
     };
   }
