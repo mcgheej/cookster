@@ -20,9 +20,9 @@ export class AfKitchensService {
       shareReplay(1),
       map(([kitchensDB, kitchenResources]) => {
         const kitchens = new Map<string, Kitchen>(
-          kitchensDB.map((kitchenBD) => [
-            kitchenBD.id,
-            { ...kitchenBD, resources: new Map<string, KitchenResourceDB>(), resourcesArray: [] },
+          kitchensDB.map((kitchenDB) => [
+            kitchenDB.id,
+            { ...kitchenDB, resources: new Map<string, KitchenResourceDB>(), resourcesArray: [] },
           ])
         );
         kitchenResources.forEach((resource) => {

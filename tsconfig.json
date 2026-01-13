@@ -24,6 +24,7 @@
       "@data-access/templates/*": ["libs/data-access/templates/*"],
       "@feature/colors/*": ["libs/feature/colors/*"],
       "@feature/home/*": ["libs/feature/home/*"],
+      "@feature/kitchens/*": ["libs/feature/kitchens/*"],
       "@feature/login/*": ["libs/feature/login/*"],
       "@feature/page-not-found/*": ["libs/feature/page-not-found/*"],
       "@feature/plans/*": ["libs/feature/plans/*"],

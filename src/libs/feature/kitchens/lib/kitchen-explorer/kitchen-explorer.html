@@ -1,0 +1,12 @@
+<div class="size-full border-r">
+  @for (kitchen of kitchens(); track kitchen.id) {
+    <div>{{ kitchen.name }}</div>
+    <div class="ml-4">
+      <pre>{{ kitchen.hobSize | json }}</pre>
+      <pre>{{ kitchen.ovensSize | json }}</pre>
+    </div>
+    @for (resource of kitchen.resourcesArray; track resource.id) {
+      <div class="ml-4">{{ resource.name }}</div>
+    }
+  }
+</div>

@@ -16,6 +16,11 @@ export const navItems: NavbarItemProps[] = [
     loggedInRequired: true,
   },
   {
+    title: 'Kitchens',
+    url: '/kitchens',
+    loggedInRequired: true,
+  },
+  {
     title: 'Login',
     url: '/login',
     loggedInRequired: false,

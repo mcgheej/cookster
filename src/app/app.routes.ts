@@ -31,5 +31,10 @@ export const routes: Routes = [
     loadComponent: () => import('@feature/plans/index').then((m) => m.Plans),
     canActivate: [authGuard('/login')],
   },
+  {
+    path: 'kitchens',
+    loadComponent: () => import('@feature/kitchens/index').then((m) => m.Kitchens),
+    canActivate: [authGuard('/login')],
+  },
   { path: '**', loadComponent: () => import('@feature/page-not-found/index').then((m) => m.PageNotFound) },
 ];
