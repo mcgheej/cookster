@@ -1,6 +1,16 @@
-<div class="size-full grid grid-cols-[minmax(0,_ 1fr)] grid-rows-[minmax(0,_ 1fr)]">
-  <div class="self-center justify-self-center">
-    <div class="relative m-8 w-[800px] h-[400px]">
+<div
+  class="size-full min-w-[600px] grid grid-cols-[minmax(0,_ 1fr)] grid-rows-[minmax(0,_ 1fr)]"
+  (tfxResizeObserver)="onResize($event)">
+  <!-- <div class="self-center justify-self-center"> -->
+  <ck-hob-container
+    class="self-center justify-self-center"
+    [widthPx]="hobContainerSizePx().width"
+    [heightPx]="hobContainerSizePx().height" />
+  <!-- <div
+      class="border border-[var(--mat-sys-secondary-fixed)]"
+      [style.width]="hobContainerSizePx().width"
+      [style.height]="hobContainerSizePx().height"></div> -->
+  <!-- <div class="relative m-8 w-[800px] h-[400px]">
       <div class="absolute border left-[0%] top-[0%] w-[100%] h-[100%] border-[var(--mat-sys-secondary-fixed)]"></div>
       <div class="absolute border left-[0%] top-[0%] w-[25%] h-[50%] border-[red]"></div>
       <div class="absolute border left-[25%] top-[0%] w-[25%] h-[50%] border-[red]"></div>
@@ -9,6 +19,6 @@
       <div class="absolute border left-[0%] top-[50%] w-[25%] h-[50%] border-[red]"></div>
       <div class="absolute border left-[25%] top-[50%] w-[25%] h-[50%] border-[red]"></div>
       <div class="absolute border left-[75%] top-[60%] w-[25%] h-[40%] border-[red]"></div>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 </div>

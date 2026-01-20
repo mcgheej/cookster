@@ -1,0 +1,13 @@
+Kitchens Component Tree
+=======================
+
+KitchensComponent
+  |
+  +-- KitchenExplorer
+  |
+  +-- KitchenEditor
+        |
+        +-- KitchenDiagram
+        |
+        +-- ResourceForm
+        
