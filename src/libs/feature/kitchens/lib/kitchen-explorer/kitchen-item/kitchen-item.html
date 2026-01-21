@@ -1,0 +1,6 @@
+<div class="cursor-pointer my-1" (click)="setCurrentKitchen(kitchenItem())">
+  <div class="select-none">{{ kitchenItem().name }}</div>
+  @if (isCurrentKitchen()) {
+  <ck-kitchen-item-detail [kitchen]="kitchenItem()" />
+  }
+</div>

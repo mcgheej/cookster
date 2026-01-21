@@ -1,16 +1,13 @@
-<!-- @for (kitchen of kitchens(); track kitchen.id) {
-  <div>{{ kitchen.name }}</div>
-}
-<div class="relative m-8 w-[800px] h-[500px] box-border border">
-  <div class="absolute border left-[0%] top-[0%] w-[25%] h-[50%] border-[red]"></div>
-  <div class="absolute border left-[25%] top-[0%] w-[25%] h-[50%] border-[red]"></div>
-  <div class="absolute border left-[50%] top-[0%] w-[25%] h-[100%] border-[red]"></div>
-  <div class="absolute border left-[75%] top-[0%] w-[25%] h-[65%] border-[red]"></div>
-  <div class="absolute border left-[0%] top-[50%] w-[25%] h-[50%] border-[red]"></div>
-  <div class="absolute border left-[25%] top-[50%] w-[25%] h-[50%] border-[red]"></div>
-  <div class="absolute border left-[75%] top-[65%] w-[25%] h-[35%] border-[red]"></div>
-</div> -->
-<div class="size-full grid grid-cols-[300px_minmax(0,_1fr)]">
+<div class="size-full grid grid-cols-[300px_minmax(0,_1fr)] grid-rows-1">
   <ck-kitchen-explorer />
-  <ck-kitchen-editor />
+  <ck-kitchen-form />
+</div>
+<div class="fixed bottom-6 right-6">
+  <button
+    mat-mini-fab
+    [matTooltipShowDelay]="tooltipShowDelay"
+    matTooltip="add new kitchen"
+    (click)="addKitchen($event)">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

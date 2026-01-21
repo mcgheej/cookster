@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'ck-resource-pallete',
-  imports: [],
-  templateUrl: './resource-pallete.html',
+  selector: 'ck-kitchen-form',
+  templateUrl: './kitchen-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResourcePallete {}
+export class KitchenForm {}
