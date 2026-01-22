@@ -8,7 +8,7 @@ import { PlansList } from './plans-list';
   imports: [CommonModule, PlansList],
   template: `
     <div class="size-full overflow-auto">
-      <div class="py-4 mx-auto w-[768px] grid grid-rows-[auto_minmax(0,_1fr)]">
+      <div class="py-4 mx-auto w-3xl grid grid-rows-[auto_minmax(0,1fr)]">
         @if (service.planSummaries$ | async; as planSummaries) {
           <ck-plans-list
             [planSummaries]="planSummaries"

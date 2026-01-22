@@ -1,1 +1,5 @@
-<div>KitchenForm works!</div>
+@if (currentKitchen(); as kitchen) {
+<div class="py-4 mx-auto w-lg">
+  <pre>{{ kitchen | json }}</pre>
+</div>
+}

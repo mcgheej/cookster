@@ -19,6 +19,8 @@ export class Kitchens {
   private readonly kitchensService = inject(KitchensService);
 
   protected readonly kitchens = this.kitchensService.kitchens;
+  protected readonly currentKitchen = this.kitchensService.currentKitchen;
+
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected addKitchen(ev: MouseEvent): void {

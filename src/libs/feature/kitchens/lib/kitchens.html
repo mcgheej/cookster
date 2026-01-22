@@ -1,6 +1,8 @@
-<div class="size-full grid grid-cols-[300px_minmax(0,_1fr)] grid-rows-1">
+<div class="size-full grid grid-cols-[300px_minmax(0,1fr)] grid-rows-1">
   <ck-kitchen-explorer />
-  <ck-kitchen-form />
+  <div class="overflow-auto">
+    <ck-kitchen-form [currentKitchen]="currentKitchen()" />
+  </div>
 </div>
 <div class="fixed bottom-6 right-6">
   <button
