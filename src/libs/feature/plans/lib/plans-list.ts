@@ -10,7 +10,7 @@ import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/lib/constants';
   selector: 'ck-plans-list',
   imports: [MatButtonModule, MatIconModule, MatTooltipModule, PlansListRow],
   template: `
-    <div class="my-0 mx-auto w-[80%] text-base sm:w-[600px] grid grid-cols-[1fr] grid-rows-[auto,_auto] pt-2">
+    <div class="my-0 mx-auto w-[80%] text-base sm:w-150 grid grid-cols-[1fr] grid-rows-[auto,auto] pt-2">
       @if (planSummaries().length > 0) {
         <div class="w-full grid grid-cols-[1fr_75px] h-10 font-semibold border-b-2 border-slate-400">
           <div class="flex items-center">Name</div>

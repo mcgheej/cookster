@@ -1,14 +1,14 @@
 <!-- 32px = ACTIVITIES_GRID_HEADER_HEIGHT -->
-<div class="size-full grid grid-cols-1 bg-[var(--mat-sys-surface)] grid-rows-[32px_minmax(0,_1fr)]">
+<div class="size-full grid grid-cols-1 bg-(--mat-sys-surface) grid-rows-[32px_minmax(0,1fr)]">
   <!-- 48px = ACTIVITIES_GRID_TIME_COLUMN_WIDTH -->
-  <div class="grid border-b-2 divider-dark overflow-hidden grid-cols-[48px_minmax(0,_1fr)]">
+  <div class="grid border-b-2 divider-dark overflow-hidden grid-cols-[48px_minmax(0,1fr)]">
     <ck-activities-grid-menu />
     <div class="bg-[var(--mat-sys-surface)">
       <ck-resource-lane-headers />
     </div>
   </div>
   <!-- 48px = ACTIVITIES_GRID_TIME_COLUMN_WIDTH -->
-  <div class="grid grid-rows-1 grid-cols-[48px_minmax(0,_1fr)]">
+  <div class="grid grid-rows-1 grid-cols-[48px_minmax(0,1fr)]">
     <ck-time-labels [hoursInGrid]="hoursInGrid()" />
     <div class="overflow-auto relative" (scroll)="onScroll($event)" (tfxResizeObserver)="onResize($event)">
       <ck-time-grid-layer [hoursInGrid]="hoursInGrid()" />

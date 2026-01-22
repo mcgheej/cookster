@@ -1,7 +1,7 @@
 <div [ngStyle]="tile().styles" (click)="activityClicked($event)">
   <div class="size-full">
     <div
-      class="text-left text-xs px-1 text-[var(--mat-sys-on-surface)] overflow-hidden select-none grid grid-cols-[max-content_max-content]">
+      class="text-left text-xs px-1 text-(--mat-sys-on-surface) overflow-hidden select-none grid grid-cols-[max-content_max-content]">
       <mat-icon
         [class]="tile().activity.actions.length > 0 && showElement() === 'visible' ? 'visible' : 'invisible'"
         [style.fontSize.px]="12"
@@ -22,31 +22,31 @@
   </div>
 </div>
 @if (tile().activity.id === selectedActivityId()) {
-  <div
-    [ckDrag]="dragDurationOperation()"
-    class="absolute h-[6px] w-[24px] z-20"
-    [ngStyle]="getResizeHandleStyles()"
-    matTooltip="drag to change duration"
-    [matTooltipShowDelay]="showDelay"
-    matTooltipPosition="above"
-    (ckDragStarted)="onDragDurationStart()"
-    (ckDragEnded)="onDragDurationEnd($event)"></div>
-  <div
-    [ckDrag]="dragActivityOperation()"
-    (ckDragStarted)="onDragActivityStart()"
-    (ckDragEnded)="onDragActivityEnd($event)"
-    class="absolute h-[16px] w-[16px] z-20"
-    [ngStyle]="getMoveHandleStyles()"
-    matTooltip="drag to move activity"
-    [matTooltipShowDelay]="showDelay"
-    matTooltipPosition="above">
-    <mat-icon
-      [style.fontSize.px]="16"
-      [style.height.px]="16"
-      [style.width.px]="16"
-      [style.marginTop.px]="2"
-      [style.marginRight.px]="2"
-      >open_with</mat-icon
-    >
-  </div>
+<div
+  [ckDrag]="dragDurationOperation()"
+  class="absolute h-1.5 w-6 z-20"
+  [ngStyle]="getResizeHandleStyles()"
+  matTooltip="drag to change duration"
+  [matTooltipShowDelay]="showDelay"
+  matTooltipPosition="above"
+  (ckDragStarted)="onDragDurationStart()"
+  (ckDragEnded)="onDragDurationEnd($event)"></div>
+<div
+  [ckDrag]="dragActivityOperation()"
+  (ckDragStarted)="onDragActivityStart()"
+  (ckDragEnded)="onDragActivityEnd($event)"
+  class="absolute h-4 w-4 z-20"
+  [ngStyle]="getMoveHandleStyles()"
+  matTooltip="drag to move activity"
+  [matTooltipShowDelay]="showDelay"
+  matTooltipPosition="above">
+  <mat-icon
+    [style.fontSize.px]="16"
+    [style.height.px]="16"
+    [style.width.px]="16"
+    [style.marginTop.px]="2"
+    [style.marginRight.px]="2"
+    >open_with</mat-icon
+  >
+</div>
 }

@@ -13,7 +13,7 @@ import { Plan, ResourceLane } from '@util/data-types/index';
 
 @Component({
   selector: 'ck-resource-action-icon',
-  host: { class: 'grid grid-cols-[minmax(0,_1fr)]' },
+  host: { class: 'grid grid-cols-[minmax(0,1fr)]' },
   imports: [MatIconModule, MatTooltipModule, CkDrag],
   templateUrl: './resource-action-icon.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

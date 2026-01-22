@@ -5,7 +5,7 @@ import { DragMoveResourceAction } from '../../drag-operations/operations/drag-mo
 @Component({
   selector: 'ck-preview-move-action-in-resource-header',
   template: `<div
-    class="fixed bg-[var(--mat-sys-error-container)] text-[var(--mat-sys-error-on-error-container)] grid grid-cols-1"
+    class="fixed bg-(--mat-sys-error-container) text-(--mat-sys-error-on-error-container) grid grid-cols-1"
     [style.top.px]="vm().top"
     [style.left.px]="vm().left"
     [style.width.px]="vm().width"

@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { navItems } from './navbar-props';
@@ -8,7 +7,7 @@ import { navItems } from './navbar-props';
   imports: [RouterModule],
   template: `
     <nav
-      class="flex flex-wrap items-center w-full py-0 px-4 text-xl font-medium text-[var(--mat-sys-on-primary)] bg-[var(--mat-sys-primary)]">
+      class="flex flex-wrap items-center w-full py-0 px-4 text-xl font-medium text-(--mat-sys-on-primary) bg-(--mat-sys-primary)">
       <a class="mt-1" routerLink="/home">Cookster</a>
       <span class="block flex-auto"></span>
       <ul class="flex text-base justify-between pt-0">
@@ -16,7 +15,7 @@ import { navItems } from './navbar-props';
           <li>
             @if (loggedIn() === navItem.loggedInRequired) {
               <a
-                class="px-4 py-2 block hover:text-[var(--mat-sys-inverse-primary)]"
+                class="px-4 py-2 block hover:text-(--mat-sys-inverse-primary)"
                 [routerLink]="navItem.url"
                 routerLinkActive="active-link"
                 >{{ navItem.title }}</a
@@ -27,7 +26,7 @@ import { navItems } from './navbar-props';
         @if (loggedIn()) {
           <li>
             <div
-              class="px-4 py-2 block hover:text-[var(--mat-sys-inverse-primary)] cursor-pointer select-none box-border"
+              class="px-4 py-2 block hover:text-(--mat-sys-inverse-primary) cursor-pointer select-none box-border"
               (click)="logout.emit()">
               Logout
             </div>

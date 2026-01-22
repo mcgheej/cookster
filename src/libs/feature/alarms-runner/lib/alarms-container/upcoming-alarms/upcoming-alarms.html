@@ -1,8 +1,8 @@
 @for (alarm of upcomingAlarms(); track $index) {
-  <div class="my-2 grid grid-cols-[100px_minmax(0,_1fr)] gap-1">
-    <div></div>
-    <div class="w-[95%] min-h-[30px] box-border border-[1px] border-[var(--mat-sys-secondary-fixed)]">
-      <ck-alarm-group-component [alarmGroup]="alarm.group" />
-    </div>
+<div class="my-2 grid grid-cols-[100px_minmax(0,1fr)] gap-1">
+  <div></div>
+  <div class="w-[95%] min-h-7.5 box-border border border-(--mat-sys-secondary-fixed)">
+    <ck-alarm-group-component [alarmGroup]="alarm.group" />
   </div>
+</div>
 }

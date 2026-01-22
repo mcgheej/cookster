@@ -9,7 +9,7 @@ import { PlansDataService } from '@data-access/plans/index';
   selector: 'ck-shell',
   imports: [RouterOutlet, NavBar],
   template: `
-    <div class="size-full grid grid-rows-[auto_minmax(0,_1fr)]">
+    <div class="size-full grid grid-rows-[auto_minmax(0,1fr)]">
       <ck-navbar [loggedIn]="loggedIn()" (logout)="logout()"></ck-navbar>
       <main class="size-full">
         <router-outlet></router-outlet>

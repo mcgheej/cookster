@@ -1,17 +1,17 @@
-<div class="bg-[var(--mat-sys-surface)] h-full w-[75px] grid grid-cols-[minmax(0,_1fr)_auto]">
+<div class="bg-(--mat-sys-surface) h-full w-18.75 grid grid-cols-[minmax(0,1fr)_auto]">
   <div class="size-full grid auto-rows-min py-0.5">
     @for (button of selectorButtons(); track $index) {
-      <div class="px-2">
-        <div [class]="buttonStyles()[$index]" (click)="panelSelectorClick.emit($index)">
-          <mat-icon class="justify-self-center primary-color">{{ button.iconName }}</mat-icon>
-          <div class="justify-self-center text-xs mt-0.5 select-none">{{ button.name }}</div>
-        </div>
-        @if (!$last) {
-          <div class="my-1.5">
-            <mat-divider></mat-divider>
-          </div>
-        }
+    <div class="px-2">
+      <div [class]="buttonStyles()[$index]" (click)="panelSelectorClick.emit($index)">
+        <mat-icon class="justify-self-center primary-color">{{ button.iconName }}</mat-icon>
+        <div class="justify-self-center text-xs mt-0.5 select-none">{{ button.name }}</div>
       </div>
+      @if (!$last) {
+      <div class="my-1.5">
+        <mat-divider></mat-divider>
+      </div>
+      }
+    </div>
     }
   </div>
   <mat-divider class="divider-dark" [vertical]="true"></mat-divider>

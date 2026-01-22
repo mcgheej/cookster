@@ -1,23 +1,23 @@
 <div
-  class="h-full bg-[var(--mat-sys-surface-container)] text-[var(--mat-sys-on-surface)] text-sm grid grid-flow-col auto-cols-max">
+  class="h-full bg-(--mat-sys-surface-container) text-(--mat-sys-on-surface) text-sm grid grid-flow-col auto-cols-max">
   @if (plan(); as plan) {
-    <div class="px-2 self-center select-none">{{ plan.properties.name }}</div>
-    <div class="h-[75%] self-center">
-      <mat-divider [vertical]="true" class="h-full"></mat-divider>
-    </div>
-    <div class="px-2 self-center select-none">{{ format(plan.properties.endTime, 'd MMM yyyy, HH:mm') }}</div>
-    <div class="h-[75%] self-center">
-      <mat-divider [vertical]="true" class="h-full"></mat-divider>
-    </div>
-    <div
-      class="px-2 self-center select-none cursor-pointer"
-      matTooltip="open time snap dialog"
-      [matTooltipShowDelay]="defaultTooltipShowDelay"
-      (click)="timeSnapChangeRequest.emit()">
-      Time Snap: {{ timeSnap() }} mins
-    </div>
-    <div class="h-[75%] self-center">
-      <mat-divider [vertical]="true" class="h-full"></mat-divider>
-    </div>
+  <div class="px-2 self-center select-none">{{ plan.properties.name }}</div>
+  <div class="h-[75%] self-center">
+    <mat-divider [vertical]="true" class="h-full"></mat-divider>
+  </div>
+  <div class="px-2 self-center select-none">{{ format(plan.properties.endTime, 'd MMM yyyy, HH:mm') }}</div>
+  <div class="h-[75%] self-center">
+    <mat-divider [vertical]="true" class="h-full"></mat-divider>
+  </div>
+  <div
+    class="px-2 self-center select-none cursor-pointer"
+    matTooltip="open time snap dialog"
+    [matTooltipShowDelay]="defaultTooltipShowDelay"
+    (click)="timeSnapChangeRequest.emit()">
+    Time Snap: {{ timeSnap() }} mins
+  </div>
+  <div class="h-[75%] self-center">
+    <mat-divider [vertical]="true" class="h-full"></mat-divider>
+  </div>
   }
 </div>

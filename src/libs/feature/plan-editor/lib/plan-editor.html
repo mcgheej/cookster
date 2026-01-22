@@ -1,15 +1,15 @@
 @if (currentPlan()) {
-  <div class="size-full grid grid-rows-[minmax(0,_1fr)_auto] grid-cols-1">
-    <div class="size-full grid grid-cols-[auto_minmax(0,_1fr)] grid-rows-1">
-      <ck-multi-panel [selectorButtons]="selectorButtons" [openPanel]="openPanel()" />
-      <div class="grid grid-rows-1 grid-cols-1">
-        <ck-activities-grid />
-      </div>
-    </div>
-    <!-- 32px = STATUS_BAR_HEIGHT -->
-    <div class="h-[32px] w-full grid grid-rows-[auto_minmax(0,_1fr)]">
-      <mat-divider class="divider-dark" />
-      <ck-status-bar [plan]="currentPlan()" [timeSnap]="timeSnap()" (timeSnapChangeRequest)="openTimeSnapDialog()" />
+<div class="size-full grid grid-rows-[minmax(0,1fr)_auto] grid-cols-1">
+  <div class="size-full grid grid-cols-[auto_minmax(0,1fr)] grid-rows-1">
+    <ck-multi-panel [selectorButtons]="selectorButtons" [openPanel]="openPanel()" />
+    <div class="grid grid-rows-1 grid-cols-1">
+      <ck-activities-grid />
     </div>
   </div>
+  <!-- 32px = STATUS_BAR_HEIGHT -->
+  <div class="h-8 w-full grid grid-rows-[auto_minmax(0,1fr)]">
+    <mat-divider class="divider-dark" />
+    <ck-status-bar [plan]="currentPlan()" [timeSnap]="timeSnap()" (timeSnapChangeRequest)="openTimeSnapDialog()" />
+  </div>
+</div>
 }

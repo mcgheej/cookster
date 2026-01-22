@@ -1,17 +1,17 @@
 <div class="size-full overflow-hidden">
   <div class="grid grid-cols-1 border-b-2 divider-dark" [style.translate]="scrollY()">
     @for (label of hoursInGrid(); track $index) {
-      <!-- 40px = ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH , 8px = ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH -->
-      <div class="grid grid-cols-[40px_8px]">
-        <div
-          class="self-start justify-self-end mt-[-9px] mr-[4px] text-[10px] cursor-default select-none text-[var(--mat-sys-on-surface-variant)]">
-          {{ $first ? '' : label }}
-        </div>
-        <div
-          class="box-border w-full border-r-2 divider-dark"
-          [style.height.px]="pixelsPerHour()"
-          [ngStyle]="!$first ? { 'border-top': '1px solid var(--mat-sys-outline-variant)' } : {}"></div>
+    <!-- 40px = ACTIVITIES_GRID_TIME_COLUMN_LABEL_WIDTH , 8px = ACTIVITIES_GRID_TIME_COLUMN_TICK_LENGTH -->
+    <div class="grid grid-cols-[40px_8px]">
+      <div
+        class="self-start justify-self-end -mt-2.25 mr-1 text-[10px] cursor-default select-none text-(--mat-sys-on-surface-variant)">
+        {{ $first ? '' : label }}
       </div>
+      <div
+        class="box-border w-full border-r-2 divider-dark"
+        [style.height.px]="pixelsPerHour()"
+        [ngStyle]="!$first ? { 'border-top': '1px solid var(--mat-sys-outline-variant)' } : {}"></div>
+    </div>
     }
   </div>
 </div>

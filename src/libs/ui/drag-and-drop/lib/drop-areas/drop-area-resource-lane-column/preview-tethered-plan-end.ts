@@ -20,10 +20,10 @@ import { format } from 'date-fns';
           [style.height.px]="vm.shadowRect.height"
           [style.clipPath]="vm.clipPath"></div>
         <div
-          class="bg-[var(--mat-sys-primary)]"
+          class="bg-(--mat-sys-primary)"
           [style.height.px]="planEndBarHeight"
           [style.width.px]="vm.shadowRect.width"></div>
-        <div class="h-[16px] pl-1 text-gray-700 text-xs select-none">{{ vm.planEndString }}</div>
+        <div class="h-4 pl-1 text-gray-700 text-xs select-none">{{ vm.planEndString }}</div>
       </div>
     }
   `,

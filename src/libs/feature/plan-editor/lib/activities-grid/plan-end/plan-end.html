@@ -1,38 +1,36 @@
 @if (planEndY(); as planEndY) {
-  <div
-    [ckDrag]="dragOperation()"
-    (ckDragStarted)="onDragStart()"
-    (ckDragEnded)="onDragEnd($event)"
-    class="absolute left-0"
-    [style.top.px]="planEndY">
-    <div [style.height.px]="planEndBarHeight" [style.width.px]="activitiesGridWidth()">
-      <div class="size-full bg-[var(--mat-sys-primary)]"></div>
-    </div>
+<div
+  [ckDrag]="dragOperation()"
+  (ckDragStarted)="onDragStart()"
+  (ckDragEnded)="onDragEnd($event)"
+  class="absolute left-0"
+  [style.top.px]="planEndY">
+  <div [style.height.px]="planEndBarHeight" [style.width.px]="activitiesGridWidth()">
+    <div class="size-full bg-(--mat-sys-primary)"></div>
   </div>
-  @if (planEndTethered()) {
-    <div class="absolute left-1 cursor-pointer" [style.top.px]="planEndY" (click)="setPlanEndTethered(false)">
-      <mat-icon
-        [matTooltipShowDelay]="1000"
-        matTooltip="Plan end tethered"
-        matTooltipPosition="above"
-        [style.fontSize.px]="10"
-        [style.height.px]="10"
-        [style.width.px]="10"
-        >lock_outline</mat-icon
-      >
-    </div>
-  }
-  @if (!planEndTethered()) {
-    <div
-      class="absolute left-1 cursor-pointer"
-      [style.top.px]="planEndY"
-      [matTooltipShowDelay]="1000"
-      matTooltipPosition="above"
-      matTooltip="Plan end untethered"
-      (click)="setPlanEndTethered(true)">
-      <span [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10" class="material-symbols-outlined"
-        >no_encryption</span
-      >
-    </div>
-  }
-}
+</div>
+@if (planEndTethered()) {
+<div class="absolute left-1 cursor-pointer" [style.top.px]="planEndY" (click)="setPlanEndTethered(false)">
+  <mat-icon
+    [matTooltipShowDelay]="1000"
+    matTooltip="Plan end tethered"
+    matTooltipPosition="above"
+    [style.fontSize.px]="10"
+    [style.height.px]="10"
+    [style.width.px]="10"
+    >lock_outline</mat-icon
+  >
+</div>
+} @if (!planEndTethered()) {
+<div
+  class="absolute left-1 cursor-pointer"
+  [style.top.px]="planEndY"
+  [matTooltipShowDelay]="1000"
+  matTooltipPosition="above"
+  matTooltip="Plan end untethered"
+  (click)="setPlanEndTethered(true)">
+  <span [style.fontSize.px]="10" [style.height.px]="10" [style.width.px]="10" class="material-symbols-outlined"
+    >no_encryption</span
+  >
+</div>
+} }

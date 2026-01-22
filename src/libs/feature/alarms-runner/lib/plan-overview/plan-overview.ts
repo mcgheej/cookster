@@ -12,24 +12,24 @@ import { format } from 'date-fns';
   imports: [MatButtonModule, MatIconModule, MatTooltipModule],
   template: `
     @if (currentPlan(); as plan) {
-      <div class="h-full grid grid-rows-[minmax(0,_1fr)_auto] grid-cols-1">
+      <div class="h-full grid grid-rows-[minmax(0,1fr)_auto] grid-cols-1">
         <div>
           <div class="ml-1">
-            <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="planColor()"></div>
+            <div class="inline-block size-2.5 rounded-[50%]" [style.backgroundColor]="planColor()"></div>
             <div class="inline-block pl-1 pt-2 font-bold text-sm select-none">Plan:</div>
           </div>
-          <div class="pl-[18px] text-sm select-none">{{ plan.properties.name }}</div>
-          <div class="pl-[18px] pt-2 font-bold text-sm select-none">Date:</div>
-          <div class="pl-[18px] text-sm select-none">
+          <div class="pl-4.5 text-sm select-none">{{ plan.properties.name }}</div>
+          <div class="pl-4.5 pt-2 font-bold text-sm select-none">Date:</div>
+          <div class="pl-4.5 text-sm select-none">
             {{ format(plan.properties.endTime, 'EEE, do LLL, yyyy - HH:mm') }}
           </div>
-          <div class="pl-[18px] pt-2 font-bold text-sm select-none">Starting at:</div>
-          <div class="pl-[18px] text-sm select-none">{{ format(plan.properties.startTime, 'HH:mm') }}</div>
-          <div class="pl-[18px] pt-2 font-bold text-sm select-none">Description:</div>
-          <div class="ml-[13px] mt-1 border border-[var(--mat-sys-secondary-fixed)] w-[273px] h-[80px] overflow-auto">
+          <div class="pl-4.5 pt-2 font-bold text-sm select-none">Starting at:</div>
+          <div class="pl-4.5 text-sm select-none">{{ format(plan.properties.startTime, 'HH:mm') }}</div>
+          <div class="pl-4.5 pt-2 font-bold text-sm select-none">Description:</div>
+          <div class="ml-3.25 mt-1 border border-(--mat-sys-secondary-fixed) w-68.25 h-20 overflow-auto">
             <div class="pl-1 pr-1 text-sm select-none">{{ plan.properties.description || 'No description' }}</div>
           </div>
-          <div class="pt-2 pl-[18px]">
+          <div class="pt-2 pl-4.5">
             <button
               matIconButton
               [matTooltipShowDelay]="tooltipShowDelay"
@@ -39,7 +39,7 @@ import { format } from 'date-fns';
             </button>
           </div>
         </div>
-        <div class="justify-self-center text-8xl mb-4 text-[var(--mat-sys-tertiary)]">
+        <div class="justify-self-center text-8xl mb-4 text-(--mat-sys-tertiary)">
           {{ formattedTime() }}
         </div>
       </div>

@@ -1,69 +1,65 @@
 @if (vm(); as vm) {
-  <div [ngStyle]="vm.styles">
-    <div class="grid grid-rows-[1fr_auto] size-full text-left text-xs px-1 text-[var(--mat-sys-on-surface)]">
+<div [ngStyle]="vm.styles">
+  <div class="grid grid-rows-[1fr_auto] size-full text-left text-xs px-1 text-(--mat-sys-on-surface)">
+    <div class="size-full">
       <div class="size-full">
-        <div class="size-full">
-          <div class="overflow-hidden select-none grid grid-cols-[max-content_max-content]">
-            <mat-icon
-              [class]="vm.actionsPresent ? 'visible' : 'invisible'"
-              [style.fontSize.px]="12"
-              [style.height.px]="12"
-              [style.width.px]="12"
-              [style.marginTop.px]="2"
-              [style.marginRight.px]="2"
-              >electric_bolt</mat-icon
-            >
-            <div class="overflow-hidden">
-              {{ vm.name }}
-            </div>
-          </div>
+        <div class="overflow-hidden select-none grid grid-cols-[max-content_max-content]">
+          <mat-icon
+            [class]="vm.actionsPresent ? 'visible' : 'invisible'"
+            [style.fontSize.px]="12"
+            [style.height.px]="12"
+            [style.width.px]="12"
+            [style.marginTop.px]="2"
+            [style.marginRight.px]="2"
+            >electric_bolt</mat-icon
+          >
+          <div class="overflow-hidden">{{ vm.name }}</div>
         </div>
       </div>
-      <div class="px-1 overflow-hidden select-none">{{ vm.newStartTime }}</div>
     </div>
+    <div class="px-1 overflow-hidden select-none">{{ vm.newStartTime }}</div>
   </div>
-  @if (vm.topEnvelopeWing) {
-    <div
-      class="fixed bg-[var(--mat-sys-on-surface)] pointer-events-none"
-      [style.boxSizing]="'border-box'"
-      [style.border]="vm.topEnvelopeWing.border"
-      [style.borderWidth.px]="1"
-      [style.clipPath]="vm.styles.clipPath"
-      [style.left.px]="vm.topEnvelopeWing.left"
-      [style.width.px]="1"
-      [style.height.px]="vm.topEnvelopeWing.height"
-      [style.top.px]="vm.topEnvelopeWing.top"></div>
-    <div
-      class="fixed bg-[var(--mat-sys-on-surface)] pointer-events-none"
-      [style.boxSizing]="'border-box'"
-      [style.border]="vm.topEnvelopeWing.border"
-      [style.borderWidth.px]="1"
-      [style.clipPath]="vm.styles.clipPath"
-      [style.left.px]="vm.topEnvelopeWing.left"
-      [style.width.px]="10"
-      [style.height.px]="1"
-      [style.top.px]="vm.topEnvelopeWing.top"></div>
-  }
-  @if (vm.bottomEnvelopeWing) {
-    <div
-      class="fixed bg-[var(--mat-sys-on-surface)] pointer-events-none"
-      [style.boxSizing]="'border-box'"
-      [style.border]="vm.bottomEnvelopeWing.border"
-      [style.borderWidth.px]="1"
-      [style.clipPath]="vm.styles.clipPath"
-      [style.left.px]="vm.bottomEnvelopeWing.left"
-      [style.width.px]="1"
-      [style.height.px]="vm.bottomEnvelopeWing.height"
-      [style.top.px]="vm.bottomEnvelopeWing.top"></div>
-    <div
-      class="fixed bg-[var(--mat-sys-on-surface)] pointer-events-none"
-      [style.boxSizing]="'border-box'"
-      [style.border]="vm.bottomEnvelopeWing.border"
-      [style.borderWidth.px]="1"
-      [style.clipPath]="vm.styles.clipPath"
-      [style.left.px]="vm.bottomEnvelopeWing.left"
-      [style.width.px]="10"
-      [style.height.px]="1"
-      [style.top.px]="vm.bottomEnvelopeWing.bottom"></div>
-  }
-}
+</div>
+@if (vm.topEnvelopeWing) {
+<div
+  class="fixed bg-(--mat-sys-on-surface) pointer-events-none"
+  [style.boxSizing]="'border-box'"
+  [style.border]="vm.topEnvelopeWing.border"
+  [style.borderWidth.px]="1"
+  [style.clipPath]="vm.styles.clipPath"
+  [style.left.px]="vm.topEnvelopeWing.left"
+  [style.width.px]="1"
+  [style.height.px]="vm.topEnvelopeWing.height"
+  [style.top.px]="vm.topEnvelopeWing.top"></div>
+<div
+  class="fixed bg-(--mat-sys-on-surface) pointer-events-none"
+  [style.boxSizing]="'border-box'"
+  [style.border]="vm.topEnvelopeWing.border"
+  [style.borderWidth.px]="1"
+  [style.clipPath]="vm.styles.clipPath"
+  [style.left.px]="vm.topEnvelopeWing.left"
+  [style.width.px]="10"
+  [style.height.px]="1"
+  [style.top.px]="vm.topEnvelopeWing.top"></div>
+} @if (vm.bottomEnvelopeWing) {
+<div
+  class="fixed bg-(--mat-sys-on-surface) pointer-events-none"
+  [style.boxSizing]="'border-box'"
+  [style.border]="vm.bottomEnvelopeWing.border"
+  [style.borderWidth.px]="1"
+  [style.clipPath]="vm.styles.clipPath"
+  [style.left.px]="vm.bottomEnvelopeWing.left"
+  [style.width.px]="1"
+  [style.height.px]="vm.bottomEnvelopeWing.height"
+  [style.top.px]="vm.bottomEnvelopeWing.top"></div>
+<div
+  class="fixed bg-(--mat-sys-on-surface) pointer-events-none"
+  [style.boxSizing]="'border-box'"
+  [style.border]="vm.bottomEnvelopeWing.border"
+  [style.borderWidth.px]="1"
+  [style.clipPath]="vm.styles.clipPath"
+  [style.left.px]="vm.bottomEnvelopeWing.left"
+  [style.width.px]="10"
+  [style.height.px]="1"
+  [style.top.px]="vm.bottomEnvelopeWing.bottom"></div>
+} }

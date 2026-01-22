@@ -1,58 +1,57 @@
-<div class="min-h-[75px] grid grid-rows-1 grid-cols-1">
+<div class="min-h-18.75 grid grid-rows-1 grid-cols-1">
   @if (soundingAlarms().length > 0) {
-    <div class="box-border grid grid-cols-[100px_minmax(0,_1fr)] gap-1">
-      <div class="justify-self-center mt-3">
-        <button [style.backgroundColor]="blink()()" matButton="filled" (click)="cancelAlarmClick()">Cancel</button>
-      </div>
-      <div class="mt-2 mb-2.5 w-full relative">
-        @if (soundingAlarms().length > 1) {
-          <div
-            class="absolute top-[4px] left-[4px] size-full w-[95%] box-border border-[1px] border-[var(--mat-sys-secondary-fixed)]"></div>
-        }
-        <div
-          class="absolute top-0 left-0 size-full w-[95%] box-border border-[1px] border-[var(--mat-sys-secondary-fixed)] bg-[var(--mat-sys-surface)]"
-          [matBadge]="soundingAlarms().length"
-          [matBadgeHidden]="soundingAlarms().length === 1">
-          <ck-alarm-group-component [alarmGroup]="soundingAlarms()[0].group" />
-        </div>
+  <div class="box-border grid grid-cols-[100px_minmax(0,1fr)] gap-1">
+    <div class="justify-self-center mt-3">
+      <button [style.backgroundColor]="blink()()" matButton="filled" (click)="cancelAlarmClick()">Cancel</button>
+    </div>
+    <div class="mt-2 mb-2.5 w-full relative">
+      @if (soundingAlarms().length > 1) {
+      <div class="absolute top-1 left-1 size-full w-[95%] box-border border border-(--mat-sys-secondary-fixed)"></div>
+      }
+      <div
+        class="absolute top-0 left-0 size-full w-[95%] box-border border border-(--mat-sys-secondary-fixed) bg-(--mat-sys-surface)"
+        [matBadge]="soundingAlarms().length"
+        [matBadgeHidden]="soundingAlarms().length === 1">
+        <ck-alarm-group-component [alarmGroup]="soundingAlarms()[0].group" />
       </div>
     </div>
+  </div>
   } @else {
-    <div class="justify-self-center self-center text-xl">No alarms sounding</div>
+  <div class="justify-self-center self-center text-xl">No alarms sounding</div>
   }
 </div>
 @if (soundingAlarms().length > 0) {
-  <div class="w-full h-[44px] relative grid grid-cols-[max-content_max-content_max-content_auto]">
-    <div class="ml-7 relative grid">
-      @if (blinkCancelButton() === false) {
-        <div
-          class="ml-3 row-start-1 row-end-2 col-start-1 col-end-2 text-3xl justify-self-center self-center"
-          [style.color]="'var(--mat-sys-primary)'">
-          \
-        </div>
-      }
-      <mat-icon
-        class="relative z-10 ml-3 cursor-pointer row-start-1 row-end-2 col-start-1 col-end-2 self-center"
-        [style.color]="'var(--mat-sys-primary)'"
-        [matTooltip]="blinkCancelButton() ? 'stop flash cancel button' : 'flash cancel button'"
-        matTooltipPosition="below"
-        [matTooltipShowDelay]="showTooltipDelay"
-        (click)="onBlinkToggle($event)"
-        >wb_iridescent</mat-icon
-      >
+<div class="w-full h-11 relative grid grid-cols-[max-content_max-content_max-content_auto]">
+  <div class="ml-7 relative grid">
+    @if (blinkCancelButton() === false) {
+    <div
+      class="ml-3 row-start-1 row-end-2 col-start-1 col-end-2 text-3xl justify-self-center self-center"
+      [style.color]="'var(--mat-sys-primary)'">
+      \
     </div>
+    }
     <mat-icon
-      class="relative z-10 ml-10 cursor-pointer self-center"
+      class="relative z-10 ml-3 cursor-pointer row-start-1 row-end-2 col-start-1 col-end-2 self-center"
       [style.color]="'var(--mat-sys-primary)'"
-      [matTooltip]="volume() === 0 ? 'unmute' : 'mute'"
+      [matTooltip]="blinkCancelButton() ? 'stop flash cancel button' : 'flash cancel button'"
       matTooltipPosition="below"
       [matTooltipShowDelay]="showTooltipDelay"
-      (click)="onMuteToggle($event)"
-      >{{ volume() === 0 || muted() ? 'volume_off' : 'volume_up' }}</mat-icon
+      (click)="onBlinkToggle($event)"
+      >wb_iridescent</mat-icon
     >
-    <mat-slider class="small no-highlight self-center" min="0" max="10" step="1">
-      <input matSliderThumb [value]="volume()" (input)="onVolumeChange($event)" #slider />
-    </mat-slider>
-    <div class="self-center">{{ slider.value }}</div>
   </div>
+  <mat-icon
+    class="relative z-10 ml-10 cursor-pointer self-center"
+    [style.color]="'var(--mat-sys-primary)'"
+    [matTooltip]="volume() === 0 ? 'unmute' : 'mute'"
+    matTooltipPosition="below"
+    [matTooltipShowDelay]="showTooltipDelay"
+    (click)="onMuteToggle($event)"
+    >{{ volume() === 0 || muted() ? 'volume_off' : 'volume_up' }}</mat-icon
+  >
+  <mat-slider class="small no-highlight self-center" min="0" max="10" step="1">
+    <input matSliderThumb [value]="volume()" (input)="onVolumeChange($event)" #slider />
+  </mat-slider>
+  <div class="self-center">{{ slider.value }}</div>
+</div>
 }

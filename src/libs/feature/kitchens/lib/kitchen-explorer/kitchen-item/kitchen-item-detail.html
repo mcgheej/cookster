@@ -3,12 +3,12 @@
   <div class="ml-2 text-[14px]">{{ resource.name }}</div>
   <div class="ml-6 text-[12px]">
     @if (resource.description !== resource.name) {
-    <div class="grid grid-cols-[10px_minmax(0,_1fr)]">
+    <div class="grid grid-cols-[10px_minmax(0,1fr)]">
       <div class="justify-self-center">-</div>
       <div>{{ resource.description }}</div>
     </div>
     }
-    <div class="grid grid-cols-[10px_minmax(0,_1fr)]">
+    <div class="grid grid-cols-[10px_minmax(0,1fr)]">
       <div class="justify-self-center">-</div>
       <div>{{ maxParallelActivities(resource.maxParallelActivities) }}</div>
     </div>

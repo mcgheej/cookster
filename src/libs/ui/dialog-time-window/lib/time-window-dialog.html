@@ -1,41 +1,39 @@
 <h2 mat-dialog-title>Time Window</h2>
 <!-- <div mat-dialog-content> -->
-<div class="relative text-xs w-[960px] h-[100px] m-[0_24px]">
+<div class="relative text-xs w-240 h-25 m-[0_24px]">
   <div
-    class="absolute cursor-pointer top-[20px] w-[960px] h-[30px] box-border bg-[var(--mat-sys-surface-dim)] border-1 border-[var(--mat-sys-primary)]"
+    class="absolute cursor-pointer top-5 w-240 h-7.5 box-border bg-(--mat-sys-surface-dim) border border-(--mat-sys-primary)"
     (click)="clickOnBarBackground($event)"></div>
   @for (t of timeslots; track $index) {
-    <div class="absolute top-0 text-center" [style.left.px]="t.leftPx" [style.width.px]="t.widthPx">{{ t.t }}</div>
+  <div class="absolute top-0 text-center" [style.left.px]="t.leftPx" [style.width.px]="t.widthPx">{{ t.t }}</div>
   }
   <div
-    class="absolute cursor-pointer top-[20px] h-[30px] bg-[var(--mat-sys-primary-container)] box-border border-1 border-[var(--mat-sys-primary)]"
+    class="absolute cursor-pointer top-5 h-7.5 bg-(--mat-sys-primary-container) box-border border border-(--mat-sys-primary)"
     [style.left.px]="timeWindowRegion().leftPx"
     [style.width.px]="timeWindowRegion().widthPx"
     (click)="clickOnTimeWindowBackground($event)"></div>
   <div
-    class="absolute top-[20px] h-[30px] bg-[var(--mat-sys-error-container)] box-border border-1 border-[var(--mat-sys-primary)]"
+    class="absolute top-5 h-7.5 bg-(--mat-sys-error-container) box-border border border-(--mat-sys-primary)"
     [style.left.px]="planWindowRegion().leftPx"
     [style.width.px]="planWindowRegion().widthPx"></div>
   @if (timeWindowRegion().widthPx > 72) {
-    <div
-      class="absolute top-[50px] h-[14px] w-[1px] bg-[var(--mat-sys-primary)]"
-      [style.left.px]="timeWindowRegion().leftPx"></div>
-    <div
-      class="absolute top-[50px] h-[14px] w-[1px] bg-[var(--mat-sys-primary)]"
-      [style.left.px]="timeWindowRegion().leftPx + timeWindowRegion().widthPx - 1"></div>
-    <div
-      class="absolute top-[57px] h-[1px] bg-[var(--mat-sys-primary)]"
-      [style.left.px]="timeWindowRegion().leftPx"
-      [style.width.px]="timeWindowRegion().widthPx"></div>
-    <div
-      class="absolute top-[50px] h-[14px] w-[72px] bg-[var(--mat-sys-surface)]"
-      [style.left.px]="timeWindowRegion().leftPx + timeWindowRegion().widthPx / 2 - 36"></div>
-    <div
-      class="absolute top-[50px] text-center text-[10px]"
-      [style.left.px]="timeWindowRegion().leftPx"
-      [style.width.px]="timeWindowRegion().widthPx">
-      Time Window
-    </div>
+  <div class="absolute top-12.5 h-3.5 w-px bg-(--mat-sys-primary)" [style.left.px]="timeWindowRegion().leftPx"></div>
+  <div
+    class="absolute top-12.5 h-3.5 w-px bg-(--mat-sys-primary)"
+    [style.left.px]="timeWindowRegion().leftPx + timeWindowRegion().widthPx - 1"></div>
+  <div
+    class="absolute top-14.25 h-px bg-(--mat-sys-primary)"
+    [style.left.px]="timeWindowRegion().leftPx"
+    [style.width.px]="timeWindowRegion().widthPx"></div>
+  <div
+    class="absolute top-12.5 h-3.5 w-18 bg-(--mat-sys-surface)"
+    [style.left.px]="timeWindowRegion().leftPx + timeWindowRegion().widthPx / 2 - 36"></div>
+  <div
+    class="absolute top-12.5 text-center text-[10px]"
+    [style.left.px]="timeWindowRegion().leftPx"
+    [style.width.px]="timeWindowRegion().widthPx">
+    Time Window
+  </div>
   }
 </div>
 <!-- </div> -->

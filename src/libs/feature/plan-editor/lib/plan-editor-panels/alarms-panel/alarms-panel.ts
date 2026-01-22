@@ -15,10 +15,10 @@ import { AlarmGroupComponent } from '@ui/shared-components/index';
   imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, AlarmGroupComponent],
   template: `
     <div class="ml-1">
-      <div class="inline-block size-[10px] rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
+      <div class="inline-block size-2.5 rounded-[50%]" [style.backgroundColor]="flairColor()"></div>
       <div class="inline-block pl-1 pt-2 font-bold text-sm select-none">Alarms:</div>
       @if (showRunAlarmsButton()) {
-        <div class="inline-block h-[10px] w-[50px] float-right text-[var(--mat-sys-primary)]">
+        <div class="inline-block h-2.5 w-12.5 float-right text-(--mat-sys-primary)">
           <button
             matIconButton
             [matTooltipShowDelay]="tooltipShowDelay"
@@ -32,7 +32,7 @@ import { AlarmGroupComponent } from '@ui/shared-components/index';
     @if (alarmGroups().length === 0) {
       <div>No alarms</div>
     } @else {
-      <div class="mt-1 ml-[18px]">
+      <div class="mt-1 ml-4.5">
         @for (alarmGroup of alarmGroups(); track $index; let isOdd = $odd) {
           <div class="mt-1">
             <ck-alarm-group-component [alarmGroup]="alarmGroup" [highlightOn]="isOdd" />
