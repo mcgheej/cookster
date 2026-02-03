@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
         <mat-label>{{ controlLabel() }}</mat-label>
         <input type="text" matInput [formControlName]="controlName()" [placeholder]="placeholder()" />
         @if (form().get(controlName())?.invalid && form().get(controlName())?.touched) {
-          <mat-error class="w-full min-w-[200px] overflow-auto"> {{ errorMessage() }}</mat-error>
+          <mat-error class="w-full min-w-50 overflow-auto"> {{ errorMessage() }}</mat-error>
         }
       </mat-form-field>
     </div>

@@ -7,7 +7,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   selector: 'ck-field-action-direction',
   imports: [ReactiveFormsModule, MatButtonToggleModule],
   template: `
-    <div class="mt-[3px]" [formGroup]="form">
+    <div class="mt-0.75" [formGroup]="form">
       <mat-button-toggle-group [formControlName]="controlName">
         <mat-button-toggle value="before">Before</mat-button-toggle>
         <mat-button-toggle value="after">After</mat-button-toggle>

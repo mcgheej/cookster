@@ -1,0 +1,28 @@
+<div
+  class="mt-3 p-[4px_16px] h-72 text-[16px] bg-(--mat-sys-surface-variant) border-b rounded-tl-sm rounded-tr-sm overflow-auto">
+  <div class="grid grid-cols-[minmax(0,1fr)_24px]">
+    <div class="py-0.5 text-[12px] text-(--mat-sys-on-surface-variant) select-none">Resources</div>
+    <div class="h-6">
+      <button
+        class="small"
+        matIconButton
+        [matTooltipShowDelay]="tooltipShowDelay"
+        matTooltip="add new resource"
+        (click)="addResource($event)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  @if (value().length === 0) {
+  <div class="py-0.5 text-[14px] text-(--mat-sys-on-surface-variant) select-none italic">No resources</div>
+  } @else { @for (resource of value(); track $index) {
+  <div
+    class="py-0.5 select-none hover:bg-[#d0d2db] cursor-pointer text-(--mat-sys-on-surface-variant) text-nowrap overflow-hidden text-ellipsis"
+    (click)="editResource($event, $index)">
+    {{ getResourceText(resource) }}
+  </div>
+  } }
+</div>
+@if (value().length > 0) {
+<div class="ml-4 text-[12px] text-(--mat-sys-on-surface-variant) select-none">Click resource to edit</div>
+}

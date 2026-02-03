@@ -1,5 +1,19 @@
 @if (currentKitchen(); as kitchen) {
-<div class="py-4 mx-auto w-lg">
-  <pre>{{ kitchen | json }}</pre>
-</div>
+<form class="py-4 mx-auto w-lg">
+  <div class="text-base font-semibold border-b-2 border-slate-400">Kitchen Details</div>
+  <div class="mt-4 w-full grid grid-cols-1">
+    <mat-form-field class="mat-headline-5" floatLabel="auto">
+      @let name = form.name();
+      <mat-label>Name</mat-label>
+      <input type="text" matInput [formField]="form.name" />
+      @if (name.invalid() && name.touched()) {
+      <mat-error class="w-full min-w-50 overflow-auto">Kitchen name is required</mat-error>
+      }
+    </mat-form-field>
+    <ck-field-resources [formField]="form.resources" [kitchenId]="kitchen.id" />
+  </div>
+  <div class="mt-1 grid grid-cols-1">
+    <button matButton class="justify-self-end" [disabled]="!canSave()" (click)="saveKitchen($event)">Save</button>
+  </div>
+</form>
 }

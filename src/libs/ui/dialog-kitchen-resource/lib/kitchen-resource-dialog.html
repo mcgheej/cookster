@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{ data.id ? 'Edit Kitchen Resource' : 'Create Kitchen Resource' }}</h2>
+<form>
+  <div mat-dialog-content>
+    <div class="w-full grid grid-cols-1">
+      <mat-form-field class="mat-headline-5" floatLabel="auto">
+        @let name = form.name();
+        <mat-label>Name</mat-label>
+        <input type="text" matInput [formField]="form.name" />
+        @if (name.invalid() && name.touched()) {
+        <mat-error class="w-full min-w-50 overflow-auto">{{ name.errors()[0]?.message }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="mt-2" floatLabel="auto">
+        <mat-label>Description</mat-label>
+        <textarea matInput [formField]="form.description" style="resize: none" rows="5"></textarea>
+      </mat-form-field>
+      <mat-form-field class="mat-headline-5" floatLabel="auto">
+        @let maxParallelActivities = form.maxParallelActivities();
+        <mat-label>Max Parallel Activities</mat-label>
+        <input type="number" matInput [formField]="form.maxParallelActivities" />
+        @if (maxParallelActivities.invalid() && maxParallelActivities.touched()) {
+        <mat-error class="w-full min-w-50 overflow-auto">{{ maxParallelActivities.errors()[0]?.message }}</mat-error>
+        } @else {
+        <mat-hint>Must be between 1 and 6</mat-hint>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-dialog-actions [align]="'end'" [style.padding-right.px]="24">
+    <button matButton [mat-dialog-close]="undefined">Cancel</button>
+    @if (data.id !== '') {
+    <button matButton (click)="deleteResource($event)">Delete</button>
+    }
+    <button matButton (click)="saveResource($event)" [disabled]="!canSave()">Save</button>
+  </mat-dialog-actions>
+</form>

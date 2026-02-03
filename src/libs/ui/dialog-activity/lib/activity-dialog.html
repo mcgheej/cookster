@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{ data.activity.id ? 'Edit Activity' : 'Create Activity' }}</h2>
 <form [formGroup]="form" (ngSubmit)="saveActivity()">
-  <div class="mt-[3px] px-6">
+  <div class="mt-0.75 px-6">
     <ck-field-text
       [form]="form"
       controlName="name"
