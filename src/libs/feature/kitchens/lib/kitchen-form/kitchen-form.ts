@@ -54,6 +54,9 @@ export class KitchenForm implements OnChanges {
   saveKitchen(ev: Event): void {
     ev.preventDefault();
     ev.stopPropagation();
-    console.log('Saving kitchen...');
+    const kitchen = this.currentKitchen();
+    if (kitchen) {
+      this.kitchenFormService.saveChanges(kitchen);
+    }
   }
 }
