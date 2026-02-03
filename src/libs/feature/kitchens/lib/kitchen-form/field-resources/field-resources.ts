@@ -74,7 +74,7 @@ export class FieldResources implements FormValueControl<KitchenResourceDB[]> {
 
   protected getResourceText(resource: KitchenResourceDB): string {
     return resource.name === resource.description || resource.description === ''
-      ? resource.name
-      : `${resource.name} (${resource.description})`;
+      ? `[${resource.seq.toString().padStart(2, '0')}] ${resource.name}`
+      : `[${resource.seq.toString().padStart(2, '0')}] ${resource.name} (${resource.description})`;
   }
 }
