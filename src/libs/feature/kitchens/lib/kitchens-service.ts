@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AfKitchensService } from '@data-access/kitchens/index';
 import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
+import { KitchenDB, KitchenResourceDB } from '@util/data-types/index';
 import { map, Observable, of, Subject } from 'rxjs';
 
 @Injectable()
@@ -28,5 +29,22 @@ export class KitchensService {
       },
     });
     return result$.asObservable();
+  }
+
+  updateKitchen(
+    updatedKitchens: KitchenDB[],
+    updatedResources: KitchenResourceDB[],
+    newResources: KitchenResourceDB[],
+    deletedResourceIds: string[]
+  ): void {
+    this.kitchensData.updateKitchen(updatedKitchens, updatedResources, newResources, deletedResourceIds).subscribe({
+      next: () => {
+        this.snackBar.open('Kitchen updated', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (error) => {
+        this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+        console.error('Error updating kitchen', error);
+      },
+    });
   }
 }

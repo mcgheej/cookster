@@ -1,7 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { form, required } from '@angular/forms/signals';
 import { Kitchen, KitchenDB, KitchenResourceDB, kitchenResourceDBsDifferent } from '@util/data-types/index';
 import { NEW_KITCHEN_RESOURCE_ID } from '../constants';
+import { KitchensService } from '../kitchens-service';
 
 export interface KitchenData {
   name: string;
@@ -10,6 +11,8 @@ export interface KitchenData {
 
 @Injectable()
 export class KitchenFormService {
+  private readonly kitchensService = inject(KitchensService);
+
   kitchenModel = signal<KitchenData>({ name: '', resources: [] });
   kitchenForm = form(this.kitchenModel, (p) => {
     required(p.name);
@@ -53,9 +56,6 @@ export class KitchenFormService {
         deletedResourceIds.push(r.id);
       }
     });
-    console.log('Updated Kitchens:', updatedKitchens);
-    console.log('Updated Resources:', updatedResources);
-    console.log('New Resources:', newResources);
-    console.log('Deleted Resource Ids:', deletedResourceIds);
+    this.kitchensService.updateKitchen(updatedKitchens, updatedResources, newResources, deletedResourceIds);
   }
 }
