@@ -1,8 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, Firestore } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  Firestore,
+  writeBatch,
+  query,
+  where,
+  collectionSnapshots,
+} from '@angular/fire/firestore';
 import { Kitchen, KitchenDB, KitchenResourceDB } from '@util/data-types/index';
-import { writeBatch } from 'firebase/firestore';
-import { combineLatest, from, map, Observable, of, shareReplay } from 'rxjs';
+import { combineLatest, from, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AfKitchensService {
@@ -91,5 +100,21 @@ export class AfKitchensService {
       return from(batch.commit());
     }
     return of(undefined);
+  }
+
+  deleteKitchen(kitchenId: string): Observable<void> {
+    const resourcesCollection = collection(this.firestore, 'kitchenResources');
+    const q = query(resourcesCollection, where('kitchenId', '==', kitchenId));
+    return collectionSnapshots(q).pipe(
+      switchMap((snapshots) => {
+        const batch = writeBatch(this.firestore);
+        snapshots.forEach((snapshot) => {
+          batch.delete(snapshot.ref);
+        });
+        const kitchenDocRef = doc(this.firestore, 'kitchens', kitchenId);
+        batch.delete(kitchenDocRef);
+        return from(batch.commit());
+      })
+    );
   }
 }

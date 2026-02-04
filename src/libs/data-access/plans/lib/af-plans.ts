@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   collectionSnapshots,
+  doc,
   Firestore,
   onSnapshot,
   query,
@@ -14,7 +15,6 @@ import {
   collectionData,
 } from '@angular/fire/firestore';
 import { ActivityDB, PlanDB } from '@util/data-types/index';
-import { doc } from 'firebase/firestore';
 import { BehaviorSubject, from, map, Observable, of, switchMap, take } from 'rxjs';
 
 interface PlanChange {

@@ -26,7 +26,6 @@ export class Kitchens {
   protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
 
   protected addKitchen(ev: MouseEvent): void {
-    console.log('Add kitchen clicked');
     this.kitchensService.createKitchen().subscribe((kitchenId) => {
       this.kitchensStore.setCurrentKitchenId(kitchenId);
     });

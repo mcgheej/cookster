@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AfKitchensService } from '@data-access/kitchens/index';
+import { ConfirmSnack } from '@ui/snack-bars/index';
 import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
-import { KitchenDB, KitchenResourceDB } from '@util/data-types/index';
+import { Kitchen, KitchenDB, KitchenResourceDB } from '@util/data-types/index';
 import { map, Observable, of, Subject } from 'rxjs';
 
 @Injectable()
@@ -44,6 +45,34 @@ export class KitchensService {
       error: (error) => {
         this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
         console.error('Error updating kitchen', error);
+      },
+    });
+  }
+
+  deleteKitchen(kitchen: Kitchen): void {
+    this.snackBar
+      .openFromComponent(ConfirmSnack, {
+        duration: 0,
+        verticalPosition: 'bottom',
+        data: {
+          title: `Delete kitchen '${kitchen.name}'?`,
+          actionButtonLabel: 'DELETE',
+        },
+      })
+      .onAction()
+      .subscribe({
+        next: () => this.doDeleteKitchen(kitchen.id),
+      });
+  }
+
+  private doDeleteKitchen(kitchenId: string): void {
+    this.kitchensData.deleteKitchen(kitchenId).subscribe({
+      next: () => {
+        this.snackBar.open('Kitchen deleted', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+      },
+      error: (error) => {
+        this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+        console.error('Error deleting kitchen', error);
       },
     });
   }
