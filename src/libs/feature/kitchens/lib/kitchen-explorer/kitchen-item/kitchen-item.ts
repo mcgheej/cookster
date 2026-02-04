@@ -33,8 +33,7 @@ export class KitchenItem {
 
   deleteKitchen(event: MouseEvent) {
     event.stopPropagation();
-    event.preventDefault(); // TODO: implement delete kitchen
+    event.preventDefault();
     this.kitchensService.deleteKitchen(this.kitchenItem());
-    // console.log('delete kitchen', this.kitchenItem().id, this.kitchenItem().name);
   }
 }
