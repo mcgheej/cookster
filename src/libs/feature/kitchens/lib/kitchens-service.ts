@@ -1,29 +1,32 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Injectable, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AfKitchensService } from '@data-access/kitchens/index';
-import { Kitchen } from '@util/data-types/index';
-import { map } from 'rxjs';
+import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
+import { map, Observable, of, Subject } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class KitchensService {
+  private readonly snackBar = inject(MatSnackBar);
   private readonly kitchensData = inject(AfKitchensService);
 
-  kitchens = toSignal(
-    this.kitchensData.kitchens$.pipe(
-      map((kitchensMap) => [...kitchensMap.values()].sort((a, b) => a.name.localeCompare(b.name)))
-    ),
-    {
-      initialValue: [] as Kitchen[],
-    }
+  readonly kitchensArray$ = this.kitchensData.kitchens$.pipe(
+    map((kitchensMap) => [...kitchensMap.values()].sort((a, b) => a.name.localeCompare(b.name)))
   );
 
-  currentKitchenId = signal<string>('');
-  currentKitchen = computed(() => {
-    const k = this.kitchens().find((kitchen) => kitchen.id === this.currentKitchenId());
-    return k ?? null;
-  });
-
-  setCurrentKitchenId(kitchenId: string) {
-    this.currentKitchenId.set(kitchenId);
+  createKitchen(): Observable<string> {
+    const result$ = new Subject<string>();
+    this.kitchensData.createKitchen({ name: 'New Kitchen' }).subscribe({
+      next: (newKitchen) => {
+        this.snackBar.open('Kitchen created', 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+        result$.next(newKitchen.id);
+        result$.complete();
+      },
+      error: (error) => {
+        this.snackBar.open(error.message, 'Close', { duration: DEFAULT_SNACKBAR_DURATION });
+        console.error('Error creating kitchen', error);
+        result$.complete();
+      },
+    });
+    return result$.asObservable();
   }
 }

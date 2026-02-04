@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { KitchensService } from '../kitchens-service';
+import { KitchensStore } from '../kitchens-store';
 import { CommonModule } from '@angular/common';
 import { KitchenItem } from './kitchen-item/kitchen-item';
 
@@ -10,7 +10,7 @@ import { KitchenItem } from './kitchen-item/kitchen-item';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KitchenExplorer {
-  private readonly kitchensService = inject(KitchensService);
+  private readonly kitchensStore = inject(KitchensStore);
 
-  protected readonly kitchens = this.kitchensService.kitchens;
+  protected readonly kitchens = this.kitchensStore.kitchens;
 }

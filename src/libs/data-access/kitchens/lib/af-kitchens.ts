@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { Kitchen, KitchenDB, KitchenResourceDB } from '@util/data-types/index';
-import { combineLatest, map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, from, map, Observable, shareReplay } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AfKitchensService {
@@ -35,6 +35,14 @@ export class AfKitchensService {
           kitchen.resourcesArray = [...kitchen.resources.values()].sort((a, b) => a.seq - b.seq);
         });
         return kitchens;
+      })
+    );
+  }
+
+  createKitchen(newKitchen: Omit<KitchenDB, 'id'>): Observable<KitchenDB> {
+    return from(addDoc(collection(this.firestore, 'kitchens'), newKitchen)).pipe(
+      map((docRef) => {
+        return { ...newKitchen, id: docRef.id } as KitchenDB;
       })
     );
   }

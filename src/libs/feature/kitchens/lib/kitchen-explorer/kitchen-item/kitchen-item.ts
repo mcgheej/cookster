@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Kitchen } from '@util/data-types/index';
-import { KitchensService } from '../../kitchens-service';
+import { KitchensStore } from '../../kitchens-store';
 import { CommonModule } from '@angular/common';
 import { KitchenItemDetail } from './kitchen-item-detail';
 
@@ -11,15 +11,15 @@ import { KitchenItemDetail } from './kitchen-item-detail';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KitchenItem {
-  private kitchensService = inject(KitchensService);
+  private kitchensStore = inject(KitchensStore);
 
   readonly kitchenItem = input.required<Kitchen>();
 
   protected readonly isCurrentKitchen = computed(() => {
-    return this.kitchensService.currentKitchenId() === this.kitchenItem().id;
+    return this.kitchensStore.currentKitchenId() === this.kitchenItem().id;
   });
 
   setCurrentKitchen(kitchen: Kitchen) {
-    this.kitchensService.setCurrentKitchenId(this.isCurrentKitchen() ? '' : kitchen.id);
+    this.kitchensStore.setCurrentKitchenId(this.isCurrentKitchen() ? '' : kitchen.id);
   }
 }
