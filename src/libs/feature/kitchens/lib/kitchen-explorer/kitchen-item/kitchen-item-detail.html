@@ -1,5 +1,5 @@
 <div class="w-full">
-  @for (resource of kitchen().resourcesArray; track $index) {
+  @if (kitchen().resourcesArray.length > 0) { @for (resource of kitchen().resourcesArray; track $index) {
   <div class="ml-2 text-[14px]">{{ resource.name }}</div>
   <div class="ml-6 text-[12px]">
     @if (resource.description !== resource.name) {
@@ -13,5 +13,7 @@
       <div>{{ maxParallelActivities(resource.maxParallelActivities) }}</div>
     </div>
   </div>
+  } } @else {
+  <div class="ml-2 italic text-[14px]">No resources defined for this kitchen.</div>
   }
 </div>
