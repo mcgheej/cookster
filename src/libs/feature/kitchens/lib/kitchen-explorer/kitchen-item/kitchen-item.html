@@ -1,6 +1,22 @@
 <div class="cursor-pointer my-1" (click)="setCurrentKitchen(kitchenItem())">
-  <div class="select-none">{{ kitchenItem().name }}</div>
   @if (isCurrentKitchen()) {
+  <div class="grid grid-cols-[minmax(0,1fr)__auto_auto]">
+    <div class="select-none">{{ kitchenItem().name }}</div>
+    <button
+      matIconButton
+      class="small"
+      matTooltip="delete kitchen"
+      [matTooltipShowDelay]="tooltipShowDelay"
+      (click)="deleteKitchen($event)">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <mat-icon>expand_more</mat-icon>
+  </div>
   <ck-kitchen-item-detail [kitchen]="kitchenItem()" />
+  } @else {
+  <div class="grid grid-cols-[minmax(0,1fr)_auto]">
+    <div class="select-none">{{ kitchenItem().name }}</div>
+    <mat-icon>expand_less</mat-icon>
+  </div>
   }
 </div>

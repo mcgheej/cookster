@@ -3,10 +3,14 @@ import { Kitchen } from '@util/data-types/index';
 import { KitchensStore } from '../../kitchens-store';
 import { CommonModule } from '@angular/common';
 import { KitchenItemDetail } from './kitchen-item-detail';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 
 @Component({
   selector: 'ck-kitchen-item',
-  imports: [CommonModule, KitchenItemDetail],
+  imports: [CommonModule, KitchenItemDetail, MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './kitchen-item.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -19,7 +23,15 @@ export class KitchenItem {
     return this.kitchensStore.currentKitchenId() === this.kitchenItem().id;
   });
 
+  protected tooltipShowDelay = DEFAULT_TOOLTIP_SHOW_DELAY;
+
   setCurrentKitchen(kitchen: Kitchen) {
     this.kitchensStore.setCurrentKitchenId(this.isCurrentKitchen() ? '' : kitchen.id);
+  }
+
+  deleteKitchen(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault(); // TODO: implement delete kitchen
+    console.log('delete kitchen', this.kitchenItem().id, this.kitchenItem().name);
   }
 }
