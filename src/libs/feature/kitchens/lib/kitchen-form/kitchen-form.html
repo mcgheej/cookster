@@ -13,7 +13,14 @@
     <ck-field-resources [formField]="form.resources" [kitchenId]="kitchen.id" />
   </div>
   <div class="mt-1 grid grid-cols-1">
-    <button matButton class="justify-self-end" [disabled]="!canSave()" (click)="saveKitchen($event)">Save</button>
+    <div class="justify-self-end">
+      @if (canSave()) {
+      <button matButton (click)="resetForm($event)">Reset Form</button>
+      }
+      <button matButton [disabled]="!canSave()" (click)="saveKitchen($event)">
+        {{ canSave() ? 'Save Changes' : 'No Changes' }}
+      </button>
+    </div>
   </div>
 </form>
 }

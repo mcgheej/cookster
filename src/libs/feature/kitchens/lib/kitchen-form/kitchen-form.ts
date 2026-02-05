@@ -21,6 +21,7 @@ export class KitchenForm implements OnChanges {
   currentKitchen = input<Kitchen | null>(null);
 
   protected readonly form = this.kitchenFormService.kitchenForm;
+
   protected readonly canSave = computed(() => {
     const name = this.form.name().value();
     const resources = this.form.resources().value();
@@ -51,12 +52,21 @@ export class KitchenForm implements OnChanges {
     }
   }
 
-  saveKitchen(ev: Event): void {
+  saveKitchen(ev: MouseEvent): void {
     ev.preventDefault();
     ev.stopPropagation();
     const kitchen = this.currentKitchen();
     if (kitchen) {
       this.kitchenFormService.saveChanges(kitchen);
+    }
+  }
+
+  resetForm(ev: MouseEvent): void {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const kitchen = this.currentKitchen();
+    if (kitchen) {
+      this.kitchenFormService.initialise(kitchen);
     }
   }
 }

@@ -5,7 +5,9 @@
     @if (resource.description !== resource.name) {
     <div class="grid grid-cols-[10px_minmax(0,1fr)]">
       <div class="justify-self-center">-</div>
-      <div>{{ resource.description }}</div>
+      <div [class.italic]="resource.description === ''">
+        {{ resource.description === '' ? 'No description' : resource.description }}
+      </div>
     </div>
     }
     <div class="grid grid-cols-[10px_minmax(0,1fr)]">
