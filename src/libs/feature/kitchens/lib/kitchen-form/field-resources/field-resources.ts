@@ -35,6 +35,7 @@ export class FieldResources implements FormValueControl<KitchenResourceDB[]> {
         seq: this.value().length,
         kitchenId: this.kitchenId(),
       },
+      this.value().length + 1,
       this.dialog
     )
       .afterClosed()
@@ -48,16 +49,28 @@ export class FieldResources implements FormValueControl<KitchenResourceDB[]> {
   protected editResource(event: MouseEvent, resourceIndex: number): void {
     event.stopPropagation();
     event.preventDefault();
-    openKitchenResourceDialog(this.value()[resourceIndex], this.dialog)
+    openKitchenResourceDialog(this.value()[resourceIndex], this.value().length, this.dialog)
       .afterClosed()
       .subscribe((result) => {
         if (result) {
           if (result.operation === 'save') {
-            this.value.update((resources) => {
-              const updatedResources = [...resources];
-              updatedResources[resourceIndex] = result.resource;
-              return updatedResources;
-            });
+            if (result.resource.seq === resourceIndex) {
+              this.value.update((resources) => {
+                const updatedResources = [...resources];
+                updatedResources[resourceIndex] = result.resource;
+                return updatedResources;
+              });
+            } else {
+              this.value.update((resources) => {
+                const updatedResources: KitchenResourceDB[] = [...resources];
+                updatedResources.splice(resourceIndex, 1);
+                updatedResources.splice(result.resource.seq, 0, result.resource);
+                for (let i = 0; i < updatedResources.length; i++) {
+                  updatedResources[i] = { ...updatedResources[i], seq: i };
+                }
+                return updatedResources;
+              });
+            }
           } else if (result.operation === 'delete') {
             this.value.update((resources) => {
               const updatedResources = [...resources];
