@@ -49,7 +49,7 @@ export class PreviewMoveActivity extends PreviewComponentBase {
 
     // The displayTile (of type DisplayTile) is the object defining the tile displayed in the resource
     // lane for the subject activity.
-    const { dragPosition: dragPos, shiftKey } = pointerPos;
+    const { offsetPosition: dragPos, shiftKey } = pointerPos;
     const dropArea = baseDropArea as DropAreaResourceLaneColumn;
     const targetActivity = dragOp.activity;
     const pixelsPerHour = dropArea.pixelsPerHour();

@@ -33,6 +33,7 @@ export class CkDrag implements AfterViewInit {
 
   ckDragStarted = output<void>();
   ckDragEnded = output<DragResult | undefined>();
+  ckDragClick = output<MouseEvent>();
 
   // Properties
   // ----------
@@ -56,6 +57,17 @@ export class CkDrag implements AfterViewInit {
   private offset: Point = { x: 0, y: 0 };
 
   /**
+   * Flag indicating whether or not a drag operation is currently in progress.
+   */
+  private dragging = false;
+
+  /**
+   * Timer for distinguishing between drag and click.
+   */
+  private dragTimer: number | null = null;
+  private mouseDown = false;
+
+  /**
    * Directive Lifecycle Hooks
    * -------------------------
    */
@@ -70,12 +82,53 @@ export class CkDrag implements AfterViewInit {
    * Do not support click events on element that is a drag trigger
    */
   protected onClick(ev: MouseEvent): void {
+    console.log('Click event in drag directive');
     ev.stopPropagation();
     ev.preventDefault();
   }
 
   protected onMousedown(ev: MouseEvent): void {
-    const startDragging = true;
+    console.log('Mouse down event in drag directive');
+    this.mouseDown = true;
+    // Start a timer for 200ms to distinguish drag from click
+    this.dragTimer = setTimeout(() => {
+      if (this.mouseDown) {
+        this.startDrag(ev);
+      }
+      this.dragTimer = null;
+    }, 200);
+  }
+
+  /**
+   * Ends the drag operation. Pull down the overlay and set the dragging
+   * signal to false.
+   */
+  protected onMouseup(ev: MouseEvent): void {
+    this.mouseDown = false;
+    if (this.dragTimer) {
+      // Mouse was released before 200ms: treat as click
+      clearTimeout(this.dragTimer);
+      this.dragTimer = null;
+      this.ckDragClick.emit(ev);
+      return;
+    }
+    // Otherwise, handle drag end as usual
+    ev.stopPropagation();
+    const result = this.ckDrag().end({
+      pointerPos: this.getPointerPos(ev),
+      overlayService: this.overlay,
+      renderer: this.renderer,
+    });
+    this.overlay.dispose(this.renderer);
+    this.dragging = false;
+    this.ckDragEnded.emit(result);
+  }
+
+  // Private Methods
+  // ---------------
+
+  private startDrag(ev: MouseEvent): void {
+    this.dragging = true;
     ev.stopPropagation();
     this.initialiseLockPointerValues(ev);
     this.overlay.create(this.renderer);
@@ -84,30 +137,12 @@ export class CkDrag implements AfterViewInit {
     this.overlay.mouseUp$?.subscribe((ev) => this.onMouseup(ev));
     const associatedDropAreas = this.dropAreasManager.getDropAreasByDragOperation(this.ckDrag().id);
     this.ckDrag().start({
-      pointerPos: this.getPointerPos(ev, startDragging),
+      pointerPos: this.getPointerPos(ev, this.dragging),
       associatedDropAreas,
       overlayService: this.overlay,
       renderer: this.renderer,
     });
   }
-
-  /**
-   * Ends the drag operation. Pull down the overlay and set the dragging
-   * signal to false.
-   */
-  protected onMouseup(ev: MouseEvent): void {
-    ev.stopPropagation();
-    const result = this.ckDrag().end({
-      pointerPos: this.getPointerPos(ev),
-      overlayService: this.overlay,
-      renderer: this.renderer,
-    });
-    this.overlay.dispose(this.renderer);
-    this.ckDragEnded.emit(result);
-  }
-
-  // Private Methods
-  // ---------------
 
   /**
    * Handle the mousemove event while dragging. Start by applying any

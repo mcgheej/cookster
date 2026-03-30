@@ -1,5 +1,10 @@
-<div [ngStyle]="tile().styles" (click)="activityClicked($event)">
-  <div class="size-full">
+<div [ngStyle]="tile().styles">
+  <div
+    class="size-full"
+    [ckDrag]="dragActivityOperation()"
+    (ckDragStarted)="onDragActivityStart()"
+    (ckDragEnded)="onDragActivityEnd($event)"
+    (ckDragClick)="activityClicked($event)">
     <div
       class="text-left text-xs px-1 text-(--mat-sys-on-surface) overflow-hidden select-none grid grid-cols-[max-content_max-content]">
       <mat-icon
@@ -31,10 +36,11 @@
   matTooltipPosition="above"
   (ckDragStarted)="onDragDurationStart()"
   (ckDragEnded)="onDragDurationEnd($event)"></div>
-<div
+<!-- <div
   [ckDrag]="dragActivityOperation()"
   (ckDragStarted)="onDragActivityStart()"
   (ckDragEnded)="onDragActivityEnd($event)"
+  (click)="dragActivityClick($event)"
   class="absolute h-4 w-4 z-20"
   [ngStyle]="getMoveHandleStyles()"
   matTooltip="drag to move activity"
@@ -48,5 +54,5 @@
     [style.marginRight.px]="2"
     >open_with</mat-icon
   >
-</div>
+</div> -->
 }

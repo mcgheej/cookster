@@ -99,6 +99,10 @@ export class ActivityTile {
     this.showElement.set('hidden');
   }
 
+  protected dragActivityClick(ev: MouseEvent) {
+    console.log('Click in activity tile');
+  }
+
   protected onDragActivityEnd(ev: DragResult | undefined) {
     this.showElement.set('visible');
     if (ev) {
@@ -109,6 +113,9 @@ export class ActivityTile {
       ) {
         this.activityMoved.emit(result);
       }
+    }
+    if (this.tile().activity.id !== this.selectedActivityId()) {
+      this.planEditorData.setSelectedActivityId(this.tile().activity.id);
     }
   }
 
