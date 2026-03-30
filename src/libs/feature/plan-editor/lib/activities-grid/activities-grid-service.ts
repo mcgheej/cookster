@@ -9,7 +9,7 @@ import { getMinutesSinceMidnight } from '@util/date-utilities/index';
 import { compareAsc, format } from 'date-fns';
 
 @Injectable()
-export class LaneHeaderService {
+export class ActivitiesGridService {
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
   private readonly plansData = inject(PlansDataService);

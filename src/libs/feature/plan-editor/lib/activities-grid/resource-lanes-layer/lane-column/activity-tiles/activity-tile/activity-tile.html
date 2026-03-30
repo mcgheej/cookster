@@ -1,4 +1,4 @@
-<div [ngStyle]="tile().styles">
+<div [ngStyle]="tile().styles" (contextmenu)="$event.preventDefault(); $event.stopPropagation()">
   <div
     class="size-full"
     [ckDrag]="dragActivityOperation()"
@@ -35,24 +35,6 @@
   [matTooltipShowDelay]="showDelay"
   matTooltipPosition="above"
   (ckDragStarted)="onDragDurationStart()"
-  (ckDragEnded)="onDragDurationEnd($event)"></div>
-<!-- <div
-  [ckDrag]="dragActivityOperation()"
-  (ckDragStarted)="onDragActivityStart()"
-  (ckDragEnded)="onDragActivityEnd($event)"
-  (click)="dragActivityClick($event)"
-  class="absolute h-4 w-4 z-20"
-  [ngStyle]="getMoveHandleStyles()"
-  matTooltip="drag to move activity"
-  [matTooltipShowDelay]="showDelay"
-  matTooltipPosition="above">
-  <mat-icon
-    [style.fontSize.px]="16"
-    [style.height.px]="16"
-    [style.width.px]="16"
-    [style.marginTop.px]="2"
-    [style.marginRight.px]="2"
-    >open_with</mat-icon
-  >
-</div> -->
+  (ckDragEnded)="onDragDurationEnd($event)"
+  (contextmenu)="$event.preventDefault(); $event.stopPropagation()"></div>
 }

@@ -82,13 +82,15 @@ export class CkDrag implements AfterViewInit {
    * Do not support click events on element that is a drag trigger
    */
   protected onClick(ev: MouseEvent): void {
-    console.log('Click event in drag directive');
     ev.stopPropagation();
     ev.preventDefault();
   }
 
   protected onMousedown(ev: MouseEvent): void {
-    console.log('Mouse down event in drag directive');
+    if (ev.buttons !== 1) {
+      // Only respond to left mouse button
+      return;
+    }
     this.mouseDown = true;
     // Start a timer for 200ms to distinguish drag from click
     this.dragTimer = setTimeout(() => {
@@ -114,6 +116,10 @@ export class CkDrag implements AfterViewInit {
     }
     // Otherwise, handle drag end as usual
     ev.stopPropagation();
+    if (!this.dragging) {
+      // Only respond to left mouse button
+      return;
+    }
     const result = this.ckDrag().end({
       pointerPos: this.getPointerPos(ev),
       overlayService: this.overlay,

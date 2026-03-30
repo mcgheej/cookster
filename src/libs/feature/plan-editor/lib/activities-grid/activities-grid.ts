@@ -13,6 +13,7 @@ import { ResourceLanesLayer } from './resource-lanes-layer/resource-lanes-layer'
 import { PlanEnd } from './plan-end/plan-end';
 import { TfxResizeEvent, TfxResizeObserver } from '@ui/tfx-resize-observer/index';
 import { FULL_TIME_WINDOW } from '@util/data-types/index';
+import { ActivitiesGridService } from './activities-grid-service';
 
 @Component({
   selector: 'ck-activities-grid',
@@ -26,10 +27,11 @@ import { FULL_TIME_WINDOW } from '@util/data-types/index';
     TimeGridLayer,
     ResourceLanesLayer,
     PlanEnd,
-    TfxResizeObserver
-],
+    TfxResizeObserver,
+  ],
   templateUrl: './activities-grid.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ActivitiesGridService],
 })
 export class ActivitiesGrid {
   private readonly planEditorData = inject(PlanEditorDataService);

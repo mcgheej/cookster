@@ -14,18 +14,17 @@ import {
   PreviewMoveActionInResourceLaneHeader,
   PreviewNewActionInResourceLaneHeader,
 } from '@ui/drag-and-drop/index';
-import { LaneHeaderService } from './lane-header-service';
+import { ActivitiesGridService } from '../../activities-grid-service';
 
 @Component({
   selector: 'ck-lane-header',
   imports: [MatIconModule, MatTooltipModule, ResourceActionIcon, LaneHeaderTitle, LaneHeaderMenu, CkDrop],
   templateUrl: './lane-header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [LaneHeaderService],
 })
 export class LaneHeader {
   private readonly planEditorData = inject(PlanEditorDataService);
-  private readonly laneHeaderService = inject(LaneHeaderService);
+  private readonly activitiesGridService = inject(ActivitiesGridService);
 
   readonly resourceLane = input.required<ResourceLane>();
 
@@ -60,7 +59,7 @@ export class LaneHeader {
     if (!plan) {
       return;
     }
-    this.laneHeaderService.createNewResourceAction(plan, this.resourceLane(), time);
+    this.activitiesGridService.createNewResourceAction(plan, this.resourceLane(), time);
     // use service to add new resource action at specified time for this.resourceLane()
   }
 }

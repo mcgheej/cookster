@@ -21,7 +21,8 @@ import {
   DEFAULT_SNACKBAR_DURATION,
   INITIAL_ACTIVITY_DURATION_MINS,
 } from '@util/app-config/index';
-import { getHours, getMinutes } from 'date-fns';
+import { addMinutes, getHours, getMinutes, startOfDay } from 'date-fns';
+import { ActivitiesGridService } from '../../activities-grid-service';
 
 @Injectable()
 export class LaneColumnService {
@@ -29,6 +30,7 @@ export class LaneColumnService {
   private readonly snackBar = inject(MatSnackBar);
   private readonly plansData = inject(PlansDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
+  private readonly activitiesGridService = inject(ActivitiesGridService);
 
   private readonly plan = this.planEditorData.currentPlan;
   private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
@@ -105,6 +107,17 @@ export class LaneColumnService {
     const minsSinceMidnight =
       Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.planTimeWindow().startHours * 60;
     this.createActivity(minsSinceMidnight, resourceLane, plan);
+  }
+
+  createNewResourceAction(ev: MouseEvent, resourceLane: ResourceLane): void {
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    const minsSinceMidnight =
+      Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.planTimeWindow().startHours * 60;
+    const actionTime = addMinutes(startOfDay(plan.properties.endTime), Math.round(minsSinceMidnight / 15) * 15);
+    this.activitiesGridService.createNewResourceAction(plan, resourceLane, actionTime);
   }
 
   // private Methods

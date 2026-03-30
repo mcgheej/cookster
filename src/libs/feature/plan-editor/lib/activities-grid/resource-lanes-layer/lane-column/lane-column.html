@@ -1,4 +1,21 @@
-<div [ckDrop]="dropArea()" class="h-full border-r-2 divider-dark relative" (click)="createNewActivity($event)">
+<div
+  [ckDrop]="dropArea()"
+  class="h-full border-r-2 divider-dark relative"
+  [matContextMenuTriggerFor]="menu"
+  (contextmenu)="onRightClick($event)">
   <ck-resource-action-tiles [resourceLane]="distinctResourceLane()" />
   <ck-activity-tiles [resourceLane]="distinctResourceLane()" />
 </div>
+<mat-menu #menu>
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="createNewActivity($event)">
+      <mat-icon>schedule</mat-icon>
+      <span>Create New Activity</span>
+    </button>
+    <button mat-menu-item (click)="createNewResourceAction($event)">
+      <mat-icon>electric_bolt</mat-icon>
+      <span>Create New Resource Action</span>
+    </button>
+  </ng-template>
+</mat-menu>
+<!-- <div style="visibility: hidden; position: fixed;" [style.top.px]="menuTopLeftPosition().y" [style.left.px]="menuTopLeftPosition().x" [matMenuTrigg]></div> -->
