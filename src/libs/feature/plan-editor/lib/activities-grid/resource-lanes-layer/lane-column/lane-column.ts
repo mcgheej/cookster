@@ -7,6 +7,7 @@ import { ActivityTiles } from './activity-tiles/activity-tiles';
 import { ResourceActionTiles } from './resource-action-tiles/resource-action-tiles';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
 
 @Component({
   selector: 'ck-lane-column',
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
   providers: [Tiler, LaneColumnService],
 })
 export class LaneColumn {
+  private readonly planEditorData = inject(PlanEditorDataService);
   private readonly service = inject(LaneColumnService);
 
   readonly resourceLane = input.required<ResourceLane>();
@@ -40,7 +42,13 @@ export class LaneColumn {
     }
   }
 
+  clearActivitySelection(ev: MouseEvent): void {
+    ev.stopPropagation();
+    this.planEditorData.setSelectedActivityId('');
+  }
+
   onRightClick(ev: MouseEvent): void {
     this.contextMenuEvent = ev;
+    this.planEditorData.setSelectedActivityId('');
   }
 }

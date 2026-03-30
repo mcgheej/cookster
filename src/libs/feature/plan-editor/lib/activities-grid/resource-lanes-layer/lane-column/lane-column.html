@@ -1,6 +1,7 @@
 <div
   [ckDrop]="dropArea()"
   class="h-full border-r-2 divider-dark relative"
+  (click)="clearActivitySelection($event)"
   [matContextMenuTriggerFor]="menu"
   (contextmenu)="onRightClick($event)">
   <ck-resource-action-tiles [resourceLane]="distinctResourceLane()" />
@@ -18,4 +19,3 @@
     </button>
   </ng-template>
 </mat-menu>
-<!-- <div style="visibility: hidden; position: fixed;" [style.top.px]="menuTopLeftPosition().y" [style.left.px]="menuTopLeftPosition().x" [matMenuTrigg]></div> -->
