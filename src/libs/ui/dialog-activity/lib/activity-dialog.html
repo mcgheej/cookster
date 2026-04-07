@@ -6,6 +6,7 @@
       controlName="name"
       controlLabel="Activity Name"
       placeholder="Name your activity..."
+      [selectTextOnFocus]="data.activity.id ? false : true"
       [errors]="nameErrors" />
     <div class="mt-3 grid grid-cols-[1fr_1fr] gap-4">
       <ck-field-timepicker

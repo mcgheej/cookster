@@ -11,7 +11,12 @@ import { MatInputModule } from '@angular/material/input';
     <div class="w-full grid grid-cols-1" [formGroup]="form()">
       <mat-form-field class="mat-headline-5" floatLabel="auto">
         <mat-label>{{ controlLabel() }}</mat-label>
-        <input type="text" matInput [formControlName]="controlName()" [placeholder]="placeholder()" />
+        <input
+          type="text"
+          matInput
+          [formControlName]="controlName()"
+          [placeholder]="placeholder()"
+          (focus)="onFocus($event.target)" />
         @if (form().get(controlName())?.invalid && form().get(controlName())?.touched) {
           <mat-error class="w-full min-w-50 overflow-auto"> {{ errorMessage() }}</mat-error>
         }
@@ -26,6 +31,7 @@ export class FieldText {
   controlLabel = input.required<string>();
   placeholder = input<string>('');
   errors = input<FieldError[]>([]);
+  selectTextOnFocus = input<boolean>(false);
 
   protected errorMessage = computed(() => {
     const errors = this.errors();
@@ -40,4 +46,10 @@ export class FieldText {
     }
     return '';
   });
+
+  onFocus(inputControl: HTMLInputElement): void {
+    if (this.selectTextOnFocus() && this.form().get(this.controlName())?.untouched) {
+      inputControl.select();
+    }
+  }
 }
