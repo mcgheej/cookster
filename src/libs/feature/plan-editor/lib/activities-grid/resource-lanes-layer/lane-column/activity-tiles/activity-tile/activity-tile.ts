@@ -1,7 +1,9 @@
 import { NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivityService } from '@feature/plan-editor/lib/activity-service';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
 import {
   CkDrag,
@@ -21,12 +23,13 @@ import { DisplayTile } from '@util/data-types/index';
   host: {
     '[style.visibility]': 'showElement()',
   },
-  imports: [NgStyle, MatIconModule, MatTooltipModule, CkDrag],
+  imports: [NgStyle, MatIconModule, MatMenuModule, MatTooltipModule, CkDrag],
   templateUrl: './activity-tile.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActivityTile {
-  private planEditorData = inject(PlanEditorDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
+  private readonly activityService = inject(ActivityService);
 
   tile = input.required<DisplayTile>();
   durationChanged = output<number>();
@@ -84,6 +87,19 @@ export class ActivityTile {
     }
   }
 
+  protected openActivityMenu(ev: MouseEvent) {
+    ev.stopPropagation();
+    ev.preventDefault();
+  }
+
+  protected editActivity() {
+    this.activityService.editActivity(this.tile().activity);
+  }
+
+  protected deleteActivity() {
+    this.activityService.deleteActivity(this.tile().activity);
+  }
+
   protected onDragDurationStart() {
     this.showElement.set('hidden');
   }
@@ -97,10 +113,6 @@ export class ActivityTile {
 
   protected onDragActivityStart() {
     this.showElement.set('hidden');
-  }
-
-  protected dragActivityClick(ev: MouseEvent) {
-    console.log('Click in activity tile');
   }
 
   protected onDragActivityEnd(ev: DragResult | undefined) {

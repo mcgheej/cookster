@@ -2,19 +2,39 @@ import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlansDataService } from '@data-access/plans/index';
-import { GenericInputDialog, GenericInputDialogData } from '@ui/dialog-generic-input/index';
-import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
 import { addResourceActionToPlan, Plan, ResourceAction, ResourceLane } from '@util/data-types/index';
+import { PlanEditorDataService } from './plan-editor-data-service';
+import { addMinutes, compareAsc, format, startOfDay } from 'date-fns';
+import { DEFAULT_SNACKBAR_DURATION } from '@util/app-config/index';
+import { GenericInputDialog, GenericInputDialogData } from '@ui/dialog-generic-input/index';
 import { getMinutesSinceMidnight } from '@util/date-utilities/index';
-import { compareAsc, format } from 'date-fns';
 
 @Injectable()
-export class ActivitiesGridService {
-  private readonly snackBar = inject(MatSnackBar);
+export class ResourceActionService {
   private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
   private readonly plansData = inject(PlansDataService);
+  private readonly planEditorData = inject(PlanEditorDataService);
 
-  createNewResourceAction(plan: Plan, resourceLane: ResourceLane, actionTime: Date): void {
+  private readonly plan = this.planEditorData.currentPlan;
+  private readonly pixelsPerHour = this.planEditorData.activitiesGridPixelsPerHour;
+  private readonly planTimeWindow = this.planEditorData.planTimeWindow;
+
+  // Public Methods
+  // --------------
+
+  createNewResourceAction(ev: MouseEvent, resourceLane: ResourceLane): void {
+    const plan = this.plan();
+    if (!plan) {
+      return;
+    }
+    const minsSinceMidnight =
+      Math.round((ev.offsetY / this.pixelsPerHour()) * 60) + this.planTimeWindow().startHours * 60;
+    const actionTime = addMinutes(startOfDay(plan.properties.endTime), Math.round(minsSinceMidnight / 15) * 15);
+    this.createResourceActionFromTime(plan, resourceLane, actionTime);
+  }
+
+  createResourceActionFromTime(plan: Plan, resourceLane: ResourceLane, actionTime: Date): void {
     if (compareAsc(actionTime, plan.properties.endTime) > 0) {
       this.snackBar.open('Can not create action beyond the end of the plan.', 'Close', {
         duration: DEFAULT_SNACKBAR_DURATION,

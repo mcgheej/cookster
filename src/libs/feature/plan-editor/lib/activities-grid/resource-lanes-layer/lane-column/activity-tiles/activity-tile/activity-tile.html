@@ -1,4 +1,4 @@
-<div [ngStyle]="tile().styles" (contextmenu)="$event.preventDefault(); $event.stopPropagation()">
+<div [ngStyle]="tile().styles" [matContextMenuTriggerFor]="menu" (contextmenu)="openActivityMenu($event)">
   <div
     class="size-full"
     [ckDrag]="dragActivityOperation()"
@@ -38,3 +38,15 @@
   (ckDragEnded)="onDragDurationEnd($event)"
   (contextmenu)="$event.preventDefault(); $event.stopPropagation()"></div>
 }
+<mat-menu #menu>
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="editActivity()">
+      <mat-icon>edit</mat-icon>
+      <span>Edit Activity</span>
+    </button>
+    <button mat-menu-item (click)="deleteActivity()">
+      <mat-icon>delete</mat-icon>
+      <span>Delete Activity</span>
+    </button>
+  </ng-template>
+</mat-menu>

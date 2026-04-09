@@ -9,19 +9,23 @@ import { PlanEditorService } from './plan-editor-service';
 import { SELECTED_ACTIVITY_PANEL_NAME, selectorButtons } from './types-constants/selector-buttons';
 import { openTimeSnapDialog } from '@ui/dialog-time-snap/index';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivityService } from './activity-service';
+import { ResourceActionService } from './resource-action-service';
 
 @Component({
   selector: 'ck-plan-editor',
   imports: [MatDividerModule, MultiPanel, ActivitiesGrid, StatusBar],
   templateUrl: './plan-editor.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PlanEditorService, PlanEditorDataService],
+  providers: [PlanEditorService, PlanEditorDataService, ActivityService, ResourceActionService],
 })
 export class PlanEditor implements OnChanges, OnDestroy {
   private readonly dialog = inject(MatDialog);
   private readonly planEditorData = inject(PlanEditorDataService);
   private readonly planEditorService = inject(PlanEditorService);
   private readonly textSpeech = inject(SpeechService);
+  private readonly activityService = inject(ActivityService);
+  private readonly resourceActionService = inject(ResourceActionService);
 
   readonly planId = input.required<string>();
 

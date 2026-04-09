@@ -14,7 +14,7 @@ import {
   PreviewMoveActionInResourceLaneHeader,
   PreviewNewActionInResourceLaneHeader,
 } from '@ui/drag-and-drop/index';
-import { ActivitiesGridService } from '../../activities-grid-service';
+import { ResourceActionService } from '@feature/plan-editor/lib/resource-action-service';
 
 @Component({
   selector: 'ck-lane-header',
@@ -24,7 +24,7 @@ import { ActivitiesGridService } from '../../activities-grid-service';
 })
 export class LaneHeader {
   private readonly planEditorData = inject(PlanEditorDataService);
-  private readonly activitiesGridService = inject(ActivitiesGridService);
+  private readonly resourceActionService = inject(ResourceActionService);
 
   readonly resourceLane = input.required<ResourceLane>();
 
@@ -59,7 +59,6 @@ export class LaneHeader {
     if (!plan) {
       return;
     }
-    this.activitiesGridService.createNewResourceAction(plan, this.resourceLane(), time);
-    // use service to add new resource action at specified time for this.resourceLane()
+    this.resourceActionService.createResourceActionFromTime(plan, this.resourceLane(), time);
   }
 }

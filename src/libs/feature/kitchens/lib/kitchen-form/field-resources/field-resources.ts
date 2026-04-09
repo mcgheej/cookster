@@ -6,8 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DEFAULT_TOOLTIP_SHOW_DELAY } from '@util/app-config/index';
 import { KitchenResourceDB } from '@util/data-types/index';
-import { openKitchenResourceDialog } from 'libs/ui/dialog-kitchen-resource';
 import { NEW_KITCHEN_RESOURCE_ID } from '../../constants';
+import { openKitchenResourceDialog } from '@ui/dialog-kitchen-resource/index';
 
 @Component({
   selector: 'ck-field-resources',

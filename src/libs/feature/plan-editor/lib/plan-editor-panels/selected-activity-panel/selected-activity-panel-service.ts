@@ -1,11 +1,8 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PlansDataService } from '@data-access/plans/lib/plans-data';
 import { PlanEditorDataService } from '../../plan-editor-data-service';
 import { addMinutes, format, interval, intervalToDuration, subMinutes } from 'date-fns';
 import { activityActionTextTimed, ActivityDB } from '@util/data-types/index';
-import { exceedsMaxParallelActivities } from '@util/tiler/index';
 import {
   DEFAULT_COLOR_OPACITY,
   DEFAULT_SNACKBAR_DURATION,
@@ -13,17 +10,15 @@ import {
   googleColors,
 } from '@util/app-config/index';
 import { opaqueColor } from '@util/color-utilities/index';
-import { openActivityDialog } from '@ui/activity-dialog/index';
-import { TemplatesDataService } from 'libs/data-access/templates';
-import { DeleteActivitySnack } from '@ui/snack-bars/index';
+import { TemplatesDataService } from '@data-access/templates/index';
+import { ActivityService } from '../../activity-service';
 
 @Injectable()
 export class SelectedActivityPanelService {
-  private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly plansData = inject(PlansDataService);
   private readonly templatesData = inject(TemplatesDataService);
   private readonly planEditorData = inject(PlanEditorDataService);
+  private readonly activityService = inject(ActivityService);
 
   // Signals and Computed Signals
   // ----------------------------
@@ -90,34 +85,10 @@ export class SelectedActivityPanelService {
 
   editActivity() {
     const selectedActivity = this.selectedActivity();
-    const plan = this.planEditorData.currentPlan();
-    if (!selectedActivity || !plan) {
+    if (!selectedActivity) {
       return;
     }
-    openActivityDialog({ activity: selectedActivity, plan: plan }, this.dialog)
-      .afterClosed()
-      .subscribe((newActivity) => {
-        if (newActivity) {
-          // check if new activity location exceeds max parallel activities for the resource lane in question
-          const activitiesInLane = plan.activities.filter((a) => a.resourceIndex === newActivity.resourceIndex);
-          if (exceedsMaxParallelActivities(newActivity, activitiesInLane, plan)) {
-            this.snackBar.open('Max parallel activities exceeded for this resource.', undefined, {
-              duration: DEFAULT_SNACKBAR_DURATION,
-            });
-          } else {
-            const { id, ...activityUpdates } = newActivity;
-            this.plansData.updateActivity(id, activityUpdates).subscribe({
-              next: () => {
-                this.snackBar.open('Activity updated', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-              },
-              error: (err) => {
-                console.error('Error updating activity', err);
-                this.snackBar.open('Error updating activity', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-              },
-            });
-          }
-        }
-      });
+    this.activityService.editActivity(selectedActivity);
   }
 
   createTemplateFromActivity(activity: ActivityDB) {
@@ -125,16 +96,7 @@ export class SelectedActivityPanelService {
   }
 
   deleteActivity(selectedActivity: ActivityDB) {
-    this.snackBar
-      .openFromComponent(DeleteActivitySnack, {
-        duration: 0,
-        verticalPosition: 'bottom',
-        data: 'Delete activity?',
-      })
-      .onAction()
-      .subscribe(() => {
-        this.doDeleteAccrual(selectedActivity.id);
-      });
+    this.activityService.deleteActivity(selectedActivity);
   }
 
   deselectActivity() {
@@ -146,18 +108,6 @@ export class SelectedActivityPanelService {
     return rgbColor
       ? opaqueColor(rgbColor, DEFAULT_COLOR_OPACITY)
       : opaqueColor(googleColors[defaultGoogleColor].color, DEFAULT_COLOR_OPACITY);
-  }
-
-  private doDeleteAccrual(id: string): void {
-    this.snackBar.open('Deleting activity...', undefined, { duration: 0 });
-    this.plansData.deleteActivity(id).subscribe({
-      next: () => {
-        this.snackBar.open('Activity deleted', undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-      },
-      error: (error) => {
-        this.snackBar.open(`Error deleting activity: ${error}`, undefined, { duration: DEFAULT_SNACKBAR_DURATION });
-      },
-    });
   }
 
   private doCreateTemplateFromActivity(activity: ActivityDB) {

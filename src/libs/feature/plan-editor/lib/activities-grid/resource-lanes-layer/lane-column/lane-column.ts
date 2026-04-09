@@ -8,6 +8,8 @@ import { ResourceActionTiles } from './resource-action-tiles/resource-action-til
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data-service';
+import { ActivityService } from '@feature/plan-editor/lib/activity-service';
+import { ResourceActionService } from '@feature/plan-editor/lib/resource-action-service';
 
 @Component({
   selector: 'ck-lane-column',
@@ -19,6 +21,8 @@ import { PlanEditorDataService } from '@feature/plan-editor/lib/plan-editor-data
 export class LaneColumn {
   private readonly planEditorData = inject(PlanEditorDataService);
   private readonly service = inject(LaneColumnService);
+  private readonly activityService = inject(ActivityService);
+  private readonly resourceActionService = inject(ResourceActionService);
 
   readonly resourceLane = input.required<ResourceLane>();
 
@@ -32,13 +36,13 @@ export class LaneColumn {
 
   createNewActivity(ev: MouseEvent): void {
     if (this.contextMenuEvent) {
-      this.service.createNewActivity(this.contextMenuEvent, this.distinctResourceLane());
+      this.activityService.createNewActivity(this.contextMenuEvent, this.distinctResourceLane());
     }
   }
 
   createNewResourceAction(ev: MouseEvent): void {
     if (this.contextMenuEvent) {
-      this.service.createNewResourceAction(this.contextMenuEvent, this.distinctResourceLane());
+      this.resourceActionService.createNewResourceAction(this.contextMenuEvent, this.distinctResourceLane());
     }
   }
 
